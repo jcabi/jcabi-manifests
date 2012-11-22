@@ -39,11 +39,11 @@
 Reader of META-INF/MANIFEST.MF files
 
   {{{./apidocs/com/jcabi/manifests/Manifests.html}<<<com.jcabi.manifests.Manifests>>>}}
-  is a convenient reader of <<<META-INF/MANIFEST.MF>>> files:
+  is a convenient reader of <<<META-INF/MANIFEST.MF>>> files. Try this:
 
 +--
 import com.jcabi.manifests.Manifests;
-String version = Manifest.read("Foo-Version");
+String version = Manifests.read("JCabi-Version");
 +--
 
   The only dependency you need is:
