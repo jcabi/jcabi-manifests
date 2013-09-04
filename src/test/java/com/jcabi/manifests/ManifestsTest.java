@@ -161,7 +161,20 @@ public final class ManifestsTest {
             "loaded from file",
             Manifests.exists(name) && Manifests.read(name).equals(value)
         );
-        file.delete();
+    }
+
+    /**
+     * Manifests can append input stream.
+     * @throws Exception If something goes wrong
+     * @since 0.8
+     */
+    @Test
+    public void appendsAttributesFromInputStream() throws Exception {
+        Manifests.append(this.getClass().getResourceAsStream("test.mf"));
+        MatcherAssert.assertThat(
+            Manifests.read("From-File"),
+            Matchers.equalTo("some test attribute")
+        );
     }
 
 }

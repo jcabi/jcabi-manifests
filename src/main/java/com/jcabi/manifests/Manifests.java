@@ -306,7 +306,8 @@ public final class Manifests {
      * @param snapshot The snapshot taken by {@link #snapshot()}
      */
     @SuppressWarnings("unchecked")
-    public static void revert(@NotNull final byte[] snapshot) {
+    public static void revert(@NotNull(message = "snapshot can't be NULL")
+        final byte[] snapshot) {
         synchronized (Manifests.INJECTED) {
             Manifests.INJECTED.clear();
             Manifests.INJECTED.putAll(
@@ -334,7 +335,9 @@ public final class Manifests {
      * @see #Manifests()
      * @throws IOException If some I/O problem inside
      */
-    public static void append(@NotNull final ServletContext ctx)
+    public static void append(
+        @NotNull(message = "servlet context can't be NULL")
+        final ServletContext ctx)
         throws IOException {
         final long start = System.currentTimeMillis();
         URL main;
@@ -374,7 +377,9 @@ public final class Manifests {
      * @param file The file to load attributes from
      * @throws IOException If some I/O problem inside
      */
-    public static void append(@NotNull final File file) throws IOException {
+    public static void append(
+        @NotNull(message = "file can't be NULL")
+        final File file) throws IOException {
         final long start = System.currentTimeMillis();
         Map<String, String> attrs;
         try {
@@ -401,9 +406,11 @@ public final class Manifests {
      *
      * @param stream Stream to use
      * @throws IOException If some I/O problem inside
+     * @since 0.8
      */
-    public static void append(@NotNull final InputStream stream)
-        throws IOException {
+    public static void append(
+        @NotNull(message = "input stream can't be null")
+        final InputStream stream) throws IOException {
         final long start = System.currentTimeMillis();
         final Map<String, String> attrs = Manifests.load(stream);
         Manifests.attributes.putAll(attrs);
@@ -511,6 +518,7 @@ public final class Manifests {
      * @see #load()
      * @see tickets #193 and #323
      * @throws IOException If some problem happens
+     * @since 0.8
      */
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     private static Map<String, String> load(final InputStream stream)
