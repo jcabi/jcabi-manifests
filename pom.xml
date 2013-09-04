@@ -43,12 +43,12 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>jcabi-aspects</artifactId>
-            <version>${project.version}</version>
+            <version>0.7.22</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>jcabi-log</artifactId>
-            <version>${project.version}</version>
+            <version>0.7.22</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
