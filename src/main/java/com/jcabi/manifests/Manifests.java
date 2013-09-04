@@ -395,6 +395,29 @@ public final class Manifests {
     }
 
     /**
+     * Append attributes from input stream.
+     *
+     * <p>The method is thread-safe.
+     *
+     * @param stream Stream to use
+     * @throws IOException If some I/O problem inside
+     */
+    public static void append(@NotNull final InputStream stream)
+        throws IOException {
+        final long start = System.currentTimeMillis();
+        final Map<String, String> attrs = Manifests.load(stream);
+        Manifests.attributes.putAll(attrs);
+        Logger.info(
+            Manifests.class,
+            "#append(): %d attributes loaded in %[ms]s (%d total): %[list]s",
+            attrs.size(),
+            System.currentTimeMillis() - start,
+            Manifests.attributes.size(),
+            new TreeSet<String>(attrs.keySet())
+        );
+    }
+
+    /**
      * Load attributes from classpath.
      *
      * <p>This method doesn't throw any checked exceptions because it is called
