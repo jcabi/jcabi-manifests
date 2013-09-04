@@ -146,7 +146,7 @@ public final class Manifests {
      * @see #inject(String,String)
      */
     private static final Map<String, String> INJECTED =
-        new ConcurrentHashMap<String, String>();
+        new ConcurrentHashMap<String, String>(0);
 
     /**
      * Attributes retrieved from all existing {@code MANIFEST.MF} files.
@@ -405,9 +405,9 @@ public final class Manifests {
      */
     private static Map<String, String> load() {
         final long start = System.currentTimeMillis();
-        Manifests.failures = new ConcurrentHashMap<URI, String>();
+        Manifests.failures = new ConcurrentHashMap<URI, String>(0);
         final Map<String, String> attrs =
-            new ConcurrentHashMap<String, String>();
+            new ConcurrentHashMap<String, String>(0);
         int count = 0;
         for (URI uri : Manifests.uris()) {
             try {
@@ -450,7 +450,7 @@ public final class Manifests {
         } catch (IOException ex) {
             throw new IllegalStateException(ex);
         }
-        final Set<URI> uris = new HashSet<URI>();
+        final Set<URI> uris = new HashSet<URI>(0);
         while (resources.hasMoreElements()) {
             try {
                 uris.add(resources.nextElement().toURI());
@@ -481,7 +481,7 @@ public final class Manifests {
     private static Map<String, String> loadOneFile(final URL url)
         throws IOException {
         final Map<String, String> props =
-            new ConcurrentHashMap<String, String>();
+            new ConcurrentHashMap<String, String>(0);
         final InputStream stream = url.openStream();
         try {
             final Manifest manifest = new Manifest(stream);
