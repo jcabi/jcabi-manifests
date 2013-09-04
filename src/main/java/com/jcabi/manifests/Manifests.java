@@ -138,7 +138,7 @@ import org.apache.commons.lang3.SerializationUtils;
  * @see <a href="http://www.jcabi.com/jcabi-manifests/index.html">www.jcabi.com/jcabi-manifests</a>
  */
 @Immutable
-@SuppressWarnings("PMD.UseConcurrentHashMap")
+@SuppressWarnings({ "PMD.UseConcurrentHashMap", "PMD.TooManyMethods" })
 public final class Manifests {
 
     /**
@@ -350,7 +350,7 @@ public final class Manifests {
                 ctx.getClass().getName()
             );
         } else {
-            final Map<String, String> attrs = Manifests.loadOneFile(main);
+            final Map<String, String> attrs = Manifests.load(main);
             Manifests.attributes.putAll(attrs);
             Logger.info(
                 Manifests.class,
@@ -378,7 +378,7 @@ public final class Manifests {
         final long start = System.currentTimeMillis();
         Map<String, String> attrs;
         try {
-            attrs = Manifests.loadOneFile(file.toURI().toURL());
+            attrs = Manifests.load(file.toURI().toURL());
         } catch (java.net.MalformedURLException ex) {
             throw new IOException(ex);
         }
@@ -411,7 +411,7 @@ public final class Manifests {
         int count = 0;
         for (URI uri : Manifests.uris()) {
             try {
-                attrs.putAll(Manifests.loadOneFile(uri.toURL()));
+                attrs.putAll(Manifests.load(uri.toURL()));
             } catch (IOException ex) {
                 Manifests.failures.put(uri, ex.getMessage());
                 Logger.error(
@@ -463,6 +463,18 @@ public final class Manifests {
 
     /**
      * Load attributes from one file.
+     * @param url The URL of it
+     * @return The attributes loaded
+     * @see #load()
+     * @throws IOException If some problem happens
+     */
+    private static Map<String, String> load(final URL url)
+        throws IOException {
+        return Manifests.load(url.openStream());
+    }
+
+    /**
+     * Load attributes from input stream.
      *
      * <p>Inside the method we catch {@code RuntimeException} (which may look
      * suspicious) in order to protect our execution flow from expected (!)
@@ -471,18 +483,17 @@ public final class Manifests {
      * file format is broken. Instead, it throws a runtime exception (an
      * unchecked one), which we should catch in such an inconvenient way.
      *
-     * @param url The URL of it
+     * @param stream Stream to load from
      * @return The attributes loaded
      * @see #load()
      * @see tickets #193 and #323
      * @throws IOException If some problem happens
      */
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    private static Map<String, String> loadOneFile(final URL url)
+    private static Map<String, String> load(final InputStream stream)
         throws IOException {
         final Map<String, String> props =
             new ConcurrentHashMap<String, String>(0);
-        final InputStream stream = url.openStream();
         try {
             final Manifest manifest = new Manifest(stream);
             final Attributes attrs = manifest.getMainAttributes();
@@ -492,16 +503,12 @@ public final class Manifests {
             }
             Logger.debug(
                 Manifests.class,
-                "#loadOneFile('%s'): %d attributes loaded (%[list]s)",
-                url, props.size(), new TreeSet<String>(props.keySet())
+                "#load(): %d attributes loaded (%[list]s)",
+                props.size(), new TreeSet<String>(props.keySet())
             );
         // @checkstyle IllegalCatch (1 line)
         } catch (RuntimeException ex) {
-            Logger.error(
-                Manifests.class,
-                "#getMainAttributes(): '%s' failed %[exception]s",
-                url, ex
-            );
+            Logger.error(Manifests.class, "#load(): failed %[exception]s", ex);
         } finally {
             IOUtils.closeQuietly(stream);
         }
