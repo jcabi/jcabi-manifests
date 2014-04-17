@@ -51,7 +51,7 @@ public final class ManifestsTest {
     @Test
     public void readsSingleExistingAttribute() throws Exception {
         MatcherAssert.assertThat(
-            Manifests.read("Class-Path"),
+            Manifests.read("Os-Name"),
             Matchers.notNullValue()
         );
     }

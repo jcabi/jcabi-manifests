@@ -343,7 +343,7 @@ public final class Manifests {
         URL main;
         try {
             main = ctx.getResource("/META-INF/MANIFEST.MF");
-        } catch (java.net.MalformedURLException ex) {
+        } catch (final java.net.MalformedURLException ex) {
             throw new IOException(ex);
         }
         if (main == null) {
@@ -384,7 +384,7 @@ public final class Manifests {
         Map<String, String> attrs;
         try {
             attrs = Manifests.load(file.toURI().toURL());
-        } catch (java.net.MalformedURLException ex) {
+        } catch (final java.net.MalformedURLException ex) {
             throw new IOException(ex);
         }
         Manifests.attributes.putAll(attrs);
@@ -439,10 +439,10 @@ public final class Manifests {
         final Map<String, String> attrs =
             new ConcurrentHashMap<String, String>(0);
         int count = 0;
-        for (URI uri : Manifests.uris()) {
+        for (final URI uri : Manifests.uris()) {
             try {
                 attrs.putAll(Manifests.load(uri.toURL()));
-            } catch (IOException ex) {
+            } catch (final IOException ex) {
                 Manifests.failures.put(uri, ex.getMessage());
                 Logger.error(
                     Manifests.class,
@@ -477,14 +477,14 @@ public final class Manifests {
         try {
             resources = Thread.currentThread().getContextClassLoader()
                 .getResources("META-INF/MANIFEST.MF");
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw new IllegalStateException(ex);
         }
         final Set<URI> uris = new HashSet<URI>(0);
         while (resources.hasMoreElements()) {
             try {
                 uris.add(resources.nextElement().toURI());
-            } catch (URISyntaxException ex) {
+            } catch (final URISyntaxException ex) {
                 throw new IllegalStateException(ex);
             }
         }
@@ -528,7 +528,7 @@ public final class Manifests {
         try {
             final Manifest manifest = new Manifest(stream);
             final Attributes attrs = manifest.getMainAttributes();
-            for (Object key : attrs.keySet()) {
+            for (final Object key : attrs.keySet()) {
                 final String value = attrs.getValue((Name) key);
                 props.put(key.toString(), value);
             }
@@ -538,7 +538,7 @@ public final class Manifests {
                 props.size(), new TreeSet<String>(props.keySet())
             );
         // @checkstyle IllegalCatch (1 line)
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             Logger.error(Manifests.class, "#load(): failed %[exception]s", ex);
         } finally {
             IOUtils.closeQuietly(stream);
