@@ -2,7 +2,7 @@
  
 [![Build Status](https://travis-ci.org/jcabi/jcabi-manifests.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-manifests)
 
-More details are here: [www.jcabi.com/jcabi-manifests](http://www.jcabi.com/jcabi-manifests/index.html)
+More details are here: [manifests.jcabi.com](http://manifests.jcabi.com/index.html)
 
 Manipulations with MANIFEST.MF files made easy:
 
@@ -22,7 +22,7 @@ You need just this dependency:
 <dependency>
   <groupId>com.jcabi</groupId>
   <artifactId>jcabi-manifests</artifactId>
-  <version>0.8</version>
+  <version>0.8.1</version>
 </dependency>
 ```
 
