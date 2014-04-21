@@ -53,6 +53,12 @@
         <developerConnection>scm:git:github.com:jcabi/jcabi-manifests.git</developerConnection>
         <url>https://github.com/jcabi/jcabi-manifests</url>
     </scm>
+    <distributionManagement>
+        <site>
+            <id>manifests.jcabi.com</id>
+            <url>http://manifests.jcabi.com/</url>
+        </site>
+    </distributionManagement>
     <dependencies>
         <dependency>
             <groupId>com.jcabi</groupId>
