@@ -42,16 +42,16 @@
     <description>Manager of MANIFEST.MF files</description>
     <issueManagement>
         <system>github</system>
-        <url>https://github.com/jcabi/jcabi-manifest/issues</url>
+        <url>https://github.com/jcabi/jcabi-manifests/issues</url>
     </issueManagement>
     <ciManagement>
         <system>rultor</system>
         <url>http://www.rultor.com/s/jcabi</url>
     </ciManagement>
     <scm>
-        <connection>scm:git:github.com:jcabi/jcabi-manifest.git</connection>
-        <developerConnection>scm:git:github.com:jcabi/jcabi-manifest.git</developerConnection>
-        <url>https://github.com/jcabi/jcabi-manifest</url>
+        <connection>scm:git:github.com:jcabi/jcabi-manifests.git</connection>
+        <developerConnection>scm:git:github.com:jcabi/jcabi-manifests.git</developerConnection>
+        <url>https://github.com/jcabi/jcabi-manifests</url>
     </scm>
     <dependencies>
         <dependency>
