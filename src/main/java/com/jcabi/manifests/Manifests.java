@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -45,7 +46,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.Attributes;
-import java.util.jar.Attributes.Name;
 import java.util.jar.Manifest;
 import javax.servlet.ServletContext;
 import javax.validation.constraints.NotNull;
@@ -209,7 +209,7 @@ public final class Manifests {
             }
             throw new IllegalArgumentException(bldr.toString());
         }
-        String result;
+        final String result;
         if (Manifests.INJECTED.containsKey(name)) {
             result = Manifests.INJECTED.get(name);
         } else {
@@ -339,11 +339,10 @@ public final class Manifests {
         @NotNull(message = "servlet context can't be NULL")
         final ServletContext ctx)
         throws IOException {
-        final long start = System.currentTimeMillis();
-        URL main;
+        final URL main;
         try {
             main = ctx.getResource("/META-INF/MANIFEST.MF");
-        } catch (final java.net.MalformedURLException ex) {
+        } catch (final MalformedURLException ex) {
             throw new IOException(ex);
         }
         if (main == null) {
@@ -353,6 +352,7 @@ public final class Manifests {
                 ctx.getClass().getName()
             );
         } else {
+            final long start = System.currentTimeMillis();
             final Map<String, String> attrs = Manifests.load(main);
             Manifests.attributes.putAll(attrs);
             Logger.info(
@@ -377,14 +377,15 @@ public final class Manifests {
      * @param file The file to load attributes from
      * @throws IOException If some I/O problem inside
      */
+    @SuppressWarnings("PMD.PrematureDeclaration")
     public static void append(
         @NotNull(message = "file can't be NULL")
         final File file) throws IOException {
+        final Map<String, String> attrs;
         final long start = System.currentTimeMillis();
-        Map<String, String> attrs;
         try {
             attrs = Manifests.load(file.toURI().toURL());
-        } catch (final java.net.MalformedURLException ex) {
+        } catch (final MalformedURLException ex) {
             throw new IOException(ex);
         }
         Manifests.attributes.putAll(attrs);
@@ -466,14 +467,14 @@ public final class Manifests {
      * Find all URLs.
      *
      * <p>This method doesn't throw any checked exceptions just for convenience
-     * of calling of it (above in {@linke #load}), although it is clear that
+     * of calling of it (above in {@link #load}), although it is clear that
      * {@link IOException} is a good candidate for being thrown out of it.
      *
      * @return The list of URLs
      * @see #load()
      */
     private static Set<URI> uris() {
-        Enumeration<URL> resources;
+        final Enumeration<URL> resources;
         try {
             resources = Thread.currentThread().getContextClassLoader()
                 .getResources("META-INF/MANIFEST.MF");
@@ -516,7 +517,6 @@ public final class Manifests {
      * @param stream Stream to load from
      * @return The attributes loaded
      * @see #load()
-     * @see tickets #193 and #323
      * @throws IOException If some problem happens
      * @since 0.8
      */
@@ -529,7 +529,9 @@ public final class Manifests {
             final Manifest manifest = new Manifest(stream);
             final Attributes attrs = manifest.getMainAttributes();
             for (final Object key : attrs.keySet()) {
-                final String value = attrs.getValue((Name) key);
+                final String value = attrs.getValue(
+                    Attributes.Name.class.cast(key)
+                );
                 props.put(key.toString(), value);
             }
             Logger.debug(
