@@ -1,6 +1,7 @@
 <img src="http://img.jcabi.com/logo-square.png" width="64px" height="64px" />
  
 [![Build Status](https://travis-ci.org/jcabi/jcabi-manifests.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-manifests)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-manifests/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-manifests)
 
 More details are here: [manifests.jcabi.com](http://manifests.jcabi.com/index.html)
 
@@ -14,16 +15,6 @@ public class Main {
     System.out.println("version is " + version);
   }
 }
-```
-
-You need just this dependency:
-
-```xml
-<dependency>
-  <groupId>com.jcabi</groupId>
-  <artifactId>jcabi-manifests</artifactId>
-  <version>0.8.1</version>
-</dependency>
 ```
 
 ## Questions?
