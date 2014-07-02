@@ -29,36 +29,31 @@
  */
 package com.jcabi.manifests;
 
-import com.jcabi.aspects.Immutable;
 import com.jcabi.log.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Enumeration;
-import java.util.HashSet;
+import java.util.AbstractMap;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import javax.servlet.ServletContext;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.SerializationUtils;
 
 /**
  * Static reader of {@code META-INF/MANIFEST.MF} files.
  *
  * The class provides convenient methods to read
  * all {@code MANIFEST.MF} files available in classpath
- * and all attributes from them. This mechanism is very useful for transferring
+ * and all attributes from them.
+ *
+ * <p>This mechanism may be very useful for transferring
  * information from continuous integration environment to the production
  * environment. For example, you want your site to show project version and
  * the date of {@code WAR} file packaging. First, you configure
@@ -102,28 +97,8 @@ import org.apache.commons.lang3.SerializationUtils;
  *   }
  * }</pre>
  *
- * <p>In unit and integration tests you may need to inject some values
- * to {@code MANIFEST.MF} in runtime (for example, in your bootstrap Groovy
- * scripts):
- *
- * <pre> import com.jcabi.manifests.Manifests
- * Manifests.inject("Foo-URL", "http://localhost/abc");</pre>
- *
- * <p>When it is necessary to isolate such injections between different unit
- * tests "snapshots" may help, for example (it's a method in a unit test):
- *
- * <pre> &#64;Test
- * public void testSomeCode() {
- *   // save current state of all MANIFEST.MF attributes
- *   final byte[] snapshot = Manifests.snapshot();
- *   // inject new attribute required for this specific test
- *   Manifests.inject("Foo-URL", "http://localhost/abc");
- *   // restore back all attributes, as they were before the injection
- *   Manifests.revert(snapshot);
- * }</pre>
- *
  * <p>The only dependency you need (check the latest version at
- * <a href="http://www.jcabi.com/jcabi-manifests/">jcabi-manifests</a>):
+ * <a href="http://manifests.jcabi.com/">jcabi-manifests</a>):
  *
  * <pre> &lt;dependency>
  *  &lt;groupId>com.jcabi&lt;/groupId>
@@ -135,36 +110,75 @@ import org.apache.commons.lang3.SerializationUtils;
  * @since 0.7
  * @see <a href="http://download.oracle.com/javase/1,5.0/docs/guide/jar/jar.html#JAR%20Manifest">JAR Manifest</a>
  * @see <a href="http://maven.apache.org/shared/maven-archiver/index.html">Maven Archiver</a>
- * @see <a href="http://www.jcabi.com/jcabi-manifests/index.html">www.jcabi.com/jcabi-manifests</a>
+ * @see <a href="http://manifests.jcabi.com/index.html">manifests.jcabi.com</a>
  */
-@Immutable
-@SuppressWarnings({ "PMD.UseConcurrentHashMap", "PMD.TooManyMethods" })
-public final class Manifests {
+public final class Manifests extends AbstractMap<String, String> {
 
     /**
-     * Injected attributes.
-     * @see #inject(String,String)
+     * Default singleton.
      */
-    private static final Map<String, String> INJECTED =
-        new ConcurrentHashMap<String, String>(0);
+    private static final Manifests DEFAULT = new Manifests();
 
     /**
-     * Attributes retrieved from all existing {@code MANIFEST.MF} files.
-     * @see #load()
+     * Attributes retrieved.
      */
-    private static Map<String, String> attributes = Manifests.load();
+    private final transient Map<String, String> attributes;
+
+    static {
+        try {
+            Manifests.DEFAULT.append(new ClasspathMfs());
+        } catch (final IOException ex) {
+            Logger.error(
+                Manifests.class,
+                "#load(): '%s' failed %[exception]s", ex
+            );
+        }
+    }
 
     /**
-     * Failures registered during loading.
-     * @see #load()
+     * Public ctor.
+     * @since 1.0
      */
-    private static Map<URI, String> failures;
+    public Manifests() {
+        this(new HashMap<String, String>(0));
+    }
 
     /**
-     * It's a utility class, can't be instantiated.
+     * Public ctor.
+     * @param attrs Attributes to encapsulate
+     * @since 1.0
      */
-    private Manifests() {
-        // intentionally empty
+    public Manifests(final Map<String, String> attrs) {
+        super();
+        this.attributes = new HashMap<String, String>(attrs);
+    }
+
+    @Override
+    public Set<Map.Entry<String, String>> entrySet() {
+        return this.attributes.entrySet();
+    }
+
+    /**
+     * Append this collection of MANIFEST.MF files.
+     * @param streams Files to append
+     * @return This
+     * @since 1.0
+     * @throws IOException If fails on I/O problem
+     */
+    public Manifests append(final Mfs streams) throws IOException {
+        final long start = System.currentTimeMillis();
+        final Collection<InputStream> list = streams.fetch();
+        for (final InputStream stream : list) {
+            this.attributes.putAll(Manifests.load(stream));
+        }
+        Logger.info(
+            this,
+            "%d attributes loaded from %d stream(s) in %[ms]s: %[list]s",
+            this.attributes.size(), list.size(),
+            System.currentTimeMillis() - start,
+            new TreeSet<String>(this.attributes.keySet())
+        );
+        return this;
     }
 
     /**
@@ -174,85 +188,30 @@ public final class Manifests {
      * will be thrown. If you're not sure whether the attribute is present or
      * not use {@link #exists(String)} beforehand.
      *
-     * <p>During testing you can inject attributes into this class by means
-     * of {@link #inject(String,String)}.
-     *
      * <p>The method is thread-safe.
      *
      * @param name Name of the attribute
      * @return The value of the attribute retrieved
      */
-    public static String read(
-        @NotNull(message = "attribute name can't be NULL")
-        @Pattern(regexp = ".+", message = "attribute name can't be empty")
-        final String name) {
-        if (Manifests.attributes == null) {
-            throw new IllegalArgumentException(
-                "Manifests haven't been loaded yet, internal error"
-            );
+    public static String read(final String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("attribute can't be NULL");
+        }
+        if (name.isEmpty()) {
+            throw new IllegalArgumentException("attribute can't be empty");
         }
         if (!Manifests.exists(name)) {
-            final StringBuilder bldr = new StringBuilder(
+            throw new IllegalArgumentException(
                 Logger.format(
                     // @checkstyle LineLength (1 line)
-                    "Atribute '%s' not found in MANIFEST.MF file(s) among %d other attribute(s) %[list]s and %d injection(s)",
+                    "Attribute '%s' not found in MANIFEST.MF file(s) among %d other attribute(s): %[list]s",
                     name,
-                    Manifests.attributes.size(),
-                    new TreeSet<String>(Manifests.attributes.keySet()),
-                    Manifests.INJECTED.size()
+                    Manifests.DEFAULT.attributes.size(),
+                    new TreeSet<String>(Manifests.DEFAULT.attributes.keySet())
                 )
             );
-            if (!Manifests.failures.isEmpty()) {
-                bldr.append("; failures: ").append(
-                    Logger.format("%[list]s", Manifests.failures.keySet())
-                );
-            }
-            throw new IllegalArgumentException(bldr.toString());
         }
-        final String result;
-        if (Manifests.INJECTED.containsKey(name)) {
-            result = Manifests.INJECTED.get(name);
-        } else {
-            result = Manifests.attributes.get(name);
-        }
-        Logger.debug(Manifests.class, "#read('%s'): found '%s'", name, result);
-        return result;
-    }
-
-    /**
-     * Inject new attribute.
-     *
-     * <p>An attribute can be injected in runtime, mostly for the sake of
-     * unit and integration testing. Once injected an attribute becomes
-     * available with {@link #read(String)}.
-     *
-     * <p>The method is thread-safe.
-     *
-     * @param name Name of the attribute
-     * @param value The value of the attribute being injected
-     */
-    public static void inject(
-        @NotNull(message = "injected name can't be NULL")
-        @Pattern(regexp = ".+", message = "name of attribute can't be empty")
-        final String name,
-        @NotNull(message = "inected value can't be NULL") final String value) {
-        if (Manifests.INJECTED.containsKey(name)) {
-            Logger.info(
-                Manifests.class,
-                "#inject(%s, '%s'): replaced previous injection '%s'",
-                name,
-                value,
-                Manifests.INJECTED.get(name)
-            );
-        } else {
-            Logger.info(
-                Manifests.class,
-                "#inject(%s, '%s'): injected",
-                name,
-                value
-            );
-        }
-        Manifests.INJECTED.put(name, value);
+        return Manifests.DEFAULT.get(name);
     }
 
     /**
@@ -266,59 +225,14 @@ public final class Manifests {
      * @param name Name of the attribute to check
      * @return Returns {@code TRUE} if it exists, {@code FALSE} otherwise
      */
-    public static boolean exists(
-        @NotNull(message = "name of attribute can't be NULL")
-        @Pattern(regexp = ".+", message = "name of attribute can't be empty")
-        final String name) {
-        final boolean exists = Manifests.attributes.containsKey(name)
-            || Manifests.INJECTED.containsKey(name);
-        Logger.debug(Manifests.class, "#exists('%s'): %B", name, exists);
-        return exists;
-    }
-
-    /**
-     * Make a snapshot of current attributes and their values.
-     *
-     * <p>The method is thread-safe.
-     *
-     * @return The snapshot, to be used later with {@link #revert(byte[])}
-     */
-    public static byte[] snapshot() {
-        byte[] snapshot;
-        synchronized (Manifests.INJECTED) {
-            snapshot = SerializationUtils.serialize(
-                (Serializable) Manifests.INJECTED
-            );
+    public static boolean exists(final String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("attribute name can't be NULL");
         }
-        Logger.debug(
-            Manifests.class,
-            "#snapshot(): created (%d bytes)",
-            snapshot.length
-        );
-        return snapshot;
-    }
-
-    /**
-     * Revert to the state that was recorded by {@link #snapshot()}.
-     *
-     * <p>The method is thread-safe.
-     *
-     * @param snapshot The snapshot taken by {@link #snapshot()}
-     */
-    @SuppressWarnings("unchecked")
-    public static void revert(@NotNull(message = "snapshot can't be NULL")
-        final byte[] snapshot) {
-        synchronized (Manifests.INJECTED) {
-            Manifests.INJECTED.clear();
-            Manifests.INJECTED.putAll(
-                (Map<String, String>) SerializationUtils.deserialize(snapshot)
-            );
+        if (name.isEmpty()) {
+            throw new IllegalArgumentException("attribute name can't be empty");
         }
-        Logger.debug(
-            Manifests.class,
-            "#revert(%d bytes): reverted",
-            snapshot.length
-        );
+        return Manifests.DEFAULT.containsKey(name);
     }
 
     /**
@@ -335,38 +249,8 @@ public final class Manifests {
      * @see #Manifests()
      * @throws IOException If some I/O problem inside
      */
-    public static void append(
-        @NotNull(message = "servlet context can't be NULL")
-        final ServletContext ctx)
-        throws IOException {
-        final URL main;
-        try {
-            main = ctx.getResource("/META-INF/MANIFEST.MF");
-        } catch (final MalformedURLException ex) {
-            throw new IOException(ex);
-        }
-        if (main == null) {
-            Logger.warn(
-                Manifests.class,
-                "#append(%s): MANIFEST.MF not found in WAR package",
-                ctx.getClass().getName()
-            );
-        } else {
-            final long start = System.currentTimeMillis();
-            final Map<String, String> attrs = Manifests.load(main);
-            Manifests.attributes.putAll(attrs);
-            Logger.info(
-                Manifests.class,
-                // @checkstyle LineLength (1 line)
-                "#append(%s): %d attribs loaded from %s in %[ms]s (%d total): %[list]s",
-                ctx.getClass().getName(),
-                attrs.size(),
-                main,
-                System.currentTimeMillis() - start,
-                Manifests.attributes.size(),
-                new TreeSet<String>(attrs.keySet())
-            );
-        }
+    public static void append(final ServletContext ctx) throws IOException {
+        Manifests.DEFAULT.append(new ServletMfs(ctx));
     }
 
     /**
@@ -377,26 +261,19 @@ public final class Manifests {
      * @param file The file to load attributes from
      * @throws IOException If some I/O problem inside
      */
-    @SuppressWarnings("PMD.PrematureDeclaration")
-    public static void append(
-        @NotNull(message = "file can't be NULL")
-        final File file) throws IOException {
-        final Map<String, String> attrs;
-        final long start = System.currentTimeMillis();
-        try {
-            attrs = Manifests.load(file.toURI().toURL());
-        } catch (final MalformedURLException ex) {
-            throw new IOException(ex);
+    public static void append(final File file) throws IOException {
+        if (file == null) {
+            throw new IllegalArgumentException("file can't be NULL");
         }
-        Manifests.attributes.putAll(attrs);
-        Logger.info(
-            Manifests.class,
-            // @checkstyle LineLength (1 line)
-            "#append('%s'): %d attributes loaded in %[ms]s (%d total): %[list]s",
-            file, attrs.size(),
-            System.currentTimeMillis() - start,
-            Manifests.attributes.size(),
-            new TreeSet<String>(attrs.keySet())
+        Manifests.DEFAULT.append(
+            new Mfs() {
+                @Override
+                public Collection<InputStream> fetch() throws IOException {
+                    return Collections.singleton(
+                        file.toURI().toURL().openStream()
+                    );
+                }
+            }
         );
     }
 
@@ -409,99 +286,18 @@ public final class Manifests {
      * @throws IOException If some I/O problem inside
      * @since 0.8
      */
-    public static void append(
-        @NotNull(message = "input stream can't be null")
-        final InputStream stream) throws IOException {
-        final long start = System.currentTimeMillis();
-        final Map<String, String> attrs = Manifests.load(stream);
-        Manifests.attributes.putAll(attrs);
-        Logger.info(
-            Manifests.class,
-            "#append(): %d attributes loaded in %[ms]s (%d total): %[list]s",
-            attrs.size(),
-            System.currentTimeMillis() - start,
-            Manifests.attributes.size(),
-            new TreeSet<String>(attrs.keySet())
-        );
-    }
-
-    /**
-     * Load attributes from classpath.
-     *
-     * <p>This method doesn't throw any checked exceptions because it is called
-     * from a static context above. It's just more convenient to catch all
-     * exceptions here than above in a static call block.
-     *
-     * @return All found attributes
-     */
-    private static Map<String, String> load() {
-        final long start = System.currentTimeMillis();
-        Manifests.failures = new ConcurrentHashMap<URI, String>(0);
-        final Map<String, String> attrs =
-            new ConcurrentHashMap<String, String>(0);
-        int count = 0;
-        for (final URI uri : Manifests.uris()) {
-            try {
-                attrs.putAll(Manifests.load(uri.toURL()));
-            } catch (final IOException ex) {
-                Manifests.failures.put(uri, ex.getMessage());
-                Logger.error(
-                    Manifests.class,
-                    "#load(): '%s' failed %[exception]s",
-                    uri, ex
-                );
+    public static void append(final InputStream stream) throws IOException {
+        if (stream == null) {
+            throw new IllegalArgumentException("input stream can't be NULL");
+        }
+        Manifests.DEFAULT.append(
+            new Mfs() {
+                @Override
+                public Collection<InputStream> fetch() {
+                    return Collections.singleton(stream);
+                }
             }
-            ++count;
-        }
-        Logger.info(
-            Manifests.class,
-            "#load(): %d attribs loaded from %d URL(s) in %[ms]s: %[list]s",
-            attrs.size(), count,
-            System.currentTimeMillis() - start,
-            new TreeSet<String>(attrs.keySet())
         );
-        return attrs;
-    }
-
-    /**
-     * Find all URLs.
-     *
-     * <p>This method doesn't throw any checked exceptions just for convenience
-     * of calling of it (above in {@link #load}), although it is clear that
-     * {@link IOException} is a good candidate for being thrown out of it.
-     *
-     * @return The list of URLs
-     * @see #load()
-     */
-    private static Set<URI> uris() {
-        final Enumeration<URL> resources;
-        try {
-            resources = Thread.currentThread().getContextClassLoader()
-                .getResources("META-INF/MANIFEST.MF");
-        } catch (final IOException ex) {
-            throw new IllegalStateException(ex);
-        }
-        final Set<URI> uris = new HashSet<URI>(0);
-        while (resources.hasMoreElements()) {
-            try {
-                uris.add(resources.nextElement().toURI());
-            } catch (final URISyntaxException ex) {
-                throw new IllegalStateException(ex);
-            }
-        }
-        return uris;
-    }
-
-    /**
-     * Load attributes from one file.
-     * @param url The URL of it
-     * @return The attributes loaded
-     * @see #load()
-     * @throws IOException If some problem happens
-     */
-    private static Map<String, String> load(final URL url)
-        throws IOException {
-        return Manifests.load(url.openStream());
     }
 
     /**
@@ -516,14 +312,13 @@ public final class Manifests {
      *
      * @param stream Stream to load from
      * @return The attributes loaded
-     * @see #load()
      * @throws IOException If some problem happens
      * @since 0.8
      */
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     private static Map<String, String> load(final InputStream stream)
         throws IOException {
-        final Map<String, String> props =
+        final ConcurrentMap<String, String> props =
             new ConcurrentHashMap<String, String>(0);
         try {
             final Manifest manifest = new Manifest(stream);
@@ -536,14 +331,14 @@ public final class Manifests {
             }
             Logger.debug(
                 Manifests.class,
-                "#load(): %d attributes loaded (%[list]s)",
+                "%d attribute(s) loaded %[list]s",
                 props.size(), new TreeSet<String>(props.keySet())
             );
         // @checkstyle IllegalCatch (1 line)
         } catch (final RuntimeException ex) {
             Logger.error(Manifests.class, "#load(): failed %[exception]s", ex);
         } finally {
-            IOUtils.closeQuietly(stream);
+            stream.close();
         }
         return props;
     }

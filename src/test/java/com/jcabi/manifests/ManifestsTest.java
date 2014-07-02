@@ -31,6 +31,7 @@ package com.jcabi.manifests;
 
 import com.jcabi.log.Logger;
 import java.io.File;
+import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -51,50 +52,9 @@ public final class ManifestsTest {
     @Test
     public void readsSingleExistingAttribute() throws Exception {
         MatcherAssert.assertThat(
-            Manifests.read("Os-Name"),
+            Manifests.read("JCabi-Version"),
             Matchers.notNullValue()
         );
-    }
-
-    /**
-     * Manifests can read an injected attribute.
-     * @throws Exception If something goes wrong
-     */
-    @Test
-    public void readsInjectedAttribute() throws Exception {
-        final String name = "Foo-Attribute";
-        final String value = "some special value";
-        MatcherAssert.assertThat(
-            Manifests.exists(name),
-            Matchers.equalTo(false)
-        );
-        Manifests.inject(name, value);
-        MatcherAssert.assertThat(
-            Manifests.exists(name),
-            Matchers.equalTo(true)
-        );
-        MatcherAssert.assertThat(
-            Manifests.read(name),
-            Matchers.equalTo(value)
-        );
-    }
-
-    /**
-     * Manifests can throw an exception if attribute name is NULL.
-     * @throws Exception If something goes wrong
-     */
-    @Test(expected = javax.validation.ConstraintViolationException.class)
-    public void throwsExceptionWhenAttributeNameIsNull() throws Exception {
-        Manifests.read(null);
-    }
-
-    /**
-     * Manifests can throw an exception if trying to inject NULL.
-     * @throws Exception If something goes wrong
-     */
-    @Test(expected = javax.validation.ConstraintViolationException.class)
-    public void throwsExceptionWhenInjectingNull() throws Exception {
-        Manifests.inject("attr-foo", null);
     }
 
     /**
@@ -119,28 +79,13 @@ public final class ManifestsTest {
      * Manifests can throw an exception loading file with empty attribute.
      * @throws Exception If something goes wrong
      */
-    @Test(expected = java.io.IOException.class)
+    @Test(expected = IOException.class)
     public void throwsExceptionWhenNoAttributes() throws Exception {
         final File file = new File(
             Thread.currentThread().getContextClassLoader()
                 .getResource("META-INF/MANIFEST_INVALID.MF").getFile()
         );
         Manifests.append(file);
-    }
-
-    /**
-     * Manifests can make a snapshot and restore it back.
-     * @throws Exception If something goes wrong
-     */
-    @Test
-    public void makesSnapshotAndRestoresBack() throws Exception {
-        final String name = "Test-Foo-Attribute";
-        final byte[] snapshot = Manifests.snapshot();
-        MatcherAssert.assertThat("is absent", !Manifests.exists(name));
-        Manifests.inject(name, "some value to inject");
-        MatcherAssert.assertThat("should be", Manifests.exists(name));
-        Manifests.revert(snapshot);
-        MatcherAssert.assertThat("reverted", !Manifests.exists(name));
     }
 
     /**

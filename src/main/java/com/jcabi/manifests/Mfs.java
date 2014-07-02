@@ -1,6 +1,4 @@
-<?xml version="1.0"?>
-<!--
- *
+/**
  * Copyright (c) 2012-2013, JCabi.com
  * All rights reserved.
  *
@@ -28,20 +26,27 @@
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
- -->
-<document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
-    <body>
-        <release version="0.8" date="4 Sep 2013" description="Manifests#append(InputStream)">
-            <action dev="yegor" issue="1" type="fix">
-                Project migrated from jcabi main repository to its
-                own Github repo. Documentation improved a bit.
-            </action>
-            <action dev="yegor" issue="1" type="fix">
-                Manifests#append(InputStream) added
-            </action>
-        </release>
-        <release version="0.7.3" date="11 Dec 2012" description="dependency on Servlet API documented"/>
-        <release version="0.7.2" date="3 Dec 2012" description="full site documentation"/>
-        <release version="0.7" date="18 Nov 2012" description="first release"/>
-    </body>
-</document>
+ */
+package com.jcabi.manifests;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+
+/**
+ * Manifests.
+ *
+ * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @version $Id$
+ * @since 1.0
+ */
+public interface Mfs {
+
+    /**
+     * Find and fetch them all.
+     * @return Iterator of found resources
+     * @throws IOException If fails
+     */
+    Collection<InputStream> fetch() throws IOException;
+
+}
