@@ -111,6 +111,7 @@ import javax.servlet.ServletContext;
  * @see <a href="http://download.oracle.com/javase/1,5.0/docs/guide/jar/jar.html#JAR%20Manifest">JAR Manifest</a>
  * @see <a href="http://maven.apache.org/shared/maven-archiver/index.html">Maven Archiver</a>
  * @see <a href="http://manifests.jcabi.com/index.html">manifests.jcabi.com</a>
+ * @see <a href="http://www.yegor256.com/2014/07/03/how-to-read-manifest-mf.html">How to Read MANIFEST.MF Files</a>
  */
 public final class Manifests extends AbstractMap<String, String> {
 
