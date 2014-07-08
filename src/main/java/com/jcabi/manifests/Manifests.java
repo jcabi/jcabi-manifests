@@ -168,14 +168,26 @@ public final class Manifests extends AbstractMap<String, String> {
     public Manifests append(final Mfs streams) throws IOException {
         final long start = System.currentTimeMillis();
         final Collection<InputStream> list = streams.fetch();
+        int saved = 0;
+        int ignored = 0;
         for (final InputStream stream : list) {
-            this.attributes.putAll(Manifests.load(stream));
+            for (final Map.Entry<String, String> attr
+                : Manifests.load(stream).entrySet()) {
+                if (this.attributes.containsKey(attr.getKey())) {
+                    ++ignored;
+                } else {
+                    this.attributes.put(attr.getKey(), attr.getValue());
+                    ++saved;
+                }
+            }
         }
         Logger.info(
             this,
-            "%d attributes loaded from %d stream(s) in %[ms]s: %[list]s",
+            // @checkstyle LineLength (1 line)
+            "%d attributes loaded from %d stream(s) in %[ms]s, %d saved, %d ignored: %[list]s",
             this.attributes.size(), list.size(),
             System.currentTimeMillis() - start,
+            saved, ignored,
             new TreeSet<String>(this.attributes.keySet())
         );
         return this;
