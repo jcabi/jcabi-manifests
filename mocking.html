@@ -54,7 +54,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-1.0.1/index.html" title="JavaDoc 1.0.1">JavaDoc 1.0.1</a>
+                            <span>                        <a href="apidocs-1.0.2/index.html" title="JavaDoc 1.0.2">JavaDoc 1.0.2</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -129,11 +129,11 @@
                             </div>
                             <div class="date">
                                 <div class="date-numbers">
-                                    <strong itemprop="version">1.0.1</strong>
+                                    <strong itemprop="version">1.0.2</strong>
                                     
-                                    <time itemprop="datePublished" datetime="2014-07-08T12:36:26Z">
+                                    <time itemprop="datePublished" datetime="2014-07-09T04:03:37Z">
                                         
-                                        08-Jul-2014
+                                        09-Jul-2014
                                     </time>
                                 </div>
                                                                                                     <div>
@@ -147,8 +147,8 @@
                         <article role="article" itemprop="articleBody">
                             <!--  --><!-- ~~ ~~ Copyright (c) 2012-2014, jcabi.com --><!-- All rights reserved. --><!--  --><!-- Redistribution and use in source and binary forms, with or without --><!-- modification, are permitted provided that the following conditions --><!-- are met: 1) Redistributions of source code must retain the above --><!-- copyright notice, this list of conditions and the following --><!-- disclaimer. 2) Redistributions in binary form must reproduce the above --><!-- copyright notice, this list of conditions and the following --><!-- disclaimer in the documentation and/or other materials provided --><!-- with the distribution. 3) Neither the name of the jcabi.com nor --><!-- the names of its contributors may be used to endorse or promote --><!-- products derived from this software without specific prior written --><!-- permission. --><!--  --><!-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS --><!-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT --><!-- NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND --><!-- FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL --><!-- THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, --><!-- INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES --><!-- (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR --><!-- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) --><!-- HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, --><!-- STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) --><!-- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED --><!-- OF THE POSSIBILITY OF SUCH DAMAGE. --><!--  --><div class="section">
 <h2>Mocking <tt>MANIFEST.MF</tt> Attributes in Unit Tests<a name="Mocking_MANIFEST.MF_Attributes_in_Unit_Tests"></a></h2>
-<p><a href="./apidocs-1.0.1/com/jcabi/manifests/Manifests.html"><tt>Manifests</tt></a> is a utility class with static only methods. The main motivation for this design is the nature of <tt>MANIFEST.MF</tt> files &amp;mdas; they are global for the entire Java Virtual Machine. In other words, they are read-only <a class="externalLink" href="http://en.wikipedia.org/wiki/Global_variable">global variables</a>.</p>
-<p>In order to simplify unit-testing and mocking the <a href="./apidocs-1.0.1/com/jcabi/manifests/Manifests.html"><tt>Manifests</tt></a> class has a few supplementary methods and mechanisms. The first one is <a href="./apidocs-1.0.1/com/jcabi/manifests/Manifests.html"><tt>inject()</tt></a>, which allows you to overwrite any <tt>MANIFEST.MF</tt> attribute. Let's say we have a <tt>Database</tt> class that is an adapter between a relational MySQL database and all other classes in the application:</p>
+<p><a href="./apidocs-1.0.2/com/jcabi/manifests/Manifests.html"><tt>Manifests</tt></a> is a utility class with static only methods. The main motivation for this design is the nature of <tt>MANIFEST.MF</tt> files &amp;mdas; they are global for the entire Java Virtual Machine. In other words, they are read-only <a class="externalLink" href="http://en.wikipedia.org/wiki/Global_variable">global variables</a>.</p>
+<p>In order to simplify unit-testing and mocking the <a href="./apidocs-1.0.2/com/jcabi/manifests/Manifests.html"><tt>Manifests</tt></a> class has a few supplementary methods and mechanisms. The first one is <a href="./apidocs-1.0.2/com/jcabi/manifests/Manifests.html"><tt>inject()</tt></a>, which allows you to overwrite any <tt>MANIFEST.MF</tt> attribute. Let's say we have a <tt>Database</tt> class that is an adapter between a relational MySQL database and all other classes in the application:</p>
 <div class="source">
 <pre>public class Database {
   private Connection connection;
@@ -162,7 +162,7 @@
     return employee;
   }
 }</pre></div>
-<p>The <tt>Database</tt> class gets JDBC URL from <tt>MANIFEST.MF</tt>. Now we want to test the class without interacting with real MySQL database. In other words we want to break this dependency and mock database behavior. We can use an <a class="externalLink" href="http://www.h2database.com/html/features.html#in_memory_databases">in-memory H2 database</a> and inject its URL into <a href="./apidocs-1.0.1/com/jcabi/manifests/Manifests.html"><tt>Manifests</tt></a>:</p>
+<p>The <tt>Database</tt> class gets JDBC URL from <tt>MANIFEST.MF</tt>. Now we want to test the class without interacting with real MySQL database. In other words we want to break this dependency and mock database behavior. We can use an <a class="externalLink" href="http://www.h2database.com/html/features.html#in_memory_databases">in-memory H2 database</a> and inject its URL into <a href="./apidocs-1.0.2/com/jcabi/manifests/Manifests.html"><tt>Manifests</tt></a>:</p>
 <div class="source">
 <pre>public class DatabaseTest {
   @Test
@@ -173,8 +173,8 @@
     assertThat(emp.name(), notNullValue());
   }
 }</pre></div>
-<p><a href="./apidocs-1.0.1/com/jcabi/manifests/Manifests.html"><tt>inject()</tt></a> method makes <tt>MANIFEST.MF</tt> attributes available for writing.</p>
-<p>Since <a href="./apidocs-1.0.1/com/jcabi/manifests/Manifests.html"><tt>Manifests</tt></a> is a registry of global attributes a change made to one of them in one unit test will affect all other tests, if they rely on the same attribute. Thus, it's a good practice to <a href="./apidocs-1.0.1/com/jcabi/manifests/Manifests.html"><tt>inject()</tt></a> in <tt>setUp()</tt> and clean after yourself in <tt>tearDown()</tt>. We have two convenient methods for this: <a href="./apidocs-1.0.1/com/jcabi/manifests/Manifests.html"><tt>snapshot()</tt></a> and <a href="./apidocs-1.0.1/com/jcabi/manifests/Manifests.html"><tt>revert()</tt></a>. The <tt>DatabaseTest</tt> unit test could be re-written as following:</p>
+<p><a href="./apidocs-1.0.2/com/jcabi/manifests/Manifests.html"><tt>inject()</tt></a> method makes <tt>MANIFEST.MF</tt> attributes available for writing.</p>
+<p>Since <a href="./apidocs-1.0.2/com/jcabi/manifests/Manifests.html"><tt>Manifests</tt></a> is a registry of global attributes a change made to one of them in one unit test will affect all other tests, if they rely on the same attribute. Thus, it's a good practice to <a href="./apidocs-1.0.2/com/jcabi/manifests/Manifests.html"><tt>inject()</tt></a> in <tt>setUp()</tt> and clean after yourself in <tt>tearDown()</tt>. We have two convenient methods for this: <a href="./apidocs-1.0.2/com/jcabi/manifests/Manifests.html"><tt>snapshot()</tt></a> and <a href="./apidocs-1.0.2/com/jcabi/manifests/Manifests.html"><tt>revert()</tt></a>. The <tt>DatabaseTest</tt> unit test could be re-written as following:</p>
 <div class="source">
 <pre>public class DatabaseTest {
   private static byte[] manifests;
