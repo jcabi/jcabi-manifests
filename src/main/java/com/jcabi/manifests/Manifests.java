@@ -151,7 +151,7 @@ public final class Manifests extends AbstractMap<String, String> {
      */
     public Manifests(final Map<String, String> attrs) {
         super();
-        this.attributes = new HashMap<String, String>(attrs);
+        this.attributes = new ConcurrentHashMap<String, String>(attrs);
     }
 
     @Override
