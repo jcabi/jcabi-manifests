@@ -96,7 +96,7 @@
 <tr>  <td class="numLine">&nbsp;39</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.Enumeration;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;40</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.HashSet;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.LinkedList;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;41</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;42</td>  <td class="nbHits">&nbsp;</td>
@@ -125,22 +125,22 @@
   <td class="src"><pre class="src">&nbsp;            .getContextClassLoader()</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;55</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            .getResources(<span class="string">"META-INF/MANIFEST.MF"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;56</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> Collection&lt;URI&gt; uris = <span class="keyword">new</span> HashSet&lt;URI&gt;(0);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;57</td>  <td class="nbHitsCovered"><a title="Line 57: Conditional coverage 100% (2/2).">&nbsp;38</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 57: Conditional coverage 100% (2/2).">        <span class="keyword">while</span> (resources.hasMoreElements()) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;56</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> Collection&lt;URI&gt; uris = <span class="keyword">new</span> LinkedList&lt;URI&gt;();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;57</td>  <td class="nbHitsCovered"><a title="Line 57: Conditional coverage 100% (2/2).">&nbsp;34</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 57: Conditional coverage 100% (2/2).">        <span class="keyword">while</span> (resources.hasMoreElements()) {</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;58</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="keyword">try</span> {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;59</td>  <td class="nbHitsCovered">&nbsp;37</td>  <td class="src"><pre class="src">&nbsp;                uris.add(resources.nextElement().toURI());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;59</td>  <td class="nbHitsCovered">&nbsp;33</td>  <td class="src"><pre class="src">&nbsp;                uris.add(resources.nextElement().toURI());</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;60</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            } <span class="keyword">catch</span> (<span class="keyword">final</span> URISyntaxException ex) {</span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;61</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                <span class="keyword">throw</span> <span class="keyword">new</span> IOException(ex);</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;62</td>  <td class="nbHitsCovered">&nbsp;37</td>  <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;62</td>  <td class="nbHitsCovered">&nbsp;33</td>  <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;63</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;64</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> Collection&lt;InputStream&gt; streams =</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;65</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="keyword">new</span> ArrayList&lt;InputStream&gt;(uris.size());</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;66</td>  <td class="nbHitsCovered"><a title="Line 66: Conditional coverage 100% (2/2).">&nbsp;1</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 66: Conditional coverage 100% (2/2).">        <span class="keyword">for</span> (<span class="keyword">final</span> URI uri : uris) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;67</td>  <td class="nbHitsCovered">&nbsp;37</td>  <td class="src"><pre class="src">&nbsp;            streams.add(uri.toURL().openStream());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;68</td>  <td class="nbHitsCovered">&nbsp;37</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;67</td>  <td class="nbHitsCovered">&nbsp;33</td>  <td class="src"><pre class="src">&nbsp;            streams.add(uri.toURL().openStream());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;68</td>  <td class="nbHitsCovered">&nbsp;33</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;69</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> streams;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;70</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
@@ -150,6 +150,6 @@
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.9.4.1 on 7/9/14 4:05 PM.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.9.4.1 on 7/22/14 7:43 PM.</div>
 </body>
 </html>

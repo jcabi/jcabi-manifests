@@ -54,7 +54,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-1.0.2/index.html" title="JavaDoc 1.0.2">JavaDoc 1.0.2</a>
+                            <span>                        <a href="apidocs-1.0.3/index.html" title="JavaDoc 1.0.3">JavaDoc 1.0.3</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -129,11 +129,11 @@
                             </div>
                             <div class="date">
                                 <div class="date-numbers">
-                                    <strong itemprop="version">1.0.2</strong>
+                                    <strong itemprop="version">1.0.3</strong>
                                     
-                                    <time itemprop="datePublished" datetime="2014-07-09T04:03:37Z">
+                                    <time itemprop="datePublished" datetime="2014-07-22T07:41:56Z">
                                         
-                                        09-Jul-2014
+                                        22-Jul-2014
                                     </time>
                                 </div>
                                                                                                     <div>
@@ -147,7 +147,7 @@
                         <article role="article" itemprop="articleBody">
                             <!--  --><!-- ~~ Copyright (c) 2012-2014, jcabi.com --><!-- All rights reserved. --><!--  --><!-- Redistribution and use in source and binary forms, with or without --><!-- modification, are permitted provided that the following conditions --><!-- are met: 1) Redistributions of source code must retain the above --><!-- copyright notice, this list of conditions and the following --><!-- disclaimer. 2) Redistributions in binary form must reproduce the above --><!-- copyright notice, this list of conditions and the following --><!-- disclaimer in the documentation and/or other materials provided --><!-- with the distribution. 3) Neither the name of the jcabi.com nor --><!-- the names of its contributors may be used to endorse or promote --><!-- products derived from this software without specific prior written --><!-- permission. --><!--  --><!-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS --><!-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT --><!-- NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND --><!-- FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL --><!-- THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, --><!-- INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES --><!-- (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR --><!-- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) --><!-- HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, --><!-- STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) --><!-- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED --><!-- OF THE POSSIBILITY OF SUCH DAMAGE. --><!--  --><div class="section">
 <h2>Versioning of JAR/WAR Application<a name="Versioning_of_JARWAR_Application"></a></h2>
-<p>Oracle <a class="externalLink" href="http://docs.oracle.com/javase/tutorial/deployment/jar/packageman.html">recommends</a> to use <tt>MANIFEST.MF</tt> for versioning of a Java application. We also recommend to use <a href="./apidocs-1.0.2/com/jcabi/manifests/Manifests.html"><tt>Manifests</tt></a> utility class for reading version data in runtime. For example, you're developing a web application and want to show its currently deployed version number somewhere in the HTML page. You can see how it works, for example, in <a class="externalLink" href="http://www.s3auth.com/">www.s3auth.com</a>. Pay attention to the small gray rectangle at the right bottom corner of the HTML page. It contains the version of the application and its Git revision hash. Every time a new version is deployed to the production server we see a new hash there. It is very convenient for developers and end-users.</p>
+<p>Oracle <a class="externalLink" href="http://docs.oracle.com/javase/tutorial/deployment/jar/packageman.html">recommends</a> to use <tt>MANIFEST.MF</tt> for versioning of a Java application. We also recommend to use <a href="./apidocs-1.0.3/com/jcabi/manifests/Manifests.html"><tt>Manifests</tt></a> utility class for reading version data in runtime. For example, you're developing a web application and want to show its currently deployed version number somewhere in the HTML page. You can see how it works, for example, in <a class="externalLink" href="http://www.s3auth.com/">www.s3auth.com</a>. Pay attention to the small gray rectangle at the right bottom corner of the HTML page. It contains the version of the application and its Git revision hash. Every time a new version is deployed to the production server we see a new hash there. It is very convenient for developers and end-users.</p>
 <p>You can see how it is done in <a class="externalLink" href="http://www.s3auth.com/">www.s3auth.com</a> by reading their <a class="externalLink" href="https://github.com/yegor256/s3auth/blob/master/s3auth-rest/pom.xml"><tt>pom.xml</tt></a> at Github. Let's reproduce it here step by step.</p>
 <p>First, you should retrieve the revision number from your SCM (either it is Git, SVN, Mercurial, or something similar). We're using <a class="externalLink" href="http://mojo.codehaus.org/buildnumber-maven-plugin/">buildnumber-maven-plugin</a>:</p>
 <div class="source">
