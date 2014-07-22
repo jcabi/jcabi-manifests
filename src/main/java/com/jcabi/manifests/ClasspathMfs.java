@@ -37,7 +37,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.HashSet;
+import java.util.LinkedList;
 
 /**
  * Manifests in classpath.
@@ -53,7 +53,7 @@ public final class ClasspathMfs implements Mfs {
         final Enumeration<URL> resources = Thread.currentThread()
             .getContextClassLoader()
             .getResources("META-INF/MANIFEST.MF");
-        final Collection<URI> uris = new HashSet<URI>(0);
+        final Collection<URI> uris = new LinkedList<URI>();
         while (resources.hasMoreElements()) {
             try {
                 uris.add(resources.nextElement().toURI());
