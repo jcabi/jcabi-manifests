@@ -58,7 +58,6 @@
         </menu>
         <menu name="Best Practices">
             <item name="Package Versioning" href="./versioning.html"/>
-            <item name="Mocking in Unit Tests" href="./mocking.html"/>
             <item name="Appending ServletContext" href="./servlets.html"/>
         </menu>
         <menu ref="reports"/>
