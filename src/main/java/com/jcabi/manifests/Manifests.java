@@ -100,6 +100,10 @@ import javax.servlet.ServletContext;
  *
  * <pre>Manifests.DEFAULT.append(new FilesMfs(new File("MANIFEST.MF")));</pre>
  *
+ * <p>You can also modify the map directly:
+ *
+ * <pre>Manifests.DEFAULT.put("Hello", "world");</pre>
+ *
  * <p>The only dependency you need (check the latest version at
  * <a href="http://manifests.jcabi.com/">jcabi-manifests</a>):
  *
