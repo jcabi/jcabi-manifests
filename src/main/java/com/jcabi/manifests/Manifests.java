@@ -33,7 +33,6 @@ import com.jcabi.log.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -117,12 +116,13 @@ import javax.servlet.ServletContext;
  * @see <a href="http://manifests.jcabi.com/index.html">manifests.jcabi.com</a>
  * @see <a href="http://www.yegor256.com/2014/07/03/how-to-read-manifest-mf.html">How to Read MANIFEST.MF Files</a>
  */
-public final class Manifests extends AbstractMap<String, String> {
+@SuppressWarnings("PMD.TooManyMethods")
+public final class Manifests implements MfMap {
 
     /**
      * Default singleton.
      */
-    public static final Manifests DEFAULT = new Manifests();
+    public static final MfMap DEFAULT = new Manifests();
 
     /**
      * Attributes retrieved.
@@ -159,18 +159,67 @@ public final class Manifests extends AbstractMap<String, String> {
     }
 
     @Override
+    public int size() {
+        return this.attributes.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.attributes.isEmpty();
+    }
+
+    @Override
+    public boolean containsKey(final Object key) {
+        return this.attributes.containsKey(key);
+    }
+
+    @Override
+    public boolean containsValue(final Object value) {
+        return this.attributes.containsValue(value);
+    }
+
+    @Override
+    public String get(final Object key) {
+        return this.attributes.get(key);
+    }
+
+    @Override
+    public String put(final String key, final String value) {
+        return this.attributes.put(key, value);
+    }
+
+    @Override
+    public String remove(final Object key) {
+        return this.attributes.remove(key);
+    }
+
+    @Override
+    public void putAll(final Map<? extends String, ? extends String> attrs) {
+        this.attributes.putAll(attrs);
+    }
+
+    @Override
+    public void clear() {
+        this.attributes.clear();
+    }
+
+    @Override
+    public Set<String> keySet() {
+        return this.attributes.keySet();
+    }
+
+    @Override
+    public Collection<String> values() {
+        return this.attributes.values();
+    }
+
+    @Override
     public Set<Map.Entry<String, String>> entrySet() {
         return this.attributes.entrySet();
     }
 
-    /**
-     * Append this collection of MANIFEST.MF files.
-     * @param streams Files to append
-     * @return This
-     * @since 1.0
-     * @throws IOException If fails on I/O problem
-     */
-    public Manifests append(final Mfs streams) throws IOException {
+    @Override
+    public MfMap append(final Mfs streams) throws IOException {
         final long start = System.currentTimeMillis();
         final Collection<InputStream> list = streams.fetch();
         int saved = 0;
@@ -223,8 +272,8 @@ public final class Manifests extends AbstractMap<String, String> {
                     // @checkstyle LineLength (1 line)
                     "Attribute '%s' not found in MANIFEST.MF file(s) among %d other attribute(s): %[list]s",
                     name,
-                    Manifests.DEFAULT.attributes.size(),
-                    new TreeSet<String>(Manifests.DEFAULT.attributes.keySet())
+                    Manifests.DEFAULT.size(),
+                    new TreeSet<String>(Manifests.DEFAULT.keySet())
                 )
             );
         }
