@@ -255,12 +255,9 @@ public final class Manifests extends AbstractMap<String, String> {
     /**
      * Append attributes from the web application {@code MANIFEST.MF}.
      *
-     * <p>You can call this method in your own
-     * {@link javax.servlet.Filter} or
-     * {@link javax.servlet.ServletContextListener},
-     * in order to inject {@code MANIFEST.MF} attributes to the class.
+     * <p>The method is deprecated. Instead, use this code:
      *
-     * <p>The method is thread-safe.
+     * <pre>Manifests.DEFAULT.append(new ServletMfs());</pre>
      *
      * @param ctx Servlet context
      * @see #Manifests()
@@ -275,7 +272,9 @@ public final class Manifests extends AbstractMap<String, String> {
     /**
      * Append attributes from the file.
      *
-     * <p>The method is thread-safe.
+     * <p>The method is deprecated. Instead, use this code:
+     *
+     * <pre>Manifests.DEFAULT.append(new FilesMfs(file));</pre>
      *
      * @param file The file to load attributes from
      * @throws IOException If some I/O problem inside
@@ -292,7 +291,9 @@ public final class Manifests extends AbstractMap<String, String> {
     /**
      * Append attributes from input stream.
      *
-     * <p>The method is thread-safe.
+     * <p>The method is deprecated. Instead, use this code:
+     *
+     * <pre>Manifests.DEFAULT.append(new StreamsMfs(stream));</pre>
      *
      * @param stream Stream to use
      * @throws IOException If some I/O problem inside
