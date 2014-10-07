@@ -27,22 +27,53 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.jcabi.manifests;
+
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
- * Static reader of {@code META-INF/MANIFEST.MF} files.
+ * Manifests in streams.
  *
- * <p>The only dependency you need is (check our latest version available
- * at <a href="http://www.jcabi.com">www.jcabi.com</a>):
+ * Append attributes from {@code MANIFEST.MF} file:
  *
- * <pre>&lt;depedency&gt;
- *   &lt;groupId&gt;com.jcabi&lt;/groupId&gt;
- *   &lt;artifactId&gt;jcabi-manifests&lt;/artifactId&gt;
- * &lt;/dependency&gt;</pre>
+ * <pre> Manifests.append(
+ *   new StreamsMfs(this.getClass().getResourceAsStream("MANIFEST.MF"))
+ * );</pre>
+ *
+ * <p>The class is immutable and thread-safe.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @since 0.7
- * @see <a href="http://www.jcabi.com/jcabi-manifests/index.html">project website</a>
- * @see <a href="http://www.yegor256.com/2014/07/03/how-to-read-manifest-mf.html">How to Read MANIFEST.MF Files</a>
+ * @since 1.1
  */
-package com.jcabi.manifests;
+public final class StreamsMfs implements Mfs {
+
+    /**
+     * Streams.
+     */
+    private final transient Collection<InputStream> streams;
+
+    /**
+     * Ctor.
+     * @param stream Stream
+     */
+    public StreamsMfs(final InputStream stream) {
+        this(Collections.singleton(stream));
+    }
+
+    /**
+     * Ctor.
+     * @param list Files
+     */
+    public StreamsMfs(final Collection<InputStream> list) {
+        this.streams = Collections.unmodifiableCollection(list);
+    }
+
+    @Override
+    public Collection<InputStream> fetch() {
+        return Collections.unmodifiableCollection(this.streams);
+    }
+
+}

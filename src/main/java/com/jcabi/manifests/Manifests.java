@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.AbstractMap;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -97,6 +96,11 @@ import javax.servlet.ServletContext;
  *   }
  * }</pre>
  *
+ * <p>If you want to add more manifests to the collection, use
+ * its static instance:
+ *
+ * <pre>Manifests.DEFAULT.append(new FilesMfs(new File("MANIFEST.MF")));</pre>
+ *
  * <p>The only dependency you need (check the latest version at
  * <a href="http://manifests.jcabi.com/">jcabi-manifests</a>):
  *
@@ -118,7 +122,7 @@ public final class Manifests extends AbstractMap<String, String> {
     /**
      * Default singleton.
      */
-    private static final Manifests DEFAULT = new Manifests();
+    public static final Manifests DEFAULT = new Manifests();
 
     /**
      * Attributes retrieved.
@@ -261,7 +265,9 @@ public final class Manifests extends AbstractMap<String, String> {
      * @param ctx Servlet context
      * @see #Manifests()
      * @throws IOException If some I/O problem inside
+     * @deprecated Use {@link #append(Mfs)} and {@link ServletMfs} instead
      */
+    @Deprecated
     public static void append(final ServletContext ctx) throws IOException {
         Manifests.DEFAULT.append(new ServletMfs(ctx));
     }
@@ -273,21 +279,14 @@ public final class Manifests extends AbstractMap<String, String> {
      *
      * @param file The file to load attributes from
      * @throws IOException If some I/O problem inside
+     * @deprecated Use {@link #append(Mfs)} and {@link FilesMfs} instead
      */
+    @Deprecated
     public static void append(final File file) throws IOException {
         if (file == null) {
             throw new IllegalArgumentException("file can't be NULL");
         }
-        Manifests.DEFAULT.append(
-            new Mfs() {
-                @Override
-                public Collection<InputStream> fetch() throws IOException {
-                    return Collections.singleton(
-                        file.toURI().toURL().openStream()
-                    );
-                }
-            }
-        );
+        Manifests.DEFAULT.append(new FilesMfs(file));
     }
 
     /**
@@ -298,19 +297,14 @@ public final class Manifests extends AbstractMap<String, String> {
      * @param stream Stream to use
      * @throws IOException If some I/O problem inside
      * @since 0.8
+     * @deprecated Use {@link #append(Mfs)} and {@link StreamsMfs} instead
      */
+    @Deprecated
     public static void append(final InputStream stream) throws IOException {
         if (stream == null) {
             throw new IllegalArgumentException("input stream can't be NULL");
         }
-        Manifests.DEFAULT.append(
-            new Mfs() {
-                @Override
-                public Collection<InputStream> fetch() {
-                    return Collections.singleton(stream);
-                }
-            }
-        );
+        Manifests.DEFAULT.append(new StreamsMfs(stream));
     }
 
     /**

@@ -85,7 +85,8 @@ public final class ManifestsTest {
             Thread.currentThread().getContextClassLoader()
                 .getResource("META-INF/MANIFEST_INVALID.MF").getFile()
         );
-        Manifests.append(file);
+        final Manifests mfs = new Manifests();
+        mfs.append(new FilesMfs(file));
     }
 
     /**
@@ -101,10 +102,11 @@ public final class ManifestsTest {
             file,
             Logger.format("%s: %s\n", name, value)
         );
-        Manifests.append(file);
+        final Manifests mfs = new Manifests();
+        mfs.append(new FilesMfs(file));
         MatcherAssert.assertThat(
             "loaded from file",
-            Manifests.exists(name) && Manifests.read(name).equals(value)
+            mfs.containsKey(name) && mfs.get(name).equals(value)
         );
     }
 
@@ -115,9 +117,12 @@ public final class ManifestsTest {
      */
     @Test
     public void appendsAttributesFromInputStream() throws Exception {
-        Manifests.append(this.getClass().getResourceAsStream("test.mf"));
+        final Manifests mfs = new Manifests();
+        mfs.append(
+            new StreamsMfs(this.getClass().getResourceAsStream("test.mf"))
+        );
         MatcherAssert.assertThat(
-            Manifests.read("From-File"),
+            mfs.get("From-File"),
             Matchers.equalTo("some test attribute")
         );
     }
