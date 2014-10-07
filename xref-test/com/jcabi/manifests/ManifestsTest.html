@@ -93,44 +93,49 @@
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>              Thread.currentThread().getContextClassLoader()
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>                  .getResource(<span class="jxr_string">"META-INF/MANIFEST_INVALID.MF"</span>).getFile()
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>          );
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>          Manifests.append(file);
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>      }
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>  
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>      <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>  <em class="jxr_javadoccomment">     * Manifests can append attributes from file.</em>
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>  <em class="jxr_javadoccomment">     * @throws Exception If something goes wrong</em>
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>      @Test
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> appendsAttributesFromFile() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>          <strong class="jxr_keyword">final</strong> String name = <span class="jxr_string">"Test-Attribute-From-File"</span>;
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>          <strong class="jxr_keyword">final</strong> String value = <span class="jxr_string">"some text value of attribute"</span>;
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>          <strong class="jxr_keyword">final</strong> File file = File.createTempFile(<span class="jxr_string">"test-"</span>, <span class="jxr_string">".MF"</span>);
-<a class="jxr_linenumber" name="L100" href="#L100">100</a>         FileUtils.writeStringToFile(
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>             file,
-<a class="jxr_linenumber" name="L102" href="#L102">102</a>             Logger.format(<span class="jxr_string">"%s: %s\n"</span>, name, value)
-<a class="jxr_linenumber" name="L103" href="#L103">103</a>         );
-<a class="jxr_linenumber" name="L104" href="#L104">104</a>         Manifests.append(file);
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>         MatcherAssert.assertThat(
-<a class="jxr_linenumber" name="L106" href="#L106">106</a>             <span class="jxr_string">"loaded from file"</span>,
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>             Manifests.exists(name) &amp;&amp; Manifests.read(name).equals(value)
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>         );
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>     }
-<a class="jxr_linenumber" name="L110" href="#L110">110</a> 
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L112" href="#L112">112</a> <em class="jxr_javadoccomment">     * Manifests can append input stream.</em>
-<a class="jxr_linenumber" name="L113" href="#L113">113</a> <em class="jxr_javadoccomment">     * @throws Exception If something goes wrong</em>
-<a class="jxr_linenumber" name="L114" href="#L114">114</a> <em class="jxr_javadoccomment">     * @since 0.8</em>
-<a class="jxr_linenumber" name="L115" href="#L115">115</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L116" href="#L116">116</a>     @Test
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> appendsAttributesFromInputStream() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>         Manifests.append(<strong class="jxr_keyword">this</strong>.getClass().getResourceAsStream(<span class="jxr_string">"test.mf"</span>));
-<a class="jxr_linenumber" name="L119" href="#L119">119</a>         MatcherAssert.assertThat(
-<a class="jxr_linenumber" name="L120" href="#L120">120</a>             Manifests.read(<span class="jxr_string">"From-File"</span>),
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>             Matchers.equalTo(<span class="jxr_string">"some test attribute"</span>)
-<a class="jxr_linenumber" name="L122" href="#L122">122</a>         );
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>     }
-<a class="jxr_linenumber" name="L124" href="#L124">124</a> 
-<a class="jxr_linenumber" name="L125" href="#L125">125</a> }
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>          <strong class="jxr_keyword">final</strong> Manifests mfs = <strong class="jxr_keyword">new</strong> Manifests();
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>          mfs.append(<strong class="jxr_keyword">new</strong> FilesMfs(file));
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>      }
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>  
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>  <em class="jxr_javadoccomment">     * Manifests can append attributes from file.</em>
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>  <em class="jxr_javadoccomment">     * @throws Exception If something goes wrong</em>
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>      @Test
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> appendsAttributesFromFile() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>          <strong class="jxr_keyword">final</strong> String name = <span class="jxr_string">"Test-Attribute-From-File"</span>;
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>          <strong class="jxr_keyword">final</strong> String value = <span class="jxr_string">"some text value of attribute"</span>;
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>         <strong class="jxr_keyword">final</strong> File file = File.createTempFile(<span class="jxr_string">"test-"</span>, <span class="jxr_string">".MF"</span>);
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>         FileUtils.writeStringToFile(
+<a class="jxr_linenumber" name="L102" href="#L102">102</a>             file,
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>             Logger.format(<span class="jxr_string">"%s: %s\n"</span>, name, value)
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>         );
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>         <strong class="jxr_keyword">final</strong> Manifests mfs = <strong class="jxr_keyword">new</strong> Manifests();
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>         mfs.append(<strong class="jxr_keyword">new</strong> FilesMfs(file));
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>         MatcherAssert.assertThat(
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>             <span class="jxr_string">"loaded from file"</span>,
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>             mfs.containsKey(name) &amp;&amp; mfs.get(name).equals(value)
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>         );
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>     }
+<a class="jxr_linenumber" name="L112" href="#L112">112</a> 
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L114" href="#L114">114</a> <em class="jxr_javadoccomment">     * Manifests can append input stream.</em>
+<a class="jxr_linenumber" name="L115" href="#L115">115</a> <em class="jxr_javadoccomment">     * @throws Exception If something goes wrong</em>
+<a class="jxr_linenumber" name="L116" href="#L116">116</a> <em class="jxr_javadoccomment">     * @since 0.8</em>
+<a class="jxr_linenumber" name="L117" href="#L117">117</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>     @Test
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> appendsAttributesFromInputStream() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>         <strong class="jxr_keyword">final</strong> Manifests mfs = <strong class="jxr_keyword">new</strong> Manifests();
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>         mfs.append(
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>             <strong class="jxr_keyword">new</strong> StreamsMfs(<strong class="jxr_keyword">this</strong>.getClass().getResourceAsStream(<span class="jxr_string">"test.mf"</span>))
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>         );
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>         MatcherAssert.assertThat(
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>             mfs.get(<span class="jxr_string">"From-File"</span>),
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>             Matchers.equalTo(<span class="jxr_string">"some test attribute"</span>)
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>         );
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>     }
+<a class="jxr_linenumber" name="L129" href="#L129">129</a> 
+<a class="jxr_linenumber" name="L130" href="#L130">130</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2012&#x2013;2014 <a href="http://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>

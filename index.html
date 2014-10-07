@@ -3,8 +3,9 @@
     <head>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>jcabi-manifests - Static Reader of META-INF/MANIFEST.MF Files</title>
+        <title>jcabi-manifests &#x2013; Static Reader of META-INF/MANIFEST.MF Files</title>
         <link media="all" rel="stylesheet" type="text/css" href="./css/jcabi.css"/>
+        <link media="all" rel="stylesheet" type="text/css" href="./ico/ico.css"/>
                     <meta name="author" content="Yegor Bugayenko" />
                             <script>
                 var _gaq = _gaq || [];
@@ -20,24 +21,8 @@
 <link rel="shortcut icon" href="http://img.jcabi.com/favicon.ico"/>
                                                                                                                 
 <link rel="author" href="https://plus.google.com/u/0/114792568016408327418?rel=author"/>
-                                            <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
-        <script>
-            $(document).ready(
-                function() {
-                    $(".menu-button").click(
-                        function() {
-                            if ($("#here-goes-menu").attr("class") == "menu-off") {
-                                $("#menu").clone().attr("class", "mobile-menu").appendTo("#here-goes-menu");
-                                $("#here-goes-menu").attr("class", "menu-on");
-                            } else {
-                                $(".mobile-menu").hide();
-                                $("#here-goes-menu").attr("class", "menu-off");
-                            }
-                        }
-                    );
-                }
-            );
-        </script>
+                                            <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript" src="./js/jcabi.js"></script>
     </head>
     <body>
                 <section class="page" itemscope="" itemtype="http://schema.org/BlogPosting">
@@ -53,7 +38,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-1.0.4/index.html" title="JavaDoc 1.0.4">JavaDoc 1.0.4</a>
+                            <span>                        <a href="apidocs-1.1/index.html" title="JavaDoc 1.1">JavaDoc 1.1</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -126,17 +111,51 @@
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">1.0.4</strong>
+                                    <strong itemprop="version">1.1</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2014-08-14T06:06:17Z">
+                                    <time itemprop="datePublished" datetime="2014-10-07T11:56:04Z">
                                         
-                                        14-Aug-2014
+                                        07-Oct-2014
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
                             </ul>
+                            <div class="social">
+                                <a href="http://www.facebook.com/sharer/sharer.php?u=URL"
+                                    title="Share on Facebook" class="ico">
+                                    <i class="icon-facebook"></i>
+                                </a>
+                                <a href="https://twitter.com/share?url=URL&amp;text=TITLE"
+                                    title="Share on Twitter" class="ico">
+                                    <i class="icon-twitter"></i>
+                                </a>
+                                <a href="https://plus.google.com/share?url=URL"
+                                    title="Share on Google+" class="ico">
+                                    <i class="icon-googleplus"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/cws/share?url=URL"
+                                    title="Share on LinkedIn" class="ico">
+                                    <i class="icon-linkedin"></i>
+                                </a>
+                                <a href="http://www.stumbleupon.com/submit?url=URL&amp;title=TITLE"
+                                    title="Share on StumbleUpon" class="ico">
+                                    <i class="icon-stumbleupon"></i>
+                                </a>
+                                <a href="http://digg.com/submit?phase=2&amp;url=URL&amp;title=TITLE"
+                                    title="Share on Digg" class="ico">
+                                    <i class="icon-digg"></i>
+                                </a>
+                                <a href="http://reddit.com/submit?url=URL&amp;title=TITLE"
+                                    title="Share on Reddit" class="ico">
+                                    <i class="icon-reddit"></i>
+                                </a>
+                                <a href="http://news.ycombinator.com/submitlink?u=URL&amp;t=TITLE"
+                                    title="Share on Hacker News" class="ico">
+                                    <i class="icon-hackernews"></i>
+                                </a>
+                            </div>
                         </header>
                         <div id="here-goes-menu" class="menu-off"></div>
                                                                             <a href="https://github.com/jcabi/jcabi-manifests">
@@ -144,8 +163,8 @@
                             </a>
                                                 <article role="article" itemprop="articleBody">
                             <!--  --><!-- ~~ Copyright (c) 2012-2014, jcabi.com --><!-- All rights reserved. --><!--  --><!-- Redistribution and use in source and binary forms, with or without --><!-- modification, are permitted provided that the following conditions --><!-- are met: 1) Redistributions of source code must retain the above --><!-- copyright notice, this list of conditions and the following --><!-- disclaimer. 2) Redistributions in binary form must reproduce the above --><!-- copyright notice, this list of conditions and the following --><!-- disclaimer in the documentation and/or other materials provided --><!-- with the distribution. 3) Neither the name of the jcabi.com nor --><!-- the names of its contributors may be used to endorse or promote --><!-- products derived from this software without specific prior written --><!-- permission. --><!--  --><!-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS --><!-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT --><!-- NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND --><!-- FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL --><!-- THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, --><!-- INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES --><!-- (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR --><!-- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) --><!-- HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, --><!-- STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) --><!-- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED --><!-- OF THE POSSIBILITY OF SUCH DAMAGE. --><!--  --><div class="section">
-<h2>Static Reader of META-INF/MANIFEST.MF Files<a name="Static_Reader_of_META-INFMANIFEST.MF_Files"></a></h2>
-<p><a href="./apidocs-1.0.4/com/jcabi/manifests/Manifests.html"><tt>com.jcabi.manifests.Manifests</tt></a> is a convenient static reader of <tt>META-INF/MANIFEST.MF</tt> files. Try this:</p>
+<h2><a name="Static_Reader_of_META-INFMANIFEST.MF_Files"></a>Static Reader of META-INF/MANIFEST.MF Files</h2>
+<p><a href="./apidocs-1.1/com/jcabi/manifests/Manifests.html"><tt>com.jcabi.manifests.Manifests</tt></a> is a convenient static reader of <tt>META-INF/MANIFEST.MF</tt> files. Try this:</p>
 <div class="source">
 <pre>import com.jcabi.manifests.Manifests;
 public class Main {
@@ -159,8 +178,8 @@ public class Main {
 <pre>Manifest-Version: 1.0
 Ant-Version: Apache Ant 1.8.2
 Created-By: 1.6.0_26-b03-384-10M3425 (Apple Inc.)</pre></div>
-<p>This manifest was generated by the author of JUnit JAR package and contains three attributes <tt>Manifest-Version</tt>, <tt>Ant-Version</tt>, and <tt>Created-By</tt>. When a JAR package is available in the classpath your application can retrieve these attributes from its manifest. <a href="./apidocs-1.0.4/com/jcabi/manifests/Manifests.html"><tt>Manifests</tt></a> utility class is a convenient reader of all attributes from all manifest files available in the classpath. All you need to provide is a name of the desired attribute.</p>
-<p><tt>MANIFEST.MF</tt> files may become an effective alternative to <tt>.properties</tt> files when <a href="./apidocs-1.0.4/com/jcabi/manifests/Manifests.html"><tt>Manifests</tt></a> utility class is used. You don't need to worry about finding the right location of the right <tt>.properties</tt>, loading it into memory, and dealing with exceptions. All you do is reading from <a href="./apidocs-1.0.4/com/jcabi/manifests/Manifests.html"><tt>Manifests</tt></a>:</p>
+<p>This manifest was generated by the author of JUnit JAR package and contains three attributes <tt>Manifest-Version</tt>, <tt>Ant-Version</tt>, and <tt>Created-By</tt>. When a JAR package is available in the classpath your application can retrieve these attributes from its manifest. <a href="./apidocs-1.1/com/jcabi/manifests/Manifests.html"><tt>Manifests</tt></a> utility class is a convenient reader of all attributes from all manifest files available in the classpath. All you need to provide is a name of the desired attribute.</p>
+<p><tt>MANIFEST.MF</tt> files may become an effective alternative to <tt>.properties</tt> files when <a href="./apidocs-1.1/com/jcabi/manifests/Manifests.html"><tt>Manifests</tt></a> utility class is used. You don't need to worry about finding the right location of the right <tt>.properties</tt>, loading it into memory, and dealing with exceptions. All you do is reading from <a href="./apidocs-1.1/com/jcabi/manifests/Manifests.html"><tt>Manifests</tt></a>:</p>
 <div class="source">
 <pre>public class Main {
   public static void main(String[] args) {
@@ -183,12 +202,12 @@ Created-By: 1.6.0_26-b03-384-10M3425 (Apple Inc.)</pre></div>
 <div class="source">
 <pre>Foo-Version: 1.0-SNAPSHOT</pre></div>
 <p>Read more about using <tt>MANIFEST.MF</tt> file for <a href="./versioning.html">versioning</a> of your Java application. Also pay attention to the <a href="./servlets.html">difference between JAR and WAR applications</a>. Besides that, there is a number of best practices related to <a href="./mocking.html">unit testing and mocking</a> of <tt>MANIFEST.MF</tt> attributes.</p>
-<p>The only dependency you need in your class path is (you can also download <a class="externalLink" href="http://repo1.maven.org/maven2/com/jcabi/jcabi-manifests/1.0.4/jcabi-manifests-1.0.4.jar"><tt>jcabi-manifests-1.0.4.jar</tt></a> and add it to the classpath):</p>
+<p>The only dependency you need in your class path is (you can also download <a class="externalLink" href="http://repo1.maven.org/maven2/com/jcabi/jcabi-manifests/1.1/jcabi-manifests-1.1.jar"><tt>jcabi-manifests-1.1.jar</tt></a> and add it to the classpath):</p>
 <div class="source">
 <pre>&lt;dependency&gt;
   &lt;groupId&gt;com.jcabi&lt;/groupId&gt;
   &lt;artifactId&gt;jcabi-manifests&lt;/artifactId&gt;
-  &lt;version&gt;1.0.4&lt;/version&gt;
+  &lt;version&gt;1.1&lt;/version&gt;
 &lt;/dependency&gt;</pre></div>
 <p>If you are outside of WAR application you should add Servlet API to compile-time classpath:</p>
 <div class="source">
@@ -199,7 +218,7 @@ Created-By: 1.6.0_26-b03-384-10M3425 (Apple Inc.)</pre></div>
   &lt;scope&gt;provided&lt;/scope&gt;
 &lt;/dependency&gt;</pre></div>
 <div class="section">
-<h3>Cutting Edge Version<a name="Cutting_Edge_Version"></a></h3>
+<h3><a name="Cutting_Edge_Version"></a>Cutting Edge Version</h3>
 <p>If you want to use current version of the product, you can do it with this configuration in your <tt>pom.xml</tt>:</p>
 <div class="source">
 <pre>&lt;repositories&gt;
