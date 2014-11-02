@@ -6,7 +6,8 @@
 [![Build Status](https://travis-ci.org/jcabi/jcabi-manifests.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-manifests)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-manifests/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-manifests)
 
-More details are here: [manifests.jcabi.com](http://manifests.jcabi.com/index.html)
+More details are here: [manifests.jcabi.com](http://manifests.jcabi.com/index.html).
+Also, read this blog post: [How to Read MANIFEST.MF Files](http://www.yegor256.com/2014/07/03/how-to-read-manifest-mf.html).
 
 Manipulations with MANIFEST.MF files made easy:
 
