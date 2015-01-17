@@ -43,7 +43,7 @@
     <name>jcabi-manifests</name>
     <description>Manager of MANIFEST.MF files</description>
     <properties>
-        <snapshotVersion>3.0-SNAPSHOT</snapshotVersion>
+        <snapshotVersion>2.0-SNAPSHOT</snapshotVersion>
     </properties>
     <issueManagement>
         <system>github</system>
