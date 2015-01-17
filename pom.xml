@@ -42,6 +42,9 @@
     <packaging>jar</packaging>
     <name>jcabi-manifests</name>
     <description>Manager of MANIFEST.MF files</description>
+    <properties>
+        <snapshotVersion>3.0-SNAPSHOT</snapshotVersion>
+    </properties>
     <issueManagement>
         <system>github</system>
         <url>https://github.com/jcabi/jcabi-manifests/issues</url>
