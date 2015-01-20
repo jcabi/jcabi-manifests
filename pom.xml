@@ -101,7 +101,7 @@
     </build>
     <!--
         @todo #16 Remove this declaration when parent pom would 
-        fix issue jcabi/jcabi-parent#19
+         fix issue jcabi/jcabi-parent#19
     -->
     <profiles>
         <profile>
