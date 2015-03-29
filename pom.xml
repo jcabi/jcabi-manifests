@@ -35,7 +35,7 @@
     <parent>
         <groupId>com.jcabi</groupId>
         <artifactId>jcabi</artifactId>
-        <version>1.16</version>
+        <version>1.17</version>
     </parent>
     <artifactId>jcabi-manifests</artifactId>
     <version>2.0-SNAPSHOT</version>
@@ -103,7 +103,7 @@
         </plugins>
     </build>
     <!--
-        @todo #16 Remove this declaration when parent pom would 
+        @todo #16 Remove this declaration when parent pom would
          fix issue jcabi/jcabi-parent#19
     -->
     <profiles>
