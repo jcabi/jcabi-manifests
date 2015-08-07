@@ -40,7 +40,7 @@ import java.util.Enumeration;
  * Manifests in classpath.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id: a79bf214200793959e7ddef6ec467fe6d3b909c8 $
+ * @version $Id$
  * @since 1.0
  */
 public final class ClasspathMfs implements Mfs {
