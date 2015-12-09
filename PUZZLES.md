@@ -1,9 +1,8 @@
-<md xmlns="http://www.w3.org/1999/xhtml" etag="3-puzzles-xsd/init.xsl">## Puzzles
+## Puzzles
 
-There are 0 active puzzles (1 total), updated on 2015-12-09T08:26:48Z:
+There are 0 active puzzles (3 total), updated on 2015-12-09T10:20:51Z:
 
-<del>unknown</del> ?
-.[<del>16</del>](https://github.com/jcabi/jcabi-manifests/issues/16) ?
-.<del>16-4036a3b3</del> pom.xml:106-107
+unknown ?
+&nbsp;[16](https://github.com/jcabi/jcabi-manifests/issues/16) ?
+&nbsp;&nbsp;16-4036a3b3 pom.xml:106-107
 
-</md>
