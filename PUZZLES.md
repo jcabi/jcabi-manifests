@@ -1,8 +1,8 @@
 ## Puzzles
 
-There are 0 active puzzles (3 total), updated on 2015-12-09T12:52:07Z:
+There are 0 active puzzles (3 total):
 
-unknown ?
-&nbsp;[16](https://github.com/jcabi/jcabi-manifests/issues/16) ?
-&nbsp;&nbsp;16-4036a3b3 pom.xml:106-107
 
+<del>unknown</del> [`?`](../master/?)<br/>
+&nbsp;&nbsp;&nbsp;[<del>16</del>](https://github.com/jcabi/jcabi-manifests/issues/16) [`?`](../master/?)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<del>16-4036a3b3</del> [`pom.xml:106-107`](../master/pom.xml#L106-L107)<br/>
