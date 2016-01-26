@@ -6,6 +6,7 @@
 [![Build Status](https://travis-ci.org/jcabi/jcabi-manifests.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-manifests)
 [![Build status](https://ci.appveyor.com/api/projects/status/p49ene126ubcl6va/branch/master?svg=true)](https://ci.appveyor.com/project/yegor256/jcabi-manifests/branch/master)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-manifests/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-manifests)
+[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/com.jcabi/jcabi-manifests/badge.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-manifests)
 [![Dependencies](https://www.versioneye.com/user/projects/561ac3d0a193340f3200104f/badge.svg?style=flat)](https://www.versioneye.com/user/projects/561ac3d0a193340f3200104f)
 
 More details are here: [manifests.jcabi.com](http://manifests.jcabi.com/index.html).
