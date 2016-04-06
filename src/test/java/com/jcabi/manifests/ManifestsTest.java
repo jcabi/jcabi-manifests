@@ -32,6 +32,10 @@ package com.jcabi.manifests;
 import com.jcabi.log.Logger;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -42,6 +46,7 @@ import org.junit.Test;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 0.7
+ * @checkstyle MultipleStringLiteralsCheck (120 lines)
  */
 public final class ManifestsTest {
 
@@ -124,6 +129,36 @@ public final class ManifestsTest {
         MatcherAssert.assertThat(
             mfs.get("From-File"),
             Matchers.equalTo("some test attribute")
+        );
+    }
+
+    /**
+     * Manifests can read values from several manifests.
+     * @throws Exception If something goes wrong
+     * @since 2.0
+     */
+    @Test
+    public void readsValuesFromSeveralManifests() throws Exception {
+        final List<InputStream> streams = Arrays.asList(
+                this.getClass().getResourceAsStream("test.mf"),
+                this.getClass().getResourceAsStream("another-test.mf")
+        );
+        final Mfs streamManifests = new StreamsMfs(streams);
+        final Collection<String> values = Manifests.all(
+                streamManifests,
+                "From-File"
+        );
+        MatcherAssert.assertThat(
+                values.size(),
+                Matchers.equalTo(2)
+        );
+        MatcherAssert.assertThat(
+                values.contains("some test attribute"),
+                Matchers.equalTo(true)
+        );
+        MatcherAssert.assertThat(
+                values.contains("another test attribute"),
+                Matchers.equalTo(true)
         );
     }
 

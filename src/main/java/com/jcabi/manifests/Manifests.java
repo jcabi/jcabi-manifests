@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -160,6 +161,29 @@ public final class Manifests implements MfMap {
     public Manifests(final Map<String, String> attrs) {
         super();
         this.attributes = new ConcurrentHashMap<String, String>(attrs);
+    }
+
+    /**
+     * Reads all values with specified key from several manifests.
+     * @param manifests Manifests
+     * @param key Value key
+     * @return Collections of values.
+     * @throws IOException If some I/O problem inside
+     */
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+    public static Collection<String> all(final Mfs manifests,
+                                         final String key) throws IOException {
+        final Collection<InputStream> streams = manifests.fetch();
+        final Collection<String> values = new LinkedList<String>();
+        for (final InputStream stream : streams) {
+            final String value = new Manifests().append(
+                    new StreamsMfs(stream)
+            ).get(key);
+            if (value != null) {
+                values.add(value);
+            }
+        }
+        return values;
     }
 
     @Override
