@@ -33,9 +33,9 @@ import com.jcabi.log.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -165,19 +165,21 @@ public final class Manifests implements MfMap {
 
     /**
      * Reads all values with specified key from several manifests.
+     * Result collections contains all values with specified key
+     * across manifests. Result is empty collection if there is no
+     * such key in any manifests.
      * @param manifests Manifests
      * @param key Value key
-     * @return Collections of values.
+     * @return Collections of values
      * @throws IOException If some I/O problem inside
      */
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-    public static Collection<String> all(final Mfs manifests,
-                                         final String key) throws IOException {
-        final Collection<InputStream> streams = manifests.fetch();
-        final Collection<String> values = new LinkedList<String>();
-        for (final InputStream stream : streams) {
+    public static Collection<String> all(final Mfs manifests, final String key)
+        throws IOException {
+        final Collection<String> values = new ArrayList<String>(0);
+        for (final InputStream stream : manifests.fetch()) {
             final String value = new Manifests().append(
-                    new StreamsMfs(stream)
+                new StreamsMfs(stream)
             ).get(key);
             if (value != null) {
                 values.add(value);

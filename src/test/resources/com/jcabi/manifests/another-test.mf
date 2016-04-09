@@ -1,1 +1,2 @@
-From-File: another test attribute
+From-File: another attribute
+Version: 2.4
