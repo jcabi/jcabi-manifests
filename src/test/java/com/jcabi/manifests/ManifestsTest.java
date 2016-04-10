@@ -185,7 +185,7 @@ public final class ManifestsTest {
             new StreamsMfs(streams),
             "Missed-key"
         );
-        MatcherAssert.assertThat(values, Matchers.hasSize(0));
+        MatcherAssert.assertThat(values, Matchers.empty());
     }
 
     /**
@@ -197,7 +197,7 @@ public final class ManifestsTest {
     public void returnsEmptyCollectionForEmptyManifestList() throws Exception {
         final Mfs empty = new StreamsMfs(Collections.<InputStream>emptyList());
         final Collection<String> values = Manifests.all(empty, "Key");
-        MatcherAssert.assertThat(values, Matchers.hasSize(0));
+        MatcherAssert.assertThat(values, Matchers.empty());
     }
 
 }
