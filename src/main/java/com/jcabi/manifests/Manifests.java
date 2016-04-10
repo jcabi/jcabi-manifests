@@ -165,7 +165,7 @@ public final class Manifests implements MfMap {
 
     /**
      * Reads all values with specified key from several manifests.
-     * Result collections contains all values with specified key
+     * Result collection contains all values with specified key
      * across manifests. Result is empty collection if there is no
      * such key in any manifests.
      * @param manifests Manifests
@@ -176,8 +176,9 @@ public final class Manifests implements MfMap {
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public static Collection<String> all(final Mfs manifests, final String key)
         throws IOException {
-        final Collection<String> values = new ArrayList<String>(0);
-        for (final InputStream stream : manifests.fetch()) {
+        final Collection<InputStream> streams = manifests.fetch();
+        final Collection<String> values = new ArrayList<String>(streams.size());
+        for (final InputStream stream : streams) {
             final String value = new Manifests().append(
                 new StreamsMfs(stream)
             ).get(key);

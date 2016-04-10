@@ -49,14 +49,6 @@ import org.junit.Test;
  * @since 0.7
  */
 public final class ManifestsTest {
-    // @checkstyle JavadocVariableCheck (8 lines)
-    public static final String TEST_MANIFEST = "test.mf";
-    public static final String TEST_MANIFEST_2 = "another-test.mf";
-    public static final String TEST_ATTRIBUTE = "some test attribute";
-    public static final String TEST_ATTRIBUTE_2 = "another attribute";
-    public static final String FROM_FILE = "From-File";
-    public static final String VERSION = "Version";
-    public static final String MISSED_KEY = "Missed-key";
 
     /**
      * Manifests can read a single attribute, which always exist in MANIFEST.MF.
@@ -132,11 +124,11 @@ public final class ManifestsTest {
     public void appendsAttributesFromInputStream() throws Exception {
         final Manifests mfs = new Manifests();
         mfs.append(
-            new StreamsMfs(this.getClass().getResourceAsStream(TEST_MANIFEST))
+            new StreamsMfs(this.getClass().getResourceAsStream("test.mf"))
         );
         MatcherAssert.assertThat(
-            mfs.get(FROM_FILE),
-            Matchers.equalTo(TEST_ATTRIBUTE)
+            mfs.get("From-File"),
+            Matchers.equalTo("some test attribute")
         );
     }
 
@@ -148,24 +140,15 @@ public final class ManifestsTest {
     @Test
     public void readsValuesFromSeveralManifests() throws Exception {
         final List<InputStream> streams = Arrays.asList(
-            this.getClass().getResourceAsStream(TEST_MANIFEST),
-            this.getClass().getResourceAsStream(TEST_MANIFEST_2)
+            this.getClass().getResourceAsStream("test2.mf"),
+            this.getClass().getResourceAsStream("test3.mf")
         );
         final Collection<String> values = Manifests.all(
             new StreamsMfs(streams),
-            FROM_FILE
+            "Name"
         );
-        MatcherAssert.assertThat(
-            values,
-            Matchers.hasSize(2)
-        );
-        MatcherAssert.assertThat(
-            values,
-            Matchers.contains(
-                TEST_ATTRIBUTE,
-                    TEST_ATTRIBUTE_2
-            )
-        );
+        MatcherAssert.assertThat(values, Matchers.hasSize(2));
+        MatcherAssert.assertThat(values, Matchers.contains("foo", "bar"));
     }
 
     /**
@@ -176,21 +159,15 @@ public final class ManifestsTest {
     @Test
     public void readsValuesExistingInSomeManifests() throws Exception {
         final List<InputStream> streams = Arrays.asList(
-            this.getClass().getResourceAsStream(TEST_MANIFEST),
-            this.getClass().getResourceAsStream(TEST_MANIFEST_2)
+            this.getClass().getResourceAsStream("test4.mf"),
+            this.getClass().getResourceAsStream("test5.mf")
         );
         final Collection<String> values = Manifests.all(
             new StreamsMfs(streams),
-            VERSION
+            "Version"
         );
-        MatcherAssert.assertThat(
-            values,
-            Matchers.hasSize(1)
-        );
-        MatcherAssert.assertThat(
-            values,
-            Matchers.contains("2.4")
-        );
+        MatcherAssert.assertThat(values, Matchers.hasSize(1));
+        MatcherAssert.assertThat(values, Matchers.contains("2.4"));
     }
 
     /**
@@ -201,17 +178,14 @@ public final class ManifestsTest {
     @Test
     public void returnsEmptyCollectionForMissedKey() throws Exception {
         final List<InputStream> streams = Arrays.asList(
-            this.getClass().getResourceAsStream(TEST_MANIFEST),
-            this.getClass().getResourceAsStream(TEST_MANIFEST_2)
+            this.getClass().getResourceAsStream("test6.mf"),
+            this.getClass().getResourceAsStream("test7.mf")
         );
         final Collection<String> values = Manifests.all(
             new StreamsMfs(streams),
-            MISSED_KEY
+            "Missed-key"
         );
-        MatcherAssert.assertThat(
-            values,
-            Matchers.hasSize(0)
-        );
+        MatcherAssert.assertThat(values, Matchers.hasSize(0));
     }
 
     /**
@@ -222,14 +196,8 @@ public final class ManifestsTest {
     @Test
     public void returnsEmptyCollectionForEmptyManifestList() throws Exception {
         final Mfs empty = new StreamsMfs(Collections.<InputStream>emptyList());
-        final Collection<String> values = Manifests.all(
-            empty,
-            FROM_FILE
-        );
-        MatcherAssert.assertThat(
-            values,
-            Matchers.hasSize(0)
-        );
+        final Collection<String> values = Manifests.all(empty, "Key");
+        MatcherAssert.assertThat(values, Matchers.hasSize(0));
     }
 
 }
