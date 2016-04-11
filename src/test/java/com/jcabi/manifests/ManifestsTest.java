@@ -147,7 +147,6 @@ public final class ManifestsTest {
             new StreamsMfs(streams),
             "Name"
         );
-        MatcherAssert.assertThat(values, Matchers.hasSize(2));
         MatcherAssert.assertThat(values, Matchers.contains("foo", "bar"));
     }
 
@@ -166,7 +165,6 @@ public final class ManifestsTest {
             new StreamsMfs(streams),
             "Version"
         );
-        MatcherAssert.assertThat(values, Matchers.hasSize(1));
         MatcherAssert.assertThat(values, Matchers.contains("2.4"));
     }
 
