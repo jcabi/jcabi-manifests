@@ -42,6 +42,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import javax.servlet.ServletContext;
@@ -141,8 +142,8 @@ public final class Manifests implements MfMap {
      * react sensibly to manual put and remove calls. It could be possible to
      * remove "attributes" altogether
      */
-    private final transient Map<String, List<String>> multimap =
-        new HashMap<String, List<String>>();
+    private final transient ConcurrentHashMap<String, List<String>> multimap =
+        new ConcurrentHashMap<String, List<String>>();
 
     static {
         try {
@@ -435,11 +436,18 @@ public final class Manifests implements MfMap {
      * @param value The value for the attribute
      */
     private void addToMultiMap(final String key, final String value) {
-        List<String> allOfAttr = this.multimap.get(key);
-        if (allOfAttr == null) {
-            allOfAttr = new ArrayList<String>(1);
-            this.multimap.put(key, allOfAttr);
-        }
+        final List<String> allOfAttr = this.multimap.computeIfAbsent(
+            key,
+            new CreateListFunction()
+        );
         allOfAttr.add(value);
+    }
+
+    private static class CreateListFunction implements
+        Function<String, List<String>> {
+        @Override
+        public List<String> apply(final String thekey) {
+            return new ArrayList<String>(1);
+        }
     }
 }

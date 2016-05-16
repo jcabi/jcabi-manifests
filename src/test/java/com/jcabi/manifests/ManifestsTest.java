@@ -185,7 +185,7 @@ public final class ManifestsTest {
     }
 
     /**
-     * A new in memory Manifest containing the supplied string as content
+     * A new in memory Manifest containing the supplied string as content.
      * @param content The content of the manifest
      * @return A Mfs Manifest
      */
