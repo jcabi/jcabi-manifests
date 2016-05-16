@@ -42,7 +42,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.function.Function;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import javax.servlet.ServletContext;
@@ -436,18 +435,10 @@ public final class Manifests implements MfMap {
      * @param value The value for the attribute
      */
     private void addToMultiMap(final String key, final String value) {
-        final List<String> allOfAttr = this.multimap.computeIfAbsent(
+        final List<String> allOfAttr = this.multimap.putIfAbsent(
             key,
-            new CreateListFunction()
+            new ArrayList<String>(1)
         );
         allOfAttr.add(value);
-    }
-
-    private static class CreateListFunction implements
-        Function<String, List<String>> {
-        @Override
-        public List<String> apply(final String thekey) {
-            return new ArrayList<String>(1);
-        }
     }
 }
