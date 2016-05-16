@@ -33,8 +33,10 @@ import com.jcabi.log.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -133,6 +135,15 @@ public final class Manifests implements MfMap {
      */
     private final transient Map<String, String> attributes;
 
+    /**
+     * All Attributes retrieved.
+     * @todo: #31 MultiMap is from appended manifests, so this field needs to
+     * react sensibly to manual put and remove calls. It could be possible to
+     * remove "attributes" altogether
+     */
+    private final transient Map<String, List<String>> multimap =
+        new HashMap<String, List<String>>();
+
     static {
         try {
             Manifests.DEFAULT.append(new ClasspathMfs());
@@ -187,6 +198,18 @@ public final class Manifests implements MfMap {
         return this.attributes.get(key);
     }
 
+    /**
+     * List all values for this key across all appended manifests in the order
+     * they were appended.
+     * @todo: #31 do not expose the internal list structure, or expose readonly
+     *  collection wrapper
+     * @param key The key of the manifest attribute
+     * @return The list of all found values
+     */
+    public List<String> getAll(final String key) {
+        return this.multimap.get(key);
+    }
+
     @Override
     public String put(final String key, final String value) {
         return this.attributes.put(key, value);
@@ -237,6 +260,7 @@ public final class Manifests implements MfMap {
                     this.attributes.put(attr.getKey(), attr.getValue());
                     ++saved;
                 }
+                this.addToMultiMap(attr.getKey(), attr.getValue());
             }
         }
         Logger.info(
@@ -404,4 +428,18 @@ public final class Manifests implements MfMap {
         return props;
     }
 
+    /**
+     * For a new key, adds a new list with one item otherwise adds the value to
+     * the existing list for that key.
+     * @param key The key for the attribute
+     * @param value The value for the attribute
+     */
+    private void addToMultiMap(final String key, final String value) {
+        List<String> allOfAttr = this.multimap.get(key);
+        if (allOfAttr == null) {
+            allOfAttr = new ArrayList<String>(1);
+            this.multimap.put(key, allOfAttr);
+        }
+        allOfAttr.add(value);
+    }
 }
