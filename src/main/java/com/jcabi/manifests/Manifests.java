@@ -435,10 +435,10 @@ public final class Manifests implements MfMap {
      * @param value The value for the attribute
      */
     private void addToMultiMap(final String key, final String value) {
-        final List<String> allOfAttr = this.multimap.putIfAbsent(
+        this.multimap.putIfAbsent(
             key,
             new ArrayList<String>(1)
         );
-        allOfAttr.add(value);
+        this.multimap.get(key).add(value);
     }
 }
