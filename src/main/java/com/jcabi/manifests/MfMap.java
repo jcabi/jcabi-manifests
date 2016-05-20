@@ -58,5 +58,5 @@ public interface MfMap extends Map<String, String> {
      * @param key The key of the manifest attribute
      * @return The list of all found values
      */
-    List<String> getAll(String key);
+    List<String> allValues(String key);
 }

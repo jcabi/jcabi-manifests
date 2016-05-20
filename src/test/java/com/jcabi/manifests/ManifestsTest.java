@@ -33,8 +33,8 @@ import com.jcabi.log.Logger;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -131,15 +131,16 @@ public final class ManifestsTest {
     }
 
     /**
-     * When get on multiple manifests, the first element takes precedence.
+     * Manifests can get the first value when multiple manifests with the same
+     * attribute have been appended.
      * @throws Exception If something goes wrong
      */
     @Test
     public void getGetsTheFirstEntryAcrossMultipleManifests() throws Exception {
         final String name = "Attr";
         final Manifests mfs = new Manifests();
-        mfs.append(manifestStream("Attr: a\n"));
-        mfs.append(manifestStream("Attr: b\n"));
+        mfs.append(ManifestsTest.manifestStream("Attr: a\n"));
+        mfs.append(ManifestsTest.manifestStream("Attr: b\n"));
         MatcherAssert.assertThat(
             "The value is from the first manifest",
             mfs.containsKey(name) && "a".equals(mfs.get(name))
@@ -147,40 +148,63 @@ public final class ManifestsTest {
     }
 
     /**
-     * When multiple manifests have been appended, get all gives all the values
-     * of the attribute.
+     * Manifests can get allValues of an attribute across multiple appended
+     * manifests.
      * @throws Exception If something goes wrong
      */
     @Test
-    public void getAllGetsAListOfAllValuesOfSameKey() throws Exception {
+    public void allValuesGetsAListOfAllValuesOfSameKey() throws Exception {
         final Manifests mfs = new Manifests();
-        mfs.append(manifestStream("Multi-Value-Attr: 1\n"));
-        mfs.append(manifestStream("Multi-Value-Attr: 2\n"));
+        mfs.append(ManifestsTest.manifestStream("Multi-Value-Attr: 1\n"));
+        mfs.append(ManifestsTest.manifestStream("Multi-Value-Attr: 2\n"));
         MatcherAssert.assertThat(
-            mfs.getAll("Multi-Value-Attr"),
+            mfs.allValues("Multi-Value-Attr"),
             Matchers.contains("1", "2")
         );
     }
 
     /**
-     * When multiple manifests have been appended, get all gives all the values
-     * of two different attributes.
+     * Manifest can get allValues of two attributes across multiple appended
+     * manifests.
      * @throws Exception If something goes wrong
      */
     @Test
-    public void getAllGetsAListOfAllValues() throws Exception {
+    public void allValuesGetsAListOfAllValues() throws Exception {
         final Manifests mfs = new Manifests();
-        mfs.append(manifestStream("Attr1: 1a\n"));
-        mfs.append(manifestStream("Attr1: 1b\nAttr2: 2a\n"));
-        mfs.append(manifestStream("Attr1: 1c\n"));
-        mfs.append(manifestStream("Attr2: 2b\n"));
+        mfs.append(ManifestsTest.manifestStream("Attr1: 1a\n"));
+        mfs.append(ManifestsTest.manifestStream("Attr1: 1b\nAttr2: 2a\n"));
+        mfs.append(ManifestsTest.manifestStream("Attr1: 1c\n"));
+        mfs.append(ManifestsTest.manifestStream("Attr2: 2b\n"));
         MatcherAssert.assertThat(
-            mfs.getAll("Attr1"),
+            mfs.allValues("Attr1"),
             Matchers.contains("1a", "1b", "1c")
         );
         MatcherAssert.assertThat(
-            mfs.getAll("Attr2"),
+            mfs.allValues("Attr2"),
             Matchers.contains("2a", "2b")
+        );
+    }
+
+    /**
+     * Manifest can return a list of all values that will not get mutated by
+     * further append operations.
+     * @throws Exception If something goes wrong
+     */
+    @Test
+    public void listReturnedByAllValuesIsACopy() throws Exception {
+        final String attr = "Attr3";
+        final String first = "first";
+        final String second = "second";
+        final Manifests mfs = new Manifests();
+        mfs.append(ManifestsTest.manifestStream("Attr3: first\n"));
+        final List<String> list = mfs.allValues(attr);
+        mfs.append(ManifestsTest.manifestStream("Attr3: second\n"));
+        MatcherAssert.assertThat(
+            list, Matchers.contains(first)
+        );
+        MatcherAssert.assertThat(
+            mfs.allValues(attr),
+            Matchers.contains(first, second)
         );
     }
 
@@ -190,10 +214,11 @@ public final class ManifestsTest {
      * @return A Mfs Manifest
      */
     private static Mfs manifestStream(final String content) {
-        final InputStream stream = new ByteArrayInputStream(
-            content.getBytes(StandardCharsets.UTF_8)
+        return new StreamsMfs(
+            new ByteArrayInputStream(
+                content.getBytes(StandardCharsets.UTF_8)
+            )
         );
-        return new StreamsMfs(stream);
     }
 
 }

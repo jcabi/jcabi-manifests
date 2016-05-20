@@ -36,6 +36,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -137,11 +138,11 @@ public final class Manifests implements MfMap {
 
     /**
      * All Attributes retrieved.
-     * @todo: #31 MultiMap is from appended manifests, so this field needs to
-     * react sensibly to manual put and remove calls. It could be possible to
-     * remove "attributes" altogether
+     * @todo #31:30min Decide how this multimap should behave during Map methods
+     *  This class implements Map<String, String> and how allValues should
+     *  behave after the many Map methods is unclear.
      */
-    private final transient ConcurrentHashMap<String, List<String>> multimap =
+    private final transient ConcurrentMap<String, List<String>> multimap =
         new ConcurrentHashMap<String, List<String>>();
 
     static {
@@ -198,16 +199,9 @@ public final class Manifests implements MfMap {
         return this.attributes.get(key);
     }
 
-    /**
-     * List all values for this key across all appended manifests in the order
-     * they were appended.
-     * @todo: #31 do not expose the internal list structure, or expose readonly
-     *  collection wrapper
-     * @param key The key of the manifest attribute
-     * @return The list of all found values
-     */
-    public List<String> getAll(final String key) {
-        return this.multimap.get(key);
+    @Override
+    public List<String> allValues(final String key) {
+        return new ArrayList<String>(this.multimap.get(key));
     }
 
     @Override
@@ -437,7 +431,7 @@ public final class Manifests implements MfMap {
     private void addToMultiMap(final String key, final String value) {
         this.multimap.putIfAbsent(
             key,
-            new ArrayList<String>(1)
+            new LinkedList<String>()
         );
         this.multimap.get(key).add(value);
     }
