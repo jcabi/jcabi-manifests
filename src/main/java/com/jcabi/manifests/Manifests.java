@@ -139,7 +139,7 @@ public final class Manifests implements MfMap {
     /**
      * All Attributes retrieved.
      * @todo #31:30min Decide how this multimap should behave during Map methods
-     *  This class implements Map<String, String> and how allValues should
+     *  This class implements Map<String, String> and how all values should
      *  behave after the many Map methods is unclear.
      */
     private final transient ConcurrentMap<String, List<String>> multimap =

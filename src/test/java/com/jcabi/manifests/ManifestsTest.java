@@ -136,7 +136,7 @@ public final class ManifestsTest {
      * @throws Exception If something goes wrong
      */
     @Test
-    public void getGetsTheFirstEntryAcrossMultipleManifests() throws Exception {
+    public void getsFirstValueAcrossMultipleManifests() throws Exception {
         final String name = "Attr";
         final Manifests mfs = new Manifests();
         mfs.append(ManifestsTest.manifestStream("Attr: a\n"));
@@ -148,12 +148,12 @@ public final class ManifestsTest {
     }
 
     /**
-     * Manifests can get allValues of an attribute across multiple appended
+     * Manifests can get all values of an attribute across multiple appended
      * manifests.
      * @throws Exception If something goes wrong
      */
     @Test
-    public void allValuesGetsAListOfAllValuesOfSameKey() throws Exception {
+    public void listsAllValuesOfSameKey() throws Exception {
         final Manifests mfs = new Manifests();
         mfs.append(ManifestsTest.manifestStream("Multi-Value-Attr: 1\n"));
         mfs.append(ManifestsTest.manifestStream("Multi-Value-Attr: 2\n"));
@@ -164,12 +164,13 @@ public final class ManifestsTest {
     }
 
     /**
-     * Manifest can get allValues of two attributes across multiple appended
+     * Manifest can get all values of two attributes across multiple appended
      * manifests.
      * @throws Exception If something goes wrong
      */
     @Test
-    public void allValuesGetsAListOfAllValues() throws Exception {
+    public void listsAllValuesOfSameKeyAcrossMultipleManifests()
+        throws Exception {
         final Manifests mfs = new Manifests();
         mfs.append(ManifestsTest.manifestStream("Attr1: 1a\n"));
         mfs.append(ManifestsTest.manifestStream("Attr1: 1b\nAttr2: 2a\n"));
@@ -191,7 +192,7 @@ public final class ManifestsTest {
      * @throws Exception If something goes wrong
      */
     @Test
-    public void listReturnedByAllValuesIsACopy() throws Exception {
+    public void returnsIndependentListOfAllValues() throws Exception {
         final String attr = "Attr3";
         final String first = "first";
         final String second = "second";
