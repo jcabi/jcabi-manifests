@@ -1,5 +1,8 @@
 language: java
 sudo: false
+jdk:
+  - oraclejdk7
+  - openjdk7
 cache:
   directories:
     - $HOME/.m2
@@ -7,7 +10,16 @@ env:
   global:
     - MAVEN_OPTS="-XX:MaxPermSize=2g -Xmx4g"
     - JAVA_OPTS="-XX:MaxPermSize=2g -Xmx4g"
-before_install:
-  - unset GEM_PATH
+addons:
+  apt:
+    packages:
+    - libmagic1
+    - libmagic-dev
+install:
+  - gem install pdd
+  - gem install est
 script:
-  - mvn clean install -Pqulice
+  - mvn clean install -Pqulice --errors --batch-mode
+  - mvn clean
+  - pdd --source=$(pwd) --file=/dev/null
+  - est --dir=est --file=/dev/null
