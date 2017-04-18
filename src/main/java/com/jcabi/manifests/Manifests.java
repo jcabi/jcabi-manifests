@@ -33,6 +33,7 @@ import com.jcabi.log.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -160,6 +161,32 @@ public final class Manifests implements MfMap {
     public Manifests(final Map<String, String> attrs) {
         super();
         this.attributes = new ConcurrentHashMap<String, String>(attrs);
+    }
+
+    /**
+     * Reads all values with specified key from several manifests.
+     * Result collection contains all values with specified key
+     * across manifests. Result is empty collection if there is no
+     * such key in any manifests.
+     * @param manifests Manifests
+     * @param key Value key
+     * @return Collections of values
+     * @throws IOException If some I/O problem inside
+     */
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+    public static Collection<String> all(final Mfs manifests, final String key)
+        throws IOException {
+        final Collection<InputStream> streams = manifests.fetch();
+        final Collection<String> values = new ArrayList<String>(streams.size());
+        for (final InputStream stream : streams) {
+            final String value = new Manifests().append(
+                new StreamsMfs(stream)
+            ).get(key);
+            if (value != null) {
+                values.add(value);
+            }
+        }
+        return values;
     }
 
     @Override

@@ -32,6 +32,11 @@ package com.jcabi.manifests;
 import com.jcabi.log.Logger;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -125,6 +130,72 @@ public final class ManifestsTest {
             mfs.get("From-File"),
             Matchers.equalTo("some test attribute")
         );
+    }
+
+    /**
+     * Manifests can read values from several manifests.
+     * @throws Exception If something goes wrong
+     * @since 1.2
+     */
+    @Test
+    public void readsValuesFromSeveralManifests() throws Exception {
+        final List<InputStream> streams = Arrays.asList(
+            this.getClass().getResourceAsStream("test2.mf"),
+            this.getClass().getResourceAsStream("test3.mf")
+        );
+        final Collection<String> values = Manifests.all(
+            new StreamsMfs(streams),
+            "Name"
+        );
+        MatcherAssert.assertThat(values, Matchers.contains("foo", "bar"));
+    }
+
+    /**
+     * Manifests can read values existing in some manifests.
+     * @throws Exception If something goes wrong
+     * @since 1.2
+     */
+    @Test
+    public void readsValuesExistingInSomeManifests() throws Exception {
+        final List<InputStream> streams = Arrays.asList(
+            this.getClass().getResourceAsStream("test4.mf"),
+            this.getClass().getResourceAsStream("test5.mf")
+        );
+        final Collection<String> values = Manifests.all(
+            new StreamsMfs(streams),
+            "Version"
+        );
+        MatcherAssert.assertThat(values, Matchers.contains("2.4"));
+    }
+
+    /**
+     * Manifests can return empty collection for missed key.
+     * @throws Exception If something goes wrong
+     * @since 1.2
+     */
+    @Test
+    public void returnsEmptyCollectionForMissedKey() throws Exception {
+        final List<InputStream> streams = Arrays.asList(
+            this.getClass().getResourceAsStream("test6.mf"),
+            this.getClass().getResourceAsStream("test7.mf")
+        );
+        final Collection<String> values = Manifests.all(
+            new StreamsMfs(streams),
+            "Missed-key"
+        );
+        MatcherAssert.assertThat(values, Matchers.empty());
+    }
+
+    /**
+     * Manifests can return empty collection for empty manifest list.
+     * @throws Exception If something goes wrong
+     * @since 1.2
+     */
+    @Test
+    public void returnsEmptyCollectionForEmptyManifestList() throws Exception {
+        final Mfs empty = new StreamsMfs(Collections.<InputStream>emptyList());
+        final Collection<String> values = Manifests.all(empty, "Key");
+        MatcherAssert.assertThat(values, Matchers.empty());
     }
 
 }
