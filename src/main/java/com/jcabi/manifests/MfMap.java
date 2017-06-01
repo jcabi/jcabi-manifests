@@ -30,6 +30,7 @@
 package com.jcabi.manifests;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,4 +52,11 @@ public interface MfMap extends Map<String, String> {
      */
     MfMap append(Mfs streams) throws IOException;
 
+    /**
+     * List all values for this key across all appended manifests in the order
+     * they were appended.
+     * @param key The key of the manifest attribute
+     * @return The list of all found values
+     */
+    List<String> allValues(String key);
 }

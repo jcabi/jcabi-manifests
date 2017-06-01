@@ -30,8 +30,11 @@
 package com.jcabi.manifests;
 
 import com.jcabi.log.Logger;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -124,6 +127,98 @@ public final class ManifestsTest {
         MatcherAssert.assertThat(
             mfs.get("From-File"),
             Matchers.equalTo("some test attribute")
+        );
+    }
+
+    /**
+     * Manifests can get the first value when multiple manifests with the same
+     * attribute have been appended.
+     * @throws Exception If something goes wrong
+     */
+    @Test
+    public void getsFirstValueAcrossMultipleManifests() throws Exception {
+        final String name = "Attr";
+        final Manifests mfs = new Manifests();
+        mfs.append(ManifestsTest.manifestStream("Attr: a\n"));
+        mfs.append(ManifestsTest.manifestStream("Attr: b\n"));
+        MatcherAssert.assertThat(
+            "The value is from the first manifest",
+            mfs.containsKey(name) && "a".equals(mfs.get(name))
+        );
+    }
+
+    /**
+     * Manifests can get all values of an attribute across multiple appended
+     * manifests.
+     * @throws Exception If something goes wrong
+     */
+    @Test
+    public void listsAllValuesOfSameKey() throws Exception {
+        final Manifests mfs = new Manifests();
+        mfs.append(ManifestsTest.manifestStream("Multi-Value-Attr: 1\n"));
+        mfs.append(ManifestsTest.manifestStream("Multi-Value-Attr: 2\n"));
+        MatcherAssert.assertThat(
+            mfs.allValues("Multi-Value-Attr"),
+            Matchers.contains("1", "2")
+        );
+    }
+
+    /**
+     * Manifest can get all values of two attributes across multiple appended
+     * manifests.
+     * @throws Exception If something goes wrong
+     */
+    @Test
+    public void listsAllValuesOfSameKeyAcrossMultipleManifests()
+        throws Exception {
+        final Manifests mfs = new Manifests();
+        mfs.append(ManifestsTest.manifestStream("Attr1: 1a\n"));
+        mfs.append(ManifestsTest.manifestStream("Attr1: 1b\nAttr2: 2a\n"));
+        mfs.append(ManifestsTest.manifestStream("Attr1: 1c\n"));
+        mfs.append(ManifestsTest.manifestStream("Attr2: 2b\n"));
+        MatcherAssert.assertThat(
+            mfs.allValues("Attr1"),
+            Matchers.contains("1a", "1b", "1c")
+        );
+        MatcherAssert.assertThat(
+            mfs.allValues("Attr2"),
+            Matchers.contains("2a", "2b")
+        );
+    }
+
+    /**
+     * Manifest can return a list of all values that will not get mutated by
+     * further append operations.
+     * @throws Exception If something goes wrong
+     */
+    @Test
+    public void returnsIndependentListOfAllValues() throws Exception {
+        final String attr = "Attr3";
+        final String first = "first";
+        final String second = "second";
+        final Manifests mfs = new Manifests();
+        mfs.append(ManifestsTest.manifestStream("Attr3: first\n"));
+        final List<String> list = mfs.allValues(attr);
+        mfs.append(ManifestsTest.manifestStream("Attr3: second\n"));
+        MatcherAssert.assertThat(
+            list, Matchers.contains(first)
+        );
+        MatcherAssert.assertThat(
+            mfs.allValues(attr),
+            Matchers.contains(first, second)
+        );
+    }
+
+    /**
+     * A new in memory Manifest containing the supplied string as content.
+     * @param content The content of the manifest
+     * @return A Mfs Manifest
+     */
+    private static Mfs manifestStream(final String content) {
+        return new StreamsMfs(
+            new ByteArrayInputStream(
+                content.getBytes(StandardCharsets.UTF_8)
+            )
         );
     }
 
