@@ -1,6 +1,6 @@
 <img src="http://img.jcabi.com/logo-square.png" width="64px" height="64px" />
 
-[![Made By Teamed.io](http://img.teamed.io/btn.svg)](http://www.teamed.io)
+[![Managed by Zerocracy](http://www.zerocracy.com/badge.svg)](http://www.zerocracy.com)
 [![DevOps By Rultor.com](http://www.rultor.com/b/jcabi/jcabi-manifests)](http://www.rultor.com/p/jcabi/jcabi-manifests)
 
 [![Build Status](https://travis-ci.org/jcabi/jcabi-manifests.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-manifests)
