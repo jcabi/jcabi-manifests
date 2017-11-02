@@ -10,6 +10,8 @@
 [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/com.jcabi/jcabi-manifests/badge.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-manifests)
 [![Dependencies](https://www.versioneye.com/user/projects/561ac3d0a193340f3200104f/badge.svg?style=flat)](https://www.versioneye.com/user/projects/561ac3d0a193340f3200104f)
 
+[![jpeek report](http://i.jpeek.org/com.jcabi/jcabi-manifests/badge.svg)](http://i.jpeek.org/com.jcabi/jcabi-manifests/)
+
 More details are here: [manifests.jcabi.com](http://manifests.jcabi.com/index.html).
 Also, read this blog post: [How to Read MANIFEST.MF Files](http://www.yegor256.com/2014/07/03/how-to-read-manifest-mf.html).
 
