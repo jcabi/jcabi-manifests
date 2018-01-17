@@ -35,11 +35,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import javax.servlet.ServletContext;
@@ -126,7 +128,8 @@ public final class Manifests implements MfMap {
     /**
      * Default singleton.
      */
-    public static final MfMap DEFAULT = new Manifests();
+    private static final AtomicReference<MfMap> DEFAULT =
+        new AtomicReference<MfMap>(new Manifests());
 
     /**
      * Attributes retrieved.
@@ -135,7 +138,11 @@ public final class Manifests implements MfMap {
 
     static {
         try {
-            Manifests.DEFAULT.append(new ClasspathMfs());
+            final MfMap currentInstance = Manifests.DEFAULT.get();
+            Manifests.DEFAULT.compareAndSet(
+                currentInstance,
+                currentInstance.append(new ClasspathMfs())
+            );
         } catch (final IOException ex) {
             Logger.error(
                 Manifests.class,
@@ -173,57 +180,34 @@ public final class Manifests implements MfMap {
     }
 
     @Override
-    public boolean containsKey(final Object key) {
+    public boolean containsKey(final String key) {
         return this.attributes.containsKey(key);
     }
 
     @Override
-    public boolean containsValue(final Object value) {
+    public boolean containsValue(final String value) {
         return this.attributes.containsValue(value);
     }
 
     @Override
-    public String get(final Object key) {
+    public String get(final String key) {
         return this.attributes.get(key);
     }
 
     @Override
-    public String put(final String key, final String value) {
-        return this.attributes.put(key, value);
-    }
-
-    @Override
-    public String remove(final Object key) {
-        return this.attributes.remove(key);
-    }
-
-    @Override
-    public void putAll(final Map<? extends String, ? extends String> attrs) {
-        this.attributes.putAll(attrs);
-    }
-
-    @Override
-    public void clear() {
-        this.attributes.clear();
+    public Map<String, String> getAsMap() {
+        return new HashMap<String, String>(this.attributes);
     }
 
     @Override
     public Set<String> keySet() {
-        return this.attributes.keySet();
-    }
-
-    @Override
-    public Collection<String> values() {
-        return this.attributes.values();
-    }
-
-    @Override
-    public Set<Map.Entry<String, String>> entrySet() {
-        return this.attributes.entrySet();
+        return new HashSet<String>(this.attributes.keySet());
     }
 
     @Override
     public MfMap append(final Mfs streams) throws IOException {
+        final ConcurrentHashMap<String, String> joinedAttributes =
+            new ConcurrentHashMap<String, String>(this.attributes);
         final long start = System.currentTimeMillis();
         final Collection<InputStream> list = streams.fetch();
         int saved = 0;
@@ -231,10 +215,10 @@ public final class Manifests implements MfMap {
         for (final InputStream stream : list) {
             for (final Map.Entry<String, String> attr
                 : Manifests.load(stream).entrySet()) {
-                if (this.attributes.containsKey(attr.getKey())) {
+                if (joinedAttributes.containsKey(attr.getKey())) {
                     ++ignored;
                 } else {
-                    this.attributes.put(attr.getKey(), attr.getValue());
+                    joinedAttributes.put(attr.getKey(), attr.getValue());
                     ++saved;
                 }
             }
@@ -248,7 +232,7 @@ public final class Manifests implements MfMap {
             saved, ignored,
             new TreeSet<String>(this.attributes.keySet())
         );
-        return this;
+        return new Manifests(joinedAttributes);
     }
 
     /**
@@ -276,12 +260,12 @@ public final class Manifests implements MfMap {
                     // @checkstyle LineLength (1 line)
                     "Attribute '%s' not found in MANIFEST.MF file(s) among %d other attribute(s): %[list]s",
                     name,
-                    Manifests.DEFAULT.size(),
-                    new TreeSet<String>(Manifests.DEFAULT.keySet())
+                    Manifests.DEFAULT.get().size(),
+                    new TreeSet<String>(Manifests.DEFAULT.get().keySet())
                 )
             );
         }
-        return Manifests.DEFAULT.get(name);
+        return Manifests.DEFAULT.get().get(name);
     }
 
     /**
@@ -302,7 +286,7 @@ public final class Manifests implements MfMap {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("attribute name can't be empty");
         }
-        return Manifests.DEFAULT.containsKey(name);
+        return Manifests.DEFAULT.get().containsKey(name);
     }
 
     /**
@@ -319,7 +303,11 @@ public final class Manifests implements MfMap {
      */
     @Deprecated
     public static void append(final ServletContext ctx) throws IOException {
-        Manifests.DEFAULT.append(new ServletMfs(ctx));
+        final MfMap currentInstance = Manifests.DEFAULT.get();
+        Manifests.DEFAULT.compareAndSet(
+            currentInstance,
+            currentInstance.append(new ServletMfs(ctx))
+        );
     }
 
     /**
@@ -338,7 +326,11 @@ public final class Manifests implements MfMap {
         if (file == null) {
             throw new IllegalArgumentException("file can't be NULL");
         }
-        Manifests.DEFAULT.append(new FilesMfs(file));
+        final MfMap currentInstance = Manifests.DEFAULT.get();
+        Manifests.DEFAULT.compareAndSet(
+            currentInstance,
+            currentInstance.append(new FilesMfs(file))
+        );
     }
 
     /**
@@ -358,7 +350,11 @@ public final class Manifests implements MfMap {
         if (stream == null) {
             throw new IllegalArgumentException("input stream can't be NULL");
         }
-        Manifests.DEFAULT.append(new StreamsMfs(stream));
+        final MfMap currentInstance = Manifests.DEFAULT.get();
+        Manifests.DEFAULT.compareAndSet(
+            currentInstance,
+            currentInstance.append(new StreamsMfs(stream))
+        );
     }
 
     /**
@@ -403,5 +399,4 @@ public final class Manifests implements MfMap {
         }
         return props;
     }
-
 }
