@@ -58,6 +58,18 @@ public final class ManifestsTest {
     }
 
     /**
+     * Manifests can read a single attribute, which always exist in MANIFEST.MF.
+     * @throws Exception If something goes wrong
+     */
+    @Test
+    public void readsSingleNotExistingAttribute() throws Exception {
+        MatcherAssert.assertThat(
+            Manifests.read("invalid-key", "default_value"),
+            Matchers.equalTo("default_value")
+        );
+    }
+
+    /**
      * Manifests can throw an exception if an attribute is empty.
      * @throws Exception If something goes wrong
      */

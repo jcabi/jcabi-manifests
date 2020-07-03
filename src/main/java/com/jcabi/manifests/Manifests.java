@@ -269,6 +269,30 @@ public final class Manifests implements MfMap {
     }
 
     /**
+     * Read one attribute available in one of {@code MANIFEST.MF} files.
+     *
+     * <p>If such a attribute doesn't exist, return default value.
+     *
+     * <p>The method is thread-safe.
+     *
+     * @param name Name of the attribute
+     * @param defaultValue Default value of the attribute
+     * @return The value of the attribute retrieved or default value
+     */
+    public static String read(final String name, final String defaultValue) {
+        if (name == null) {
+            throw new IllegalArgumentException("attribute can't be NULL");
+        }
+        if (name.isEmpty()) {
+            throw new IllegalArgumentException("attribute can't be empty");
+        }
+        if (!Manifests.exists(name)) {
+            return defaultValue;
+        }
+        return Manifests.DEFAULT.get().get(name);
+    }
+
+    /**
      * Check whether attribute exists in any of {@code MANIFEST.MF} files.
      *
      * <p>Use this method before {@link #read(String)} to check whether an
