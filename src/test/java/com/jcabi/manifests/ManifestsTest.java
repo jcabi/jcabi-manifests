@@ -58,6 +58,19 @@ public final class ManifestsTest {
     }
 
     /**
+     * Manifests can read a default value.
+     * @throws Exception If something goes wrong
+     */
+    @Test
+    public void readsSingleNotExistingAttribute() throws Exception {
+        final String value = "default";
+        MatcherAssert.assertThat(
+            Manifests.read("invalid-key", value),
+            Matchers.equalTo(value)
+        );
+    }
+
+    /**
      * Manifests can throw an exception if an attribute is empty.
      * @throws Exception If something goes wrong
      */
