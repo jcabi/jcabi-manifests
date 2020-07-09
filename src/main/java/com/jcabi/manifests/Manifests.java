@@ -248,12 +248,8 @@ public final class Manifests implements MfMap {
      * @return The value of the attribute retrieved
      */
     public static String read(final String name) {
-        if (name == null) {
-            throw new IllegalArgumentException("attribute can't be NULL");
-        }
-        if (name.isEmpty()) {
-            throw new IllegalArgumentException("attribute can't be empty");
-        }
+        Assertions.notNull(name);
+        Assertions.notEmpty(name);
         if (!Manifests.exists(name)) {
             throw new IllegalArgumentException(
                 Logger.format(
@@ -276,20 +272,19 @@ public final class Manifests implements MfMap {
      * <p>The method is thread-safe.
      *
      * @param name Name of the attribute
-     * @param defaultValue Default value of the attribute
+     * @param def Default value of the attribute
      * @return The value of the attribute retrieved or default value
      */
-    public static String read(final String name, final String defaultValue) {
-        if (name == null) {
-            throw new IllegalArgumentException("attribute can't be NULL");
+    public static String read(final String name, final String def) {
+        Assertions.notNull(name);
+        Assertions.notEmpty(name);
+        String value;
+        if (Manifests.exists(name)) {
+            value = Manifests.DEFAULT.get().get(name);
+        } else {
+            value = def;
         }
-        if (name.isEmpty()) {
-            throw new IllegalArgumentException("attribute can't be empty");
-        }
-        if (!Manifests.exists(name)) {
-            return defaultValue;
-        }
-        return Manifests.DEFAULT.get().get(name);
+        return value;
     }
 
     /**
