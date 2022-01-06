@@ -144,10 +144,7 @@ public final class Manifests implements MfMap {
                 currentInstance.append(new ClasspathMfs())
             );
         } catch (final IOException ex) {
-            Logger.error(
-                Manifests.class,
-                "#load(): '%s' failed %[exception]s", ex
-            );
+            logLoadFailedError(ex);
         }
     }
 
@@ -393,10 +390,19 @@ public final class Manifests implements MfMap {
             );
         // @checkstyle IllegalCatch (1 line)
         } catch (final RuntimeException ex) {
-            Logger.error(Manifests.class, "#load(): failed %[exception]s", ex);
+            logLoadFailedError(ex);
         } finally {
             stream.close();
         }
         return props;
+    }
+
+    /**
+     * Report the exception that was just thrown.
+     *
+     * @param exn The exception to report
+     */
+    private static void logLoadFailedError(final Exception exn) {
+        Logger.error(Manifests.class, "#load(): failed %[exception]s", exn);
     }
 }
