@@ -40,7 +40,7 @@
  * &lt;/dependency&gt;</pre>
  *
  * @since 0.7
- * @see <a href="http://www.jcabi.com/jcabi-manifests/index.html">project website</a>
- * @see <a href="http://www.yegor256.com/2014/07/03/how-to-read-manifest-mf.html">How to Read MANIFEST.MF Files</a>
+ * @link <a href="http://www.jcabi.com/jcabi-manifests/index.html">project website</a>
+ * @link <a href="http://www.yegor256.com/2014/07/03/how-to-read-manifest-mf.html">How to Read MANIFEST.MF Files</a>
  */
 package com.jcabi.manifests;
