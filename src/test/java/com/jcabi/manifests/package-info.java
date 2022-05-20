@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012-2017, jcabi.com
  * All rights reserved.
  *
@@ -31,8 +31,6 @@
 /**
  * Reader of {@code META-INF/MANIFEST.MF} files, tests.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.7
  */
 package com.jcabi.manifests;
