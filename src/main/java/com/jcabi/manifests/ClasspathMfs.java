@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2012-2017, jcabi.com
+/*
+ * Copyright (c) 2012-2022, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,8 +39,6 @@ import java.util.Enumeration;
 /**
  * Manifests in classpath.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 1.0
  */
 public final class ClasspathMfs implements Mfs {
@@ -48,9 +46,9 @@ public final class ClasspathMfs implements Mfs {
     @Override
     public Collection<InputStream> fetch() throws IOException {
         final Enumeration<URL> resources = Thread.currentThread()
-                .getContextClassLoader()
-                .getResources("META-INF/MANIFEST.MF");
-        final Collection<InputStream> streams = new ArrayList<InputStream>(1);
+            .getContextClassLoader()
+            .getResources("META-INF/MANIFEST.MF");
+        final Collection<InputStream> streams = new ArrayList<>(1);
         while (resources.hasMoreElements()) {
             streams.add(resources.nextElement().openStream());
         }

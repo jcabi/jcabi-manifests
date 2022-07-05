@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2012-2017, jcabi.com
+/*
+ * Copyright (c) 2012-2022, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,10 +36,8 @@ import java.util.Set;
 /**
  * Map of manifest attributes.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
- * @since 1.1
  * @see Manifests
+ * @since 1.1
  */
 public interface MfMap {
 
@@ -98,6 +96,7 @@ public interface MfMap {
      * Append this collection of MANIFEST.MF files.
      * This method may not change the original instance
      * and should create a new instance and return it as a result.
+     *
      * @param streams Files to append
      * @return New instance that contains original and appended attributes
      * @throws IOException If fails on I/O problem

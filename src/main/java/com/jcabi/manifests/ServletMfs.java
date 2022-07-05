@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2012-2017, jcabi.com
+/*
+ * Copyright (c) 2012-2022, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,8 +51,6 @@ import javax.servlet.ServletContext;
  *
  * <p>The class is thread-safe.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 1.0
  */
 public final class ServletMfs implements Mfs {
@@ -73,7 +71,7 @@ public final class ServletMfs implements Mfs {
     @Override
     public Collection<InputStream> fetch() throws IOException {
         final URL main = this.ctx.getResource("/META-INF/MANIFEST.MF");
-        final Collection<InputStream> streams = new ArrayList<InputStream>(1);
+        final Collection<InputStream> streams = new ArrayList<>(1);
         if (main == null) {
             Logger.warn(this, "MANIFEST.MF not found in WAR package");
         } else {

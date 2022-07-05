@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2012-2017, jcabi.com
+/*
+ * Copyright (c) 2012-2022, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,10 +39,8 @@
  *   &lt;artifactId&gt;jcabi-manifests&lt;/artifactId&gt;
  * &lt;/dependency&gt;</pre>
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.7
- * @see <a href="http://www.jcabi.com/jcabi-manifests/index.html">project website</a>
- * @see <a href="http://www.yegor256.com/2014/07/03/how-to-read-manifest-mf.html">How to Read MANIFEST.MF Files</a>
+ * @link <a href="http://www.jcabi.com/jcabi-manifests/index.html">project website</a>
+ * @link <a href="http://www.yegor256.com/2014/07/03/how-to-read-manifest-mf.html">How to Read MANIFEST.MF Files</a>
  */
 package com.jcabi.manifests;

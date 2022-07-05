@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2012-2017, jcabi.com
+/*
+ * Copyright (c) 2012-2022, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,8 +44,6 @@ import java.util.Collections;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 1.1
  */
 public final class StreamsMfs implements Mfs {

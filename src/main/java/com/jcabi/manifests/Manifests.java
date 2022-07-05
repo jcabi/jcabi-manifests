@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2012-2017, jcabi.com
+/*
+ * Copyright (c) 2012-2022, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -114,22 +114,20 @@ import javax.servlet.ServletContext;
  *  &lt;artifactId>jcabi-manifests&lt;/artifactId>
  * &lt;/dependency></pre>
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.7
- * @see <a href="http://download.oracle.com/javase/1,5.0/docs/guide/jar/jar.html#JAR%20Manifest">JAR Manifest</a>
- * @see <a href="http://maven.apache.org/shared/maven-archiver/index.html">Maven Archiver</a>
- * @see <a href="http://manifests.jcabi.com/index.html">manifests.jcabi.com</a>
- * @see <a href="http://www.yegor256.com/2014/07/03/how-to-read-manifest-mf.html">How to Read MANIFEST.MF Files</a>
+ * @link <a href="http://download.oracle.com/javase/1,5.0/docs/guide/jar/jar.html#JAR%20Manifest">JAR Manifest</a>
+ * @link <a href="http://maven.apache.org/shared/maven-archiver/index.html">Maven Archiver</a>
+ * @link <a href="http://manifests.jcabi.com/index.html">manifests.jcabi.com</a>
+ * @link <a href="http://www.yegor256.com/2014/07/03/how-to-read-manifest-mf.html">How to Read MANIFEST.MF Files</a>
  */
-@SuppressWarnings("PMD.TooManyMethods")
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.ProhibitPublicStaticMethods"})
 public final class Manifests implements MfMap {
 
     /**
      * Default singleton.
      */
     private static final AtomicReference<MfMap> DEFAULT =
-        new AtomicReference<MfMap>(new Manifests());
+        new AtomicReference<>(new Manifests());
 
     /**
      * Attributes retrieved.
@@ -138,16 +136,13 @@ public final class Manifests implements MfMap {
 
     static {
         try {
-            final MfMap currentInstance = Manifests.DEFAULT.get();
+            final MfMap instance = Manifests.DEFAULT.get();
             Manifests.DEFAULT.compareAndSet(
-                currentInstance,
-                currentInstance.append(new ClasspathMfs())
+                instance,
+                instance.append(new ClasspathMfs())
             );
         } catch (final IOException ex) {
-            Logger.error(
-                Manifests.class,
-                "#load(): '%s' failed %[exception]s", ex
-            );
+            Manifests.logLoadFailedError(ex);
         }
     }
 
@@ -156,7 +151,7 @@ public final class Manifests implements MfMap {
      * @since 1.0
      */
     public Manifests() {
-        this(new HashMap<String, String>(0));
+        this(new HashMap<>(0));
     }
 
     /**
@@ -166,7 +161,7 @@ public final class Manifests implements MfMap {
      */
     public Manifests(final Map<String, String> attrs) {
         super();
-        this.attributes = new ConcurrentHashMap<String, String>(attrs);
+        this.attributes = new ConcurrentHashMap<>(attrs);
     }
 
     @Override
@@ -196,18 +191,19 @@ public final class Manifests implements MfMap {
 
     @Override
     public Map<String, String> getAsMap() {
-        return new HashMap<String, String>(this.attributes);
+        return new HashMap<>(this.attributes);
     }
 
     @Override
     public Set<String> keySet() {
-        return new HashSet<String>(this.attributes.keySet());
+        return new HashSet<>(this.attributes.keySet());
     }
 
     @Override
+    @SuppressWarnings("PMD.GuardLogStatement")
     public MfMap append(final Mfs streams) throws IOException {
-        final ConcurrentHashMap<String, String> joinedAttributes =
-            new ConcurrentHashMap<String, String>(this.attributes);
+        final ConcurrentHashMap<String, String> joined =
+            new ConcurrentHashMap<>(this.attributes);
         final long start = System.currentTimeMillis();
         final Collection<InputStream> list = streams.fetch();
         int saved = 0;
@@ -215,10 +211,10 @@ public final class Manifests implements MfMap {
         for (final InputStream stream : list) {
             for (final Map.Entry<String, String> attr
                 : Manifests.load(stream).entrySet()) {
-                if (joinedAttributes.containsKey(attr.getKey())) {
+                if (joined.containsKey(attr.getKey())) {
                     ++ignored;
                 } else {
-                    joinedAttributes.put(attr.getKey(), attr.getValue());
+                    joined.put(attr.getKey(), attr.getValue());
                     ++saved;
                 }
             }
@@ -230,9 +226,9 @@ public final class Manifests implements MfMap {
             this.attributes.size(), list.size(),
             System.currentTimeMillis() - start,
             saved, ignored,
-            new TreeSet<String>(this.attributes.keySet())
+            new TreeSet<>(this.attributes.keySet())
         );
-        return new Manifests(joinedAttributes);
+        return new Manifests(joined);
     }
 
     /**
@@ -257,7 +253,7 @@ public final class Manifests implements MfMap {
                     "Attribute '%s' not found in MANIFEST.MF file(s) among %d other attribute(s): %[list]s",
                     name,
                     Manifests.DEFAULT.get().size(),
-                    new TreeSet<String>(Manifests.DEFAULT.get().keySet())
+                    new TreeSet<>(Manifests.DEFAULT.get().keySet())
                 )
             );
         }
@@ -322,10 +318,10 @@ public final class Manifests implements MfMap {
      */
     @Deprecated
     public static void append(final ServletContext ctx) throws IOException {
-        final MfMap currentInstance = Manifests.DEFAULT.get();
+        final MfMap current = Manifests.DEFAULT.get();
         Manifests.DEFAULT.compareAndSet(
-            currentInstance,
-            currentInstance.append(new ServletMfs(ctx))
+            current,
+            current.append(new ServletMfs(ctx))
         );
     }
 
@@ -345,10 +341,10 @@ public final class Manifests implements MfMap {
         if (file == null) {
             throw new IllegalArgumentException("file can't be NULL");
         }
-        final MfMap currentInstance = Manifests.DEFAULT.get();
+        final MfMap current = Manifests.DEFAULT.get();
         Manifests.DEFAULT.compareAndSet(
-            currentInstance,
-            currentInstance.append(new FilesMfs(file))
+            current,
+            current.append(new FilesMfs(file))
         );
     }
 
@@ -369,10 +365,10 @@ public final class Manifests implements MfMap {
         if (stream == null) {
             throw new IllegalArgumentException("input stream can't be NULL");
         }
-        final MfMap currentInstance = Manifests.DEFAULT.get();
+        final MfMap current = Manifests.DEFAULT.get();
         Manifests.DEFAULT.compareAndSet(
-            currentInstance,
-            currentInstance.append(new StreamsMfs(stream))
+            current,
+            current.append(new StreamsMfs(stream))
         );
     }
 
@@ -395,7 +391,7 @@ public final class Manifests implements MfMap {
     private static Map<String, String> load(final InputStream stream)
         throws IOException {
         final ConcurrentMap<String, String> props =
-            new ConcurrentHashMap<String, String>(0);
+            new ConcurrentHashMap<>(0);
         try {
             final Manifest manifest = new Manifest(stream);
             final Attributes attrs = manifest.getMainAttributes();
@@ -408,14 +404,23 @@ public final class Manifests implements MfMap {
             Logger.debug(
                 Manifests.class,
                 "%d attribute(s) loaded %[list]s",
-                props.size(), new TreeSet<String>(props.keySet())
+                props.size(), new TreeSet<>(props.keySet())
             );
         // @checkstyle IllegalCatch (1 line)
         } catch (final RuntimeException ex) {
-            Logger.error(Manifests.class, "#load(): failed %[exception]s", ex);
+            Manifests.logLoadFailedError(ex);
         } finally {
             stream.close();
         }
         return props;
+    }
+
+    /**
+     * Report the exception that was just thrown.
+     *
+     * @param exn The exception to report
+     */
+    private static void logLoadFailedError(final Exception exn) {
+        Logger.error(Manifests.class, "#load(): failed %[exception]s", exn);
     }
 }

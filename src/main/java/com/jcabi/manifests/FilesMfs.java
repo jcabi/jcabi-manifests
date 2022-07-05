@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2012-2017, jcabi.com
+/*
+ * Copyright (c) 2012-2022, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,8 +45,6 @@ import java.util.Collections;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 1.1
  */
 public final class FilesMfs implements Mfs {
@@ -74,7 +72,7 @@ public final class FilesMfs implements Mfs {
 
     @Override
     public Collection<InputStream> fetch() throws IOException {
-        final Collection<InputStream> streams = new ArrayList<InputStream>(1);
+        final Collection<InputStream> streams = new ArrayList<>(1);
         for (final File file : this.files) {
             streams.add(file.toURI().toURL().openStream());
         }
