@@ -30,6 +30,7 @@
 package com.jcabi.manifests;
 
 import com.jcabi.log.Logger;
+import jakarta.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +45,6 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
-import javax.servlet.ServletContext;
 
 /**
  * Static reader of {@code META-INF/MANIFEST.MF} files.
@@ -77,12 +77,12 @@ import javax.servlet.ServletContext;
  * these attributes where it's necessary (in one of your JAXB annotated objects,
  * for example) and show to users:
  *
- * <pre> import com.jcabi.manifests.Manifest;
+ * <pre>  import com.jcabi.manifests.Manifest;
  * import java.text.SimpleDateFormat;
  * import java.util.Date;
  * import java.util.Locale;
- * import javax.xml.bind.annotation.XmlElement;
- * import javax.xml.bind.annotation.XmlRootElement;
+ * import jakarta.xml.bind.annotation.XmlElement;
+ * import jakarta.xml.bind.annotation.XmlRootElement;
  * &#64;XmlRootElement
  * public final class Page {
  *   &#64;XmlElement

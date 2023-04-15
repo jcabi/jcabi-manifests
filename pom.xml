@@ -69,19 +69,20 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     </dependency>
     <dependency>
       <!--
-      Javax Servlet API 2.4. We're using this old version intentionally,
-      in order to make the framework compatible with all possible (incl.
-      very old) web containers. See ticket #42 for more information.
+      Jakarta Servlet API 5.0.0. We're using this old version intentionally,
+      in order to make the framework compatible with all possible Jakarta
+      web containers (Jakarta 9.1 or higher)
       -->
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <version>2.5</version>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>5.0.0</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>javax.el</groupId>
-      <artifactId>javax.el-api</artifactId>
+      <groupId>jakarta.el</groupId>
+      <artifactId>jakarta.el-api</artifactId>
+      <version>4.0.0</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
