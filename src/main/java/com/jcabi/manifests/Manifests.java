@@ -115,7 +115,7 @@ import java.util.jar.Manifest;
  * &lt;/dependency></pre>
  *
  * @since 0.7
- * @link <a href="http://download.oracle.com/javase/1,5.0/docs/guide/jar/jar.html#JAR%20Manifest">JAR Manifest</a>
+ * @link <a href="http://download.oracle.com/javase/1.5.0/docs/guide/jar/jar.html#JAR%20Manifest">JAR Manifest</a>
  * @link <a href="http://maven.apache.org/shared/maven-archiver/index.html">Maven Archiver</a>
  * @link <a href="http://manifests.jcabi.com/index.html">manifests.jcabi.com</a>
  * @link <a href="http://www.yegor256.com/2014/07/03/how-to-read-manifest-mf.html">How to Read MANIFEST.MF Files</a>
