@@ -44,18 +44,18 @@ import org.junit.jupiter.api.Test;
  *
  * @since 0.7
  */
-public final class ManifestsTest {
+final class ManifestsTest {
 
     @Test
-    public void readsSingleExistingAttribute() {
+    void readsSingleExistingAttribute() {
         MatcherAssert.assertThat(
-            Manifests.read("JCabi-Version"),
+            Manifests.read("Built-By"),
             Matchers.notNullValue()
         );
     }
 
     @Test
-    public void throwsExceptionWhenAttributeIsEmpty() {
+    void throwsExceptionWhenAttributeIsEmpty() {
         Assertions.assertThrows(
             IllegalArgumentException.class,
             () -> Manifests.read("Jcabi-Test-Empty-Attribute")
@@ -63,7 +63,7 @@ public final class ManifestsTest {
     }
 
     @Test
-    public void throwsExceptionIfAttributeIsMissed() {
+    void throwsExceptionIfAttributeIsMissed() {
         Assertions.assertThrows(
             IllegalArgumentException.class,
             () -> Manifests.read("absent-property")
@@ -71,7 +71,7 @@ public final class ManifestsTest {
     }
 
     @Test
-    public void throwsExceptionWhenNoAttributes() {
+    void throwsExceptionWhenNoAttributes() {
         Assertions.assertThrows(
             IOException.class,
             () -> {
@@ -86,7 +86,7 @@ public final class ManifestsTest {
     }
 
     @Test
-    public void appendsAttributesFromFile() throws Exception {
+    void appendsAttributesFromFile() throws Exception {
         final String name = "Test-Attribute-From-File";
         final String value = "some text value of attribute";
         final File file = File.createTempFile("test-", ".MF");
@@ -103,7 +103,7 @@ public final class ManifestsTest {
     }
 
     @Test
-    public void appendsAttributesFromInputStream() throws Exception {
+    void appendsAttributesFromInputStream() throws Exception {
         final MfMap manifests = new Manifests();
         manifests.append(
             new StreamsMfs(this.getClass().getResourceAsStream("test.mf"))
@@ -115,7 +115,7 @@ public final class ManifestsTest {
     }
 
     @Test
-    public void appendToSingleton() throws Exception {
+    void appendToSingleton() throws Exception {
         Manifests.singleton().append(new StringMfs("foo: bar\n"));
         MatcherAssert.assertThat(
             Manifests.read("foo"),
