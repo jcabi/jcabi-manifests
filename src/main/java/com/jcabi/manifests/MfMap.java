@@ -99,7 +99,7 @@ public interface MfMap {
      *
      * @param mfs Content to append
      * @throws IOException If fails on I/O problem
-     * @since 1.0
+     * @since 2.0.0
      */
     void append(Mfs mfs) throws IOException;
 }

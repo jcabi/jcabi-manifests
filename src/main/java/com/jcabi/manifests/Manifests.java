@@ -100,11 +100,11 @@ import javax.servlet.ServletContext;
  * <p>If you want to add more manifests to the collection, use
  * its static instance:
  *
- * <pre>Manifests.DEFAULT.append(new FilesMfs(new File("MANIFEST.MF")));</pre>
+ * <pre>Manifests.singleton().append(new FilesMfs(new File("MANIFEST.MF")));</pre>
  *
  * <p>You can also modify the map directly:
  *
- * <pre>Manifests.DEFAULT.put("Hello", "world");</pre>
+ * <pre>Manifests.singleton().put("Hello", "world");</pre>
  *
  * <p>The only dependency you need (check the latest version at
  * <a href="http://manifests.jcabi.com/">jcabi-manifests</a>):
@@ -164,7 +164,7 @@ public final class Manifests implements MfMap {
      * Get the singleton.
      *
      * @return The singleton
-     * @since 1.3
+     * @since 2.0.0
      */
     public static MfMap singleton() {
         return Manifests.DEFAULT.get();
