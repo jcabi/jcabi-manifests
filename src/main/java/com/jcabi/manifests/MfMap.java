@@ -94,13 +94,12 @@ public interface MfMap {
 
     /**
      * Append this collection of MANIFEST.MF files.
-     * This method may not change the original instance
-     * and should create a new instance and return it as a result.
      *
-     * @param streams Files to append
-     * @return New instance that contains original and appended attributes
+     * This method changes the original instance.
+     *
+     * @param mfs Content to append
      * @throws IOException If fails on I/O problem
      * @since 1.0
      */
-    MfMap append(Mfs streams) throws IOException;
+    void append(Mfs mfs) throws IOException;
 }

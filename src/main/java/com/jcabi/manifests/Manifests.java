@@ -136,11 +136,7 @@ public final class Manifests implements MfMap {
 
     static {
         try {
-            final MfMap instance = Manifests.DEFAULT.get();
-            Manifests.DEFAULT.compareAndSet(
-                instance,
-                instance.append(new ClasspathMfs())
-            );
+            Manifests.singleton().append(new ClasspathMfs());
         } catch (final IOException ex) {
             Manifests.logLoadFailedError(ex);
         }
@@ -162,6 +158,16 @@ public final class Manifests implements MfMap {
     public Manifests(final Map<String, String> attrs) {
         super();
         this.attributes = new ConcurrentHashMap<>(attrs);
+    }
+
+    /**
+     * Get the singleton.
+     *
+     * @return The singleton
+     * @since 1.3
+     */
+    public static MfMap singleton() {
+        return Manifests.DEFAULT.get();
     }
 
     @Override
@@ -201,20 +207,18 @@ public final class Manifests implements MfMap {
 
     @Override
     @SuppressWarnings("PMD.GuardLogStatement")
-    public MfMap append(final Mfs streams) throws IOException {
-        final ConcurrentHashMap<String, String> joined =
-            new ConcurrentHashMap<>(this.attributes);
+    public void append(final Mfs mfs) throws IOException {
         final long start = System.currentTimeMillis();
-        final Collection<InputStream> list = streams.fetch();
+        final Collection<InputStream> list = mfs.fetch();
         int saved = 0;
         int ignored = 0;
         for (final InputStream stream : list) {
             for (final Map.Entry<String, String> attr
                 : Manifests.load(stream).entrySet()) {
-                if (joined.containsKey(attr.getKey())) {
+                if (this.attributes.containsKey(attr.getKey())) {
                     ++ignored;
                 } else {
-                    joined.put(attr.getKey(), attr.getValue());
+                    this.attributes.put(attr.getKey(), attr.getValue());
                     ++saved;
                 }
             }
@@ -228,7 +232,6 @@ public final class Manifests implements MfMap {
             saved, ignored,
             new TreeSet<>(this.attributes.keySet())
         );
-        return new Manifests(joined);
     }
 
     /**
@@ -256,12 +259,12 @@ public final class Manifests implements MfMap {
                     // @checkstyle LineLength (1 line)
                     "Attribute '%s' not found in MANIFEST.MF file(s) among %d other attribute(s): %[list]s",
                     name,
-                    Manifests.DEFAULT.get().size(),
-                    new TreeSet<>(Manifests.DEFAULT.get().keySet())
+                    Manifests.singleton().size(),
+                    new TreeSet<>(Manifests.singleton().keySet())
                 )
             );
         }
-        return Manifests.DEFAULT.get().get(name);
+        return Manifests.singleton().get(name);
     }
 
     /**
@@ -282,7 +285,7 @@ public final class Manifests implements MfMap {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("attribute name can't be empty");
         }
-        return Manifests.DEFAULT.get().containsKey(name);
+        return Manifests.singleton().containsKey(name);
     }
 
     /**
@@ -299,11 +302,7 @@ public final class Manifests implements MfMap {
      */
     @Deprecated
     public static void append(final ServletContext ctx) throws IOException {
-        final MfMap current = Manifests.DEFAULT.get();
-        Manifests.DEFAULT.compareAndSet(
-            current,
-            current.append(new ServletMfs(ctx))
-        );
+        Manifests.singleton().append(new ServletMfs(ctx));
     }
 
     /**
@@ -322,11 +321,7 @@ public final class Manifests implements MfMap {
         if (file == null) {
             throw new IllegalArgumentException("file can't be NULL");
         }
-        final MfMap current = Manifests.DEFAULT.get();
-        Manifests.DEFAULT.compareAndSet(
-            current,
-            current.append(new FilesMfs(file))
-        );
+        Manifests.singleton().append(new FilesMfs(file));
     }
 
     /**
@@ -346,11 +341,7 @@ public final class Manifests implements MfMap {
         if (stream == null) {
             throw new IllegalArgumentException("input stream can't be NULL");
         }
-        final MfMap current = Manifests.DEFAULT.get();
-        Manifests.DEFAULT.compareAndSet(
-            current,
-            current.append(new StreamsMfs(stream))
-        );
+        Manifests.singleton().append(new StreamsMfs(stream));
     }
 
     /**

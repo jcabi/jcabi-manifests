@@ -94,7 +94,8 @@ public final class ManifestsTest {
             file.toPath(),
             Logger.format("%s: %s\n", name, value).getBytes(StandardCharsets.UTF_8)
         );
-        final MfMap manifests = new Manifests().append(new FilesMfs(file));
+        final MfMap manifests = new Manifests();
+        manifests.append(new FilesMfs(file));
         MatcherAssert.assertThat(
             "loaded from file",
             manifests.containsKey(name) && manifests.get(name).equals(value)
@@ -103,12 +104,22 @@ public final class ManifestsTest {
 
     @Test
     public void appendsAttributesFromInputStream() throws Exception {
-        final MfMap manifests = new Manifests().append(
+        final MfMap manifests = new Manifests();
+        manifests.append(
             new StreamsMfs(this.getClass().getResourceAsStream("test.mf"))
         );
         MatcherAssert.assertThat(
             manifests.get("From-File"),
             Matchers.equalTo("some test attribute")
+        );
+    }
+
+    @Test
+    public void appendToSingleton() throws Exception {
+        Manifests.singleton().append(new StringMfs("foo: bar\n"));
+        MatcherAssert.assertThat(
+            Manifests.read("foo"),
+            Matchers.equalTo("bar")
         );
     }
 
