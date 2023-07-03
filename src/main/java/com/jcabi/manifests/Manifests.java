@@ -30,8 +30,6 @@
 package com.jcabi.manifests;
 
 import com.jcabi.log.Logger;
-import jakarta.servlet.ServletContext;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
@@ -286,62 +284,6 @@ public final class Manifests implements MfMap {
             throw new IllegalArgumentException("attribute name can't be empty");
         }
         return Manifests.singleton().containsKey(name);
-    }
-
-    /**
-     * Append attributes from the web application {@code MANIFEST.MF}.
-     *
-     * <p>The method is deprecated. Instead, use this code:
-     *
-     * <pre>Manifests.DEFAULT.append(new ServletMfs());</pre>
-     *
-     * @param ctx Servlet context
-     * @see #Manifests()
-     * @throws IOException If some I/O problem inside
-     * @deprecated Use {@link #append(Mfs)} and {@link ServletMfs} instead
-     */
-    @Deprecated
-    public static void append(final ServletContext ctx) throws IOException {
-        Manifests.singleton().append(new ServletMfs(ctx));
-    }
-
-    /**
-     * Append attributes from the file.
-     *
-     * <p>The method is deprecated. Instead, use this code:
-     *
-     * <pre>Manifests.DEFAULT.append(new FilesMfs(file));</pre>
-     *
-     * @param file The file to load attributes from
-     * @throws IOException If some I/O problem inside
-     * @deprecated Use {@link #append(Mfs)} and {@link FilesMfs} instead
-     */
-    @Deprecated
-    public static void append(final File file) throws IOException {
-        if (file == null) {
-            throw new IllegalArgumentException("file can't be NULL");
-        }
-        Manifests.singleton().append(new FilesMfs(file));
-    }
-
-    /**
-     * Append attributes from input stream.
-     *
-     * <p>The method is deprecated. Instead, use this code:
-     *
-     * <pre>Manifests.DEFAULT.append(new StreamsMfs(stream));</pre>
-     *
-     * @param stream Stream to use
-     * @throws IOException If some I/O problem inside
-     * @since 0.8
-     * @deprecated Use {@link #append(Mfs)} and {@link StreamsMfs} instead
-     */
-    @Deprecated
-    public static void append(final InputStream stream) throws IOException {
-        if (stream == null) {
-            throw new IllegalArgumentException("input stream can't be NULL");
-        }
-        Manifests.singleton().append(new StreamsMfs(stream));
     }
 
     /**

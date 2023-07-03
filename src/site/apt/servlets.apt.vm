@@ -64,7 +64,7 @@ public class Manifests {
   This mechanism works just fine in web
   applications (<<<WAR>>> packages) as long as
   the current thread contains the same class loader as is being used in
-  {{{https://jakarta.ee/specifications/platform/9/apidocs/jakarta/servlet/servletcontext}<<<ServletContext>>>}}.
+  {{{http://docs.oracle.com/javaee/6/api/javax/servlet/ServletContext.html}<<<ServletContext>>>}}.
   In some web containers it is not true, and
   {{{./apidocs-${project.version}/com/jcabi/manifests/Manifests.html}<<<Manifests>>>}}
   simply won't see your <<<MANIFEST.MF>>> files.
@@ -75,7 +75,7 @@ public class Manifests {
   {{{./apidocs-${project.version}/com/jcabi/manifests/Manifests.html}<<<Manifests>>>}}
   about an additional classloader available. You should call this method
   in one of your
-  {{{https://jakarta.ee/specifications/platform/9/apidocs/jakarta/servlet/servletcontext}<<<ServletContextListener>>>}}-s:
+  {{{http://docs.oracle.com/javaee/6/api/javax/servlet/ServletContextListener.html}<<<ServletContextListener>>>}}-s:
 
 +--
 public class MyListener implements ServletContextListener {
