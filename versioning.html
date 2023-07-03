@@ -33,7 +33,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-2.0.0/index.html" title="JavaDoc 2.0.0">JavaDoc 2.0.0</a>
+                            <span>                        <a href="apidocs-2.1.0/index.html" title="JavaDoc 2.1.0">JavaDoc 2.1.0</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -101,13 +101,13 @@
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">2.0.0</strong>
+                                    <strong itemprop="version">2.1.0</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2023-05-29T06:21:06Z">
+                                    <time itemprop="datePublished" datetime="2023-07-03T02:35:26Z">
                                         
-                                        29-May-2023
+                                        03-Jul-2023
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -120,7 +120,7 @@
                                                 <article itemprop="articleBody">
                             <section>
 <h2><a name="Versioning_of_JAR.2FWAR_Application"></a>Versioning of JAR/WAR Application</h2>
-<p>Oracle <a class="externalLink" href="http://docs.oracle.com/javase/tutorial/deployment/jar/packageman.html">recommends</a> to use <code>MANIFEST.MF</code> for versioning of a Java application. We also recommend to use <a href="./apidocs-2.0.0/com/jcabi/manifests/Manifests.html"><code>Manifests</code></a> utility class for reading version data in runtime. For example, you're developing a web application and want to show its currently deployed version number somewhere in the HTML page. You can see how it works, for example, in <a class="externalLink" href="http://www.s3auth.com/">www.s3auth.com</a>. Pay attention to the small gray rectangle at the right bottom corner of the HTML page. It contains the version of the application and its Git revision hash. Every time a new version is deployed to the production server we see a new hash there. It is very convenient for developers and end-users.</p>
+<p>Oracle <a class="externalLink" href="http://docs.oracle.com/javase/tutorial/deployment/jar/packageman.html">recommends</a> to use <code>MANIFEST.MF</code> for versioning of a Java application. We also recommend to use <a href="./apidocs-2.1.0/com/jcabi/manifests/Manifests.html"><code>Manifests</code></a> utility class for reading version data in runtime. For example, you're developing a web application and want to show its currently deployed version number somewhere in the HTML page. You can see how it works, for example, in <a class="externalLink" href="http://www.s3auth.com/">www.s3auth.com</a>. Pay attention to the small gray rectangle at the right bottom corner of the HTML page. It contains the version of the application and its Git revision hash. Every time a new version is deployed to the production server we see a new hash there. It is very convenient for developers and end-users.</p>
 <p>You can see how it is done in <a class="externalLink" href="http://www.s3auth.com/">www.s3auth.com</a> by reading their <a class="externalLink" href="https://github.com/yegor256/s3auth/blob/master/s3auth-rest/pom.xml"><code>pom.xml</code></a> at Github. Let's reproduce it here step by step.</p>
 <p>First, you should retrieve the revision number from your SCM (either it is Git, SVN, Mercurial, or something similar). We're using <a class="externalLink" href="http://mojo.codehaus.org/buildnumber-maven-plugin/">buildnumber-maven-plugin</a>:</p>
 <div class="source">
