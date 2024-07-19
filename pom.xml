@@ -99,7 +99,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>jakarta.el</groupId>
       <artifactId>jakarta.el-api</artifactId>
-      <version>6.0.0</version>
+      <version>6.0.1</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
