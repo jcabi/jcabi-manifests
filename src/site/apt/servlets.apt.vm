@@ -89,5 +89,3 @@ public class MyListener implements ServletContextListener {
   You can call
   {{{./apidocs-${project.version}/com/jcabi/manifests/Manifests.html}<<<append(ServletContext)>>>}}
   many times, it's harmless for the registry.
-
-
