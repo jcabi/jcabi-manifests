@@ -6,6 +6,7 @@
 [![mvn](https://github.com/jcabi/jcabi-manifests/actions/workflows/mvn.yml/badge.svg)](https://github.com/jcabi/jcabi-manifests/actions/workflows/mvn.yml)
 [![PDD status](http://www.0pdd.com/svg?name=jcabi/jcabi-manifests)](http://www.0pdd.com/p?name=jcabi/jcabi-manifests)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-manifests/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-manifests)
+[![libs.tech recommends](https://libs.tech/project/12584841/badge.svg)](https://libs.tech/project/12584841/jcabi-manifests)
 [![Javadoc](https://javadoc.io/badge/com.jcabi/jcabi-manifests.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-manifests)
 
 More details are here: [manifests.jcabi.com](http://manifests.jcabi.com/index.html).
