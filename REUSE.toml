@@ -4,6 +4,8 @@
 version = 1
 [[annotations]]
 path = [
+    "src/test/resources/META-INF/MANIFEST_INVALID.MF",
+    "src/test/resources/com/jcabi/manifests/test.mf",
     "**.json",
     "**.md",
     "**.txt",
