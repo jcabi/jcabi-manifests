@@ -24,6 +24,7 @@ final class ManifestsTest {
     @Test
     void readsSingleExistingAttribute() {
         MatcherAssert.assertThat(
+            "fails to read one property",
             Manifests.read("Built-By"),
             Matchers.notNullValue()
         );
@@ -33,7 +34,8 @@ final class ManifestsTest {
     void throwsExceptionWhenAttributeIsEmpty() {
         Assertions.assertThrows(
             IllegalArgumentException.class,
-            () -> Manifests.read("Jcabi-Test-Empty-Attribute")
+            () -> Manifests.read("Jcabi-Test-Empty-Attribute"),
+            "doesn't throw on empty attribute"
         );
     }
 
@@ -41,7 +43,8 @@ final class ManifestsTest {
     void throwsExceptionIfAttributeIsMissed() {
         Assertions.assertThrows(
             IllegalArgumentException.class,
-            () -> Manifests.read("absent-property")
+            () -> Manifests.read("absent-property"),
+            "doesn't throw on absent property"
         );
     }
 
@@ -56,7 +59,8 @@ final class ManifestsTest {
                 );
                 final Manifests mfs = new Manifests();
                 mfs.append(new FilesMfs(file));
-            }
+            },
+            "doesn't throw"
         );
     }
 
@@ -73,7 +77,8 @@ final class ManifestsTest {
         manifests.append(new FilesMfs(file));
         MatcherAssert.assertThat(
             "loaded from file",
-            manifests.containsKey(name) && manifests.get(name).equals(value)
+            manifests.containsKey(name) && manifests.get(name).equals(value),
+            Matchers.is(true)
         );
     }
 
@@ -84,6 +89,7 @@ final class ManifestsTest {
             new StreamsMfs(this.getClass().getResourceAsStream("test.mf"))
         );
         MatcherAssert.assertThat(
+            "failes to read from stream",
             manifests.get("From-File"),
             Matchers.equalTo("some test attribute")
         );
@@ -93,6 +99,7 @@ final class ManifestsTest {
     void appendToSingleton() throws Exception {
         Manifests.singleton().append(new StringMfs("foo: bar\n"));
         MatcherAssert.assertThat(
+            "fails to work as expected",
             Manifests.read("foo"),
             Matchers.equalTo("bar")
         );

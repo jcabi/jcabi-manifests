@@ -21,11 +21,13 @@ final class StringMfsTest {
 
     @Test
     void turnsStringIntoMfs() throws IOException {
-        final InputStream input = new StringMfs("Foo: bar").fetch().iterator().next();
-        MatcherAssert.assertThat(
-            IOUtils.toString(input, StandardCharsets.UTF_8),
-            Matchers.containsString("Foo:")
-        );
+        try (InputStream input = new StringMfs("Foo: bar").fetch().iterator().next()) {
+            MatcherAssert.assertThat(
+                "fails to work as expected",
+                IOUtils.toString(input, StandardCharsets.UTF_8),
+                Matchers.containsString("Foo:")
+            );
+        }
     }
 
 }

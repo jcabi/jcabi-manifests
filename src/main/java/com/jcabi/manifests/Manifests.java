@@ -179,7 +179,7 @@ public final class Manifests implements MfMap {
     }
 
     @Override
-    @SuppressWarnings("PMD.GuardLogStatement")
+    @SuppressWarnings({ "PMD.GuardLogStatement", "PMD.CloseResource" })
     public void append(final Mfs mfs) throws IOException {
         final long start = System.currentTimeMillis();
         final Collection<InputStream> list = mfs.fetch();
@@ -195,16 +195,19 @@ public final class Manifests implements MfMap {
                     ++saved;
                 }
             }
+            stream.close();
         }
-        Logger.info(
-            this,
-            // @checkstyle LineLength (1 line)
-            "%d attributes loaded from %d stream(s) in %[ms]s, %d saved, %d ignored: %[list]s",
-            this.attributes.size(), list.size(),
-            System.currentTimeMillis() - start,
-            saved, ignored,
-            new TreeSet<>(this.attributes.keySet())
-        );
+        if (Logger.isDebugEnabled(this)) {
+            Logger.debug(
+                this,
+                // @checkstyle LineLength (1 line)
+                "%d attributes loaded from %d stream(s) in %[ms]s, %d saved, %d ignored: %[list]s",
+                this.attributes.size(), list.size(),
+                System.currentTimeMillis() - start,
+                saved, ignored,
+                new TreeSet<>(this.attributes.keySet())
+            );
+        }
     }
 
     /**
@@ -276,7 +279,7 @@ public final class Manifests implements MfMap {
      * @throws IOException If some problem happens
      * @since 0.8
      */
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.UseTryWithResources"})
     private static Map<String, String> load(final InputStream stream)
         throws IOException {
         final ConcurrentMap<String, String> props =
