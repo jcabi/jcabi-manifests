@@ -2,21 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
     <head>
         <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>jcabi-manifests &#x2013; Versioning of JAR/WAR Application</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Versioning of JAR/WAR Application – jcabi-manifests</title>
         <link media="all" rel="stylesheet" type="text/css" href="./css/jcabi.css"/>
-                    <meta name="author" content="Yegor Bugayenko" />
-                            <script>
-                var _gaq = _gaq || [];
-                _gaq.push(['_setAccount', 'UA-1963507-23']);
-                _gaq.push(['_trackPageview']);
-                (function() {
-                    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-                })();
-            </script>
-                                            <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+                    <meta name="author" content="Yegor Bugayenko"/>
+                                                    <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
         <script src="./js/jcabi.js"></script>
     </head>
     <body>
@@ -33,7 +23,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-2.1.0/index.html" title="JavaDoc 2.1.0">JavaDoc 2.1.0</a>
+                            <span>                        <a href="apidocs-2.2.0/index.html" title="JavaDoc 2.2.0">JavaDoc 2.2.0</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -91,23 +81,21 @@
                             <div class="logo">
                                 <a href="../"
                                     title=" logo ">
-                                    <img src="https://img.jcabi.com/logo-square.svg"
+                                    <img src="${decoration.bannerLeft.src}"
                                         alt="jcabi"
-                                                                                    width="64"
-                                                                                                                            height="64"
-                                                                                itemprop="image"
+                                                                                                                        itemprop="image"
                                     />
                                 </a>
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">2.1.0</strong>
+                                    <strong itemprop="version">2.2.0</strong>
                                 </li>
                                 <li>
-                                    
-                                    <time itemprop="datePublished" datetime="2023-07-03T02:35:26Z">
-                                        
-                                        03-Jul-2023
+                                    $dateFormat.applyPattern("yyyy-MM-dd'T'hh:mm:ss'Z'")
+                                    <time itemprop="datePublished" datetime="${dateFormat.format($currentDate)}">
+                                        $dateFormat.applyPattern('dd-MMM-yyyy')
+                                        ${dateFormat.format($currentDate)}
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -118,13 +106,12 @@
                                 <img src="https://www.jcabi.com/fork-me.svg" class="fork-me"/>
                             </a>
                                                 <article itemprop="articleBody">
-                            <section>
-<h2><a name="Versioning_of_JAR.2FWAR_Application"></a>Versioning of JAR/WAR Application</h2>
-<p>Oracle <a class="externalLink" href="http://docs.oracle.com/javase/tutorial/deployment/jar/packageman.html">recommends</a> to use <code>MANIFEST.MF</code> for versioning of a Java application. We also recommend to use <a href="./apidocs-2.1.0/com/jcabi/manifests/Manifests.html"><code>Manifests</code></a> utility class for reading version data in runtime. For example, you're developing a web application and want to show its currently deployed version number somewhere in the HTML page. You can see how it works, for example, in <a class="externalLink" href="http://www.s3auth.com/">www.s3auth.com</a>. Pay attention to the small gray rectangle at the right bottom corner of the HTML page. It contains the version of the application and its Git revision hash. Every time a new version is deployed to the production server we see a new hash there. It is very convenient for developers and end-users.</p>
+                            <section><a id="Versioning_of_JAR.2FWAR_Application"></a>
+<h1>Versioning of JAR/WAR Application</h1>
+<p>Oracle <a class="externalLink" href="http://docs.oracle.com/javase/tutorial/deployment/jar/packageman.html">recommends</a> to use <code>MANIFEST.MF</code> for versioning of a Java application. We also recommend to use <a href="./apidocs-2.2.0/com/jcabi/manifests/Manifests.html"><code>Manifests</code></a> utility class for reading version data in runtime. For example, you're developing a web application and want to show its currently deployed version number somewhere in the HTML page. You can see how it works, for example, in <a class="externalLink" href="http://www.s3auth.com/">www.s3auth.com</a>. Pay attention to the small gray rectangle at the right bottom corner of the HTML page. It contains the version of the application and its Git revision hash. Every time a new version is deployed to the production server we see a new hash there. It is very convenient for developers and end-users.</p>
 <p>You can see how it is done in <a class="externalLink" href="http://www.s3auth.com/">www.s3auth.com</a> by reading their <a class="externalLink" href="https://github.com/yegor256/s3auth/blob/master/s3auth-rest/pom.xml"><code>pom.xml</code></a> at Github. Let's reproduce it here step by step.</p>
 <p>First, you should retrieve the revision number from your SCM (either it is Git, SVN, Mercurial, or something similar). We're using <a class="externalLink" href="http://mojo.codehaus.org/buildnumber-maven-plugin/">buildnumber-maven-plugin</a>:</p>
-<div class="source">
-<pre>&lt;build&gt;
+<pre><code>&lt;build&gt;
   &lt;plugins&gt;
     [...]
     &lt;plugin&gt;
@@ -140,11 +127,10 @@
       &lt;/executions&gt;
     &lt;/plugin&gt;
   &lt;/plugins&gt;
-&lt;/build&gt;</pre></div>
+&lt;/build&gt;</code></pre>
 <p>With a default configuration this plugin will retrieve revision number and save it into <code>buildNumber</code> Maven property.</p>
 <p>The next step is to set your custom <code>META-INF/MANIFEST.MF</code> attribute to this generated value. <a class="externalLink" href="http://maven.apache.org/plugins/maven-war-plugin/">maven-war-plugin</a> has a special configuration property exactly for this purpose:</p>
-<div class="source">
-<pre>&lt;plugin&gt;
+<pre><code>&lt;plugin&gt;
   &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
   &lt;configuration&gt;
     &lt;archive&gt;
@@ -154,14 +140,12 @@
       &lt;/manifestEntries&gt;
     &lt;/archive&gt;
   &lt;/configuration&gt;
-&lt;/plugin&gt;</pre></div>
+&lt;/plugin&gt;</code></pre>
 <p>After packaging of your WAR artifact take a look at <code>META-INF/MANIFEST.MF</code> file. You will see something like this (if you're using Git):</p>
-<div class="source">
-<pre>My-Version: 1.0-SNAPSHOT
-My-Hash: d1cd2d628c3b56ab2766a0a658c040724e13d3ba</pre></div>
+<pre><code>My-Version: 1.0-SNAPSHOT
+My-Hash: d1cd2d628c3b56ab2766a0a658c040724e13d3ba</code></pre>
 <p>The last and final step is to read these values in the application and show them to the end-user inside HTML. If you're using JSP:</p>
-<div class="source">
-<pre>&lt;html&gt;
+<pre><code>&lt;html&gt;
   &lt;body&gt;
     [...]
     &lt;div id=&quot;version&quot;&gt;
@@ -169,7 +153,7 @@ My-Hash: d1cd2d628c3b56ab2766a0a658c040724e13d3ba</pre></div>
       &lt;%= com.jcabi.manifests.Manifests.read(&quot;My-Hash&quot;) %&gt;
     &lt;/div&gt;
   &lt;/body&gt;
-&lt;/html&gt;</pre></div>
+&lt;/html&gt;</code></pre>
 <p>That's it.</p></section>
                         </article>
                     </div>
@@ -177,10 +161,10 @@ My-Hash: d1cd2d628c3b56ab2766a0a658c040724e13d3ba</pre></div>
                 <footer class="legal-notes">
                     <div>
                         Copyright &#169;
-                                                                            2012-2023
+                                                                            2012-${currentYear}
                                             </div>
                     <div>jcabi.com, All Rights Reserved.</div>
-                    <div><a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
+                    <div><a href="https://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
                 </footer>
             </div>
         </div>

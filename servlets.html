@@ -2,21 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
     <head>
         <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>jcabi-manifests &#x2013; Appending ServletContext Manifests to the Registry</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Appending ServletContext Manifests to the Registry – jcabi-manifests</title>
         <link media="all" rel="stylesheet" type="text/css" href="./css/jcabi.css"/>
-                    <meta name="author" content="Yegor Bugayenko" />
-                            <script>
-                var _gaq = _gaq || [];
-                _gaq.push(['_setAccount', 'UA-1963507-23']);
-                _gaq.push(['_trackPageview']);
-                (function() {
-                    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-                })();
-            </script>
-                                            <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+                    <meta name="author" content="Yegor Bugayenko"/>
+                                                    <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
         <script src="./js/jcabi.js"></script>
     </head>
     <body>
@@ -33,7 +23,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-2.1.0/index.html" title="JavaDoc 2.1.0">JavaDoc 2.1.0</a>
+                            <span>                        <a href="apidocs-2.2.0/index.html" title="JavaDoc 2.2.0">JavaDoc 2.2.0</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -91,23 +81,21 @@
                             <div class="logo">
                                 <a href="../"
                                     title=" logo ">
-                                    <img src="https://img.jcabi.com/logo-square.svg"
+                                    <img src="${decoration.bannerLeft.src}"
                                         alt="jcabi"
-                                                                                    width="64"
-                                                                                                                            height="64"
-                                                                                itemprop="image"
+                                                                                                                        itemprop="image"
                                     />
                                 </a>
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">2.1.0</strong>
+                                    <strong itemprop="version">2.2.0</strong>
                                 </li>
                                 <li>
-                                    
-                                    <time itemprop="datePublished" datetime="2023-07-03T02:35:26Z">
-                                        
-                                        03-Jul-2023
+                                    $dateFormat.applyPattern("yyyy-MM-dd'T'hh:mm:ss'Z'")
+                                    <time itemprop="datePublished" datetime="${dateFormat.format($currentDate)}">
+                                        $dateFormat.applyPattern('dd-MMM-yyyy')
+                                        ${dateFormat.format($currentDate)}
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -118,37 +106,35 @@
                                 <img src="https://www.jcabi.com/fork-me.svg" class="fork-me"/>
                             </a>
                                                 <article itemprop="articleBody">
-                            <section>
-<h2><a name="Appending_ServletContext_Manifests_to_the_Registry"></a>Appending <code>ServletContext</code> Manifests to the Registry</h2>
-<p>This is how <a href="./apidocs-2.1.0/com/jcabi/manifests/Manifests.html"><code>Manifests</code></a> utility class finds all <code>MANIFEST.MF</code> files available in the classpath:</p>
-<div class="source">
-<pre>public class Manifests {
+                            <section><a id="Appending_ServletContext_Manifests_to_the_Registry"></a>
+<h1>Appending <code>ServletContext</code> Manifests to the Registry</h1>
+<p>This is how <a href="./apidocs-2.2.0/com/jcabi/manifests/Manifests.html"><code>Manifests</code></a> utility class finds all <code>MANIFEST.MF</code> files available in the classpath:</p>
+<pre><code>public class Manifests {
   public static void load() {
     // ...
     ClassLoader loader = Thread.currentThread().getContextClassLoader();
     Enumeration&lt;URL&gt; resources = loader.getResources(&quot;META-INF/MANIFEST.MF&quot;);
   }
-}</pre></div>
-<p>Context <a class="externalLink" href="http://docs.oracle.com/javase/7/docs/api/java/lang/ClassLoader.html"><code>ClassLoader</code></a> of a current <a class="externalLink" href="http://docs.oracle.com/javase/7/docs/api/java/lang/Thread.html"><code>Thread</code></a> is being used to find all available <code>META-INF/MANIFEST.MF</code> files. This mechanism works just fine in web applications (<code>WAR</code> packages) as long as the current thread contains the same class loader as is being used in <a class="externalLink" href="http://docs.oracle.com/javaee/6/api/javax/servlet/ServletContext.html"><code>ServletContext</code></a>. In some web containers it is not true, and <a href="./apidocs-2.1.0/com/jcabi/manifests/Manifests.html"><code>Manifests</code></a> simply won't see your <code>MANIFEST.MF</code> files.</p>
-<p>To solve the problem there is a method <a href="./apidocs-2.1.0/com/jcabi/manifests/Manifests.html"><code>append(ServletContext)</code></a>, which allows you to inform <a href="./apidocs-2.1.0/com/jcabi/manifests/Manifests.html"><code>Manifests</code></a> about an additional classloader available. You should call this method in one of your <a class="externalLink" href="http://docs.oracle.com/javaee/6/api/javax/servlet/ServletContextListener.html"><code>ServletContextListener</code></a>-s:</p>
-<div class="source">
-<pre>public class MyListener implements ServletContextListener {
+}</code></pre>
+<p>Context <a class="externalLink" href="http://docs.oracle.com/javase/7/docs/api/java/lang/ClassLoader.html"><code>ClassLoader</code></a> of a current <a class="externalLink" href="http://docs.oracle.com/javase/7/docs/api/java/lang/Thread.html"><code>Thread</code></a> is being used to find all available <code>META-INF/MANIFEST.MF</code> files. This mechanism works just fine in web applications (<code>WAR</code> packages) as long as the current thread contains the same class loader as is being used in <a class="externalLink" href="http://docs.oracle.com/javaee/6/api/javax/servlet/ServletContext.html"><code>ServletContext</code></a>. In some web containers it is not true, and <a href="./apidocs-2.2.0/com/jcabi/manifests/Manifests.html"><code>Manifests</code></a> simply won't see your <code>MANIFEST.MF</code> files.</p>
+<p>To solve the problem there is a method <a href="./apidocs-2.2.0/com/jcabi/manifests/Manifests.html"><code>append(ServletContext)</code></a>, which allows you to inform <a href="./apidocs-2.2.0/com/jcabi/manifests/Manifests.html"><code>Manifests</code></a> about an additional classloader available. You should call this method in one of your <a class="externalLink" href="http://docs.oracle.com/javaee/6/api/javax/servlet/ServletContextListener.html"><code>ServletContextListener</code></a>-s:</p>
+<pre><code>public class MyListener implements ServletContextListener {
   @Override
   public void contextInitialized(ServletContextEvent event) {
     Manifests.append(event.getServletContext());
   }
-}</pre></div>
-<p>You can call <a href="./apidocs-2.1.0/com/jcabi/manifests/Manifests.html"><code>append(ServletContext)</code></a> many times, it's harmless for the registry.</p></section>
+}</code></pre>
+<p>You can call <a href="./apidocs-2.2.0/com/jcabi/manifests/Manifests.html"><code>append(ServletContext)</code></a> many times, it's harmless for the registry.</p></section>
                         </article>
                     </div>
                 </main>
                 <footer class="legal-notes">
                     <div>
                         Copyright &#169;
-                                                                            2012-2023
+                                                                            2012-${currentYear}
                                             </div>
                     <div>jcabi.com, All Rights Reserved.</div>
-                    <div><a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
+                    <div><a href="https://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
                 </footer>
             </div>
         </div>
