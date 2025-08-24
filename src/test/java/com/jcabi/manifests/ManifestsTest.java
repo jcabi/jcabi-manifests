@@ -89,7 +89,7 @@ final class ManifestsTest {
             new StreamsMfs(this.getClass().getResourceAsStream("test.mf"))
         );
         MatcherAssert.assertThat(
-            "failes to read from stream",
+            "fails to read from stream",
             manifests.get("From-File"),
             Matchers.equalTo("some test attribute")
         );

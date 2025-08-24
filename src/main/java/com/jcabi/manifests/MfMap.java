@@ -33,7 +33,7 @@ public interface MfMap {
     /**
      * Check if attributes map contains the given key.
      * @param key Attribute name
-     * @return True if attributes map contains the given key and false otherwise
+     * @return True if attributes map contains the given key, and false otherwise
      * @since 2.0
      */
     boolean containsKey(String key);
@@ -41,7 +41,7 @@ public interface MfMap {
     /**
      * Check if attributes map contains the given value.
      * @param value Attribute value
-     * @return True if attributes map contains the given value and false otherwise
+     * @return True if attributes map contains the given value, and false otherwise
      * @since 2.0
      */
     boolean containsValue(String value);
@@ -49,7 +49,7 @@ public interface MfMap {
     /**
      * Get attribute value by its key.
      * @param key Attribute name
-     * @return Value of the attribute and null if attribute not found
+     * @return Value of the attribute, and null if attribute not found
      */
     String get(String key);
 

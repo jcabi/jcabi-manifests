@@ -26,7 +26,7 @@ public class Main {
 ## How to contribute?
 
 Fork the repository, make changes, submit a pull request.
-We promise to review your changes same day and apply to
+We promise to review your changes the same day and apply to
 the `master` branch, if they look correct.
 
 Please run Maven build before submitting a pull request:

@@ -213,7 +213,7 @@ public final class Manifests implements MfMap {
     /**
      * Read one attribute available in one of {@code MANIFEST.MF} files.
      *
-     * <p>If such a attribute doesn't exist {@link IllegalArgumentException}
+     * <p>If such an attribute doesn't exist {@link IllegalArgumentException}
      * will be thrown. If you're not sure whether the attribute is present or
      * not use {@link #exists(String)} beforehand.
      *
