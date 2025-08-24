@@ -1,4 +1,4 @@
-<img alt="logo" src="https://www.jcabi.com/logo-square.svg" width="64px" height="64px" />
+# A One-Liner to Read `MANIFEST.MF` Files
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
 [![DevOps By Rultor.com](https://www.rultor.com/b/jcabi/jcabi-manifests)](https://www.rultor.com/p/jcabi/jcabi-manifests)
@@ -8,8 +8,9 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-manifests/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-manifests)
 [![Javadoc](https://javadoc.io/badge/com.jcabi/jcabi-manifests.svg)](https://www.javadoc.io/doc/com.jcabi/jcabi-manifests)
 
-More details are here: [manifests.jcabi.com](http://manifests.jcabi.com/index.html).
-Also, read this blog post: [How to Read MANIFEST.MF Files](http://www.yegor256.com/2014/07/03/how-to-read-manifest-mf.html).
+More details are here:
+[manifests.jcabi.com](http://manifests.jcabi.com/index.html).
+Also, read this blog post: [How to Read MANIFEST.MF Files][blog].
 
 Manipulations with `MANIFEST.MF` files in Java made easy:
 
@@ -31,6 +32,8 @@ the `master` branch, if they look correct.
 
 Please run Maven build before submitting a pull request:
 
+```bash
+mvn clean install -Pqulice
 ```
-$ mvn clean install -Pqulice
-```
+
+[blog]: http://www.yegor256.com/2014/07/03/how-to-read-manifest-mf.html
