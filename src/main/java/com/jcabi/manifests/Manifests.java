@@ -16,7 +16,6 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
 /**
@@ -93,7 +92,7 @@ import java.util.jar.Manifest;
  * @link <a href="http://manifests.jcabi.com/index.html">manifests.jcabi.com</a>
  * @link <a href="http://www.yegor256.com/2014/07/03/how-to-read-manifest-mf.html">How to Read MANIFEST.MF Files</a>
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.ProhibitPublicStaticMethods"})
+@SuppressWarnings("PMD.ProhibitPublicStaticMethods")
 public final class Manifests implements MfMap {
 
     /**
@@ -179,7 +178,7 @@ public final class Manifests implements MfMap {
     }
 
     @Override
-    @SuppressWarnings({ "PMD.GuardLogStatement", "PMD.CloseResource" })
+    @SuppressWarnings({"PMD.CloseResource", "PMD.UnnecessaryLocalRule"})
     public void append(final Mfs mfs) throws IOException {
         final long start = System.currentTimeMillis();
         final Collection<InputStream> list = mfs.fetch();
@@ -285,13 +284,12 @@ public final class Manifests implements MfMap {
         final ConcurrentMap<String, String> props =
             new ConcurrentHashMap<>(0);
         try {
-            final Manifest manifest = new Manifest(stream);
-            final Attributes attrs = manifest.getMainAttributes();
-            for (final Object key : attrs.keySet()) {
-                final String value = attrs.getValue(
-                    Attributes.Name.class.cast(key)
+            for (final Map.Entry<Object, Object> entry
+                : new Manifest(stream).getMainAttributes().entrySet()) {
+                props.put(
+                    entry.getKey().toString(),
+                    entry.getValue().toString()
                 );
-                props.put(key.toString(), value);
             }
             Logger.debug(
                 Manifests.class,

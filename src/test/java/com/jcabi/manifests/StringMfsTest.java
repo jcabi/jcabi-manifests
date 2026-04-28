@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 final class StringMfsTest {
 
     @Test
+    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     void turnsStringIntoMfs() throws IOException {
         try (InputStream input = new StringMfs("Foo: bar").fetch().iterator().next()) {
             MatcherAssert.assertThat(
