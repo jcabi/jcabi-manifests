@@ -52,14 +52,14 @@ final class ManifestsTest {
     void throwsExceptionWhenNoAttributes() {
         Assertions.assertThrows(
             IOException.class,
-            () -> {
-                final File file = new File(
-                    Thread.currentThread().getContextClassLoader()
-                        .getResource("META-INF/MANIFEST_INVALID.MF").getFile()
-                );
-                final Manifests mfs = new Manifests();
-                mfs.append(new FilesMfs(file));
-            },
+            () -> new Manifests().append(
+                new FilesMfs(
+                    new File(
+                        Thread.currentThread().getContextClassLoader()
+                            .getResource("META-INF/MANIFEST_INVALID.MF").getFile()
+                    )
+                )
+            ),
             "doesn't throw"
         );
     }

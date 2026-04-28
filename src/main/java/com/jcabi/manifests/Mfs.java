@@ -13,6 +13,7 @@ import java.util.Collection;
  *
  * @since 1.0
  */
+@FunctionalInterface
 public interface Mfs {
 
     /**
