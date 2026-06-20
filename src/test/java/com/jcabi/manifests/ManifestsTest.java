@@ -105,4 +105,26 @@ final class ManifestsTest {
         );
     }
 
+    @Test
+    void asMapMirrorsGetAsMap() throws Exception {
+        final MfMap manifests = new Manifests();
+        manifests.append(new StringMfs("Alias-Key: alias-value\n"));
+        MatcherAssert.assertThat(
+            "asMap() must expose the same snapshot as getAsMap()",
+            manifests.asMap(),
+            Matchers.equalTo(manifests.getAsMap())
+        );
+    }
+
+    @Test
+    void asMapExposesAppendedAttribute() throws Exception {
+        final MfMap manifests = new Manifests();
+        manifests.append(new StringMfs("Alias-Key: alias-value\n"));
+        MatcherAssert.assertThat(
+            "asMap() must contain the appended attribute",
+            manifests.asMap().get("Alias-Key"),
+            Matchers.equalTo("alias-value")
+        );
+    }
+
 }
