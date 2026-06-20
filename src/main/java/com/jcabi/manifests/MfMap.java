@@ -61,6 +61,22 @@ public interface MfMap {
     Map<String, String> getAsMap();
 
     /**
+     * Get a copy of attributes map, named per the original specification
+     * of issue #38.
+     *
+     * <p>This is an alias for {@link #getAsMap()} that exposes the same
+     * snapshot under the shorter, idiomatic name from the acceptance
+     * criteria. Implementations may override it, but the default delegates
+     * to {@link #getAsMap()} so existing implementations need no change.
+     *
+     * @return Copy of attributes map
+     * @since 2.1
+     */
+    default Map<String, String> asMap() {
+        return this.getAsMap();
+    }
+
+    /**
      * Get a copy of a set of attributes keys.
      * @return Copy of a set of attributes keys
      * @since 2.0
