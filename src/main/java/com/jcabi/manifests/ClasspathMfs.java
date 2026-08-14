@@ -13,7 +13,6 @@ import java.util.Enumeration;
 
 /**
  * Manifests in classpath.
- *
  * @since 1.0
  */
 public final class ClasspathMfs implements Mfs {
@@ -29,5 +28,4 @@ public final class ClasspathMfs implements Mfs {
         }
         return streams;
     }
-
 }

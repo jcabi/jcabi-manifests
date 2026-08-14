@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link Manifests}.
- *
  * @since 0.7
  */
 final class ManifestsTest {
@@ -71,7 +70,7 @@ final class ManifestsTest {
         final File file = File.createTempFile("test-", ".MF");
         Files.write(
             file.toPath(),
-            Logger.format("%s: %s\n", name, value).getBytes(StandardCharsets.UTF_8)
+            Logger.format("%s: %s%n", name, value).getBytes(StandardCharsets.UTF_8)
         );
         final MfMap manifests = new Manifests();
         manifests.append(new FilesMfs(file));
@@ -97,12 +96,11 @@ final class ManifestsTest {
 
     @Test
     void appendToSingleton() throws Exception {
-        Manifests.singleton().append(new StringMfs("foo: bar\n"));
+        Manifests.singleton().append(new StringMfs(String.format("foo: bar%n")));
         MatcherAssert.assertThat(
             "fails to work as expected",
             Manifests.read("foo"),
             Matchers.equalTo("bar")
         );
     }
-
 }

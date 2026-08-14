@@ -38,5 +38,4 @@ public final class StringMfs implements Mfs {
             new ByteArrayInputStream(this.source.getBytes(StandardCharsets.UTF_8))
         );
     }
-
 }

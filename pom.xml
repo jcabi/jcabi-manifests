@@ -120,4 +120,18 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>qulice</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.qulice</groupId>
+            <artifactId>qulice-maven-plugin</artifactId>
+            <version>0.30.11</version>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

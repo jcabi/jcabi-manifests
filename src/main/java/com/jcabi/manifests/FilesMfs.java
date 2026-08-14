@@ -14,7 +14,7 @@ import java.util.Collections;
 /**
  * Manifests in files.
  *
- * Append attributes from {@code MANIFEST.MF} file:
+ * <p>Append attributes from {@code MANIFEST.MF} file:
  *
  * <pre> Manifests.append(new FilesMfs(new File("MANIFEST.MF")));</pre>
  *
@@ -42,7 +42,7 @@ public final class FilesMfs implements Mfs {
      * @param list Files
      */
     public FilesMfs(final Collection<File> list) {
-        this.files = Collections.unmodifiableCollection(list);
+        this.files = new ArrayList<>(list);
     }
 
     @Override
@@ -53,5 +53,4 @@ public final class FilesMfs implements Mfs {
         }
         return streams;
     }
-
 }

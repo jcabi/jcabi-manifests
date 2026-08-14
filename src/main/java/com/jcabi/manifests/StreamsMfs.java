@@ -5,13 +5,14 @@
 package com.jcabi.manifests;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
 /**
  * Manifests in streams.
  *
- * Append attributes from {@code MANIFEST.MF} file:
+ * <p>Append attributes from {@code MANIFEST.MF} file:
  *
  * <pre> Manifests.append(
  *   new StreamsMfs(this.getClass().getResourceAsStream("MANIFEST.MF"))
@@ -41,12 +42,11 @@ public final class StreamsMfs implements Mfs {
      * @param list Files
      */
     public StreamsMfs(final Collection<InputStream> list) {
-        this.streams = Collections.unmodifiableCollection(list);
+        this.streams = new ArrayList<>(list);
     }
 
     @Override
     public Collection<InputStream> fetch() {
         return Collections.unmodifiableCollection(this.streams);
     }
-
 }

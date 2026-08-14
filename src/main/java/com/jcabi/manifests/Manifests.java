@@ -21,7 +21,7 @@ import java.util.jar.Manifest;
 /**
  * Static reader of {@code META-INF/MANIFEST.MF} files.
  *
- * The class provides convenient methods to read
+ * <p>The class provides convenient methods to read
  * all {@code MANIFEST.MF} files available in classpath
  * and all attributes from them.
  *
@@ -128,13 +128,11 @@ public final class Manifests implements MfMap {
      * @since 1.0
      */
     public Manifests(final Map<String, String> attrs) {
-        super();
         this.attributes = new ConcurrentHashMap<>(attrs);
     }
 
     /**
      * Get the singleton.
-     *
      * @return The singleton
      * @since 2.0.0
      */
@@ -178,7 +176,7 @@ public final class Manifests implements MfMap {
     }
 
     @Override
-    @SuppressWarnings({"PMD.CloseResource", "PMD.UnnecessaryLocalRule"})
+    @SuppressWarnings("PMD.CloseResource")
     public void append(final Mfs mfs) throws IOException {
         final long start = System.currentTimeMillis();
         final Collection<InputStream> list = mfs.fetch();
@@ -199,7 +197,6 @@ public final class Manifests implements MfMap {
         if (Logger.isDebugEnabled(this)) {
             Logger.debug(
                 this,
-                // @checkstyle LineLength (1 line)
                 "%d attributes loaded from %d stream(s) in %[ms]s, %d saved, %d ignored: %[list]s",
                 this.attributes.size(), list.size(),
                 System.currentTimeMillis() - start,
@@ -231,7 +228,6 @@ public final class Manifests implements MfMap {
         if (!Manifests.exists(name)) {
             throw new IllegalArgumentException(
                 Logger.format(
-                    // @checkstyle LineLength (1 line)
                     "Attribute '%s' not found in MANIFEST.MF file(s) among %d other attribute(s): %[list]s",
                     name,
                     Manifests.singleton().size(),
@@ -307,7 +303,6 @@ public final class Manifests implements MfMap {
 
     /**
      * Report the exception that was just thrown.
-     *
      * @param exn The exception to report
      */
     private static void logLoadFailedError(final Exception exn) {

@@ -15,7 +15,7 @@ import java.util.Collection;
 /**
  * Manifests in servlet context.
  *
- * Append attributes from the web application {@code MANIFEST.MF}.
+ * <p>Append attributes from the web application {@code MANIFEST.MF}.
  *
  * <p>You can use this class in your own
  * {@link jakarta.servlet.Filter} or
@@ -54,5 +54,4 @@ public final class JakartaServletMfs implements Mfs {
         }
         return streams;
     }
-
 }

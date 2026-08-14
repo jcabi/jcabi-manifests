@@ -10,7 +10,6 @@ import java.util.Set;
 
 /**
  * Map of manifest attributes.
- *
  * @see Manifests
  * @since 1.1
  */
@@ -70,7 +69,7 @@ public interface MfMap {
     /**
      * Append this collection of MANIFEST.MF files.
      *
-     * This method changes the original instance.
+     * <p>This method changes the original instance.
      *
      * @param mfs Content to append
      * @throws IOException If fails on I/O problem

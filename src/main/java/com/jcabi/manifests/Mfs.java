@@ -10,7 +10,6 @@ import java.util.Collection;
 
 /**
  * Manifests.
- *
  * @since 1.0
  */
 @FunctionalInterface
@@ -22,5 +21,4 @@ public interface Mfs {
      * @throws IOException If fails
      */
     Collection<InputStream> fetch() throws IOException;
-
 }

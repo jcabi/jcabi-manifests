@@ -14,13 +14,11 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link StringMfs}.
- *
  * @since 2.0.0
  */
 final class StringMfsTest {
 
     @Test
-    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     void turnsStringIntoMfs() throws IOException {
         try (InputStream input = new StringMfs("Foo: bar").fetch().iterator().next()) {
             MatcherAssert.assertThat(
@@ -30,5 +28,4 @@ final class StringMfsTest {
             );
         }
     }
-
 }
