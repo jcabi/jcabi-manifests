@@ -259,21 +259,6 @@ public final class Manifests implements MfMap {
         return Manifests.singleton().containsKey(name);
     }
 
-    /**
-     * Load attributes from input stream.
-     *
-     * <p>Inside the method we catch {@code RuntimeException} (which may look
-     * suspicious) in order to protect our execution flow from expected (!)
-     * exceptions from {@link Manifest#getMainAttributes()}. For some reason,
-     * this JDK method doesn't throw checked exceptions if {@code MANIFEST.MF}
-     * file format is broken. Instead, it throws a runtime exception (an
-     * unchecked one), which we should catch in such an inconvenient way.
-     *
-     * @param stream Stream to load from
-     * @return The attributes loaded
-     * @throws IOException If some problem happens
-     * @since 0.8
-     */
     @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.UseTryWithResources"})
     private static Map<String, String> load(final InputStream stream)
         throws IOException {
@@ -301,10 +286,6 @@ public final class Manifests implements MfMap {
         return props;
     }
 
-    /**
-     * Report the exception that was just thrown.
-     * @param exn The exception to report
-     */
     private static void logLoadFailedError(final Exception exn) {
         Logger.error(Manifests.class, "#load(): failed %[exception]s", exn);
     }
