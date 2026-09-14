@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link StringMfs}.
+ *
  * @since 2.0.0
  */
 final class StringMfsTest {

@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link Manifests}.
+ *
  * @since 0.7
  */
 final class ManifestsTest {

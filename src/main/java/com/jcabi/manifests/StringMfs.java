@@ -13,7 +13,7 @@ import java.util.Collections;
 /**
  * Manifests in a UTF-8 string.
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @since 1.3
  */
@@ -26,6 +26,7 @@ public final class StringMfs implements Mfs {
 
     /**
      * Ctor.
+     *
      * @param src The source
      */
     public StringMfs(final String src) {

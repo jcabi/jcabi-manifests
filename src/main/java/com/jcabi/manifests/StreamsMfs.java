@@ -12,13 +12,13 @@ import java.util.Collections;
 /**
  * Manifests in streams.
  *
- * <p>Append attributes from {@code MANIFEST.MF} file:
+ * <p>Append attributes from {@code MANIFEST.MF} file:</p>
  *
  * <pre> Manifests.append(
  *   new StreamsMfs(this.getClass().getResourceAsStream("MANIFEST.MF"))
  * );</pre>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @since 1.1
  */
@@ -31,6 +31,7 @@ public final class StreamsMfs implements Mfs {
 
     /**
      * Ctor.
+     *
      * @param stream Stream
      */
     public StreamsMfs(final InputStream stream) {
@@ -39,6 +40,7 @@ public final class StreamsMfs implements Mfs {
 
     /**
      * Ctor.
+     *
      * @param list Files
      */
     public StreamsMfs(final Collection<InputStream> list) {

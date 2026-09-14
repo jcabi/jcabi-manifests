@@ -15,16 +15,16 @@ import javax.servlet.ServletContext;
 /**
  * Manifests in servlet context.
  *
- * <p>Append attributes from the web application {@code MANIFEST.MF}.
+ * <p>Append attributes from the web application {@code MANIFEST.MF}.</p>
  *
  * <p>You can use this class in your own
  * {@link javax.servlet.Filter} or
  * {@link javax.servlet.ServletContextListener},
- * in order to inject {@code MANIFEST.MF} attributes to the class:
+ * in order to inject {@code MANIFEST.MF} attributes to the class:</p>
  *
  * <pre> Manifests.append(new ServletMfs(context));</pre>
  *
- * <p>The class is thread-safe.
+ * <p>The class is thread-safe.</p>
  *
  * @since 1.0
  */
@@ -37,6 +37,7 @@ public final class ServletMfs implements Mfs {
 
     /**
      * Ctor.
+     *
      * @param context Context
      */
     public ServletMfs(final ServletContext context) {

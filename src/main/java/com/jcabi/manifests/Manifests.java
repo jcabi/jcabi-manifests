@@ -23,13 +23,13 @@ import java.util.jar.Manifest;
  *
  * <p>The class provides convenient methods to read
  * all {@code MANIFEST.MF} files available in classpath
- * and all attributes from them.
+ * and all attributes from them.</p>
  *
  * <p>This mechanism may be very useful for transferring
  * information from continuous integration environment to the production
  * environment. For example, you want your site to show project version and
  * the date of {@code WAR} file packaging. First, you configure
- * {@code maven-war-plugin} to add this information to {@code MANIFEST.MF}:
+ * {@code maven-war-plugin} to add this information to {@code MANIFEST.MF}:</p>
  *
  * <pre> &lt;plugin>
  *  &lt;artifactId>maven-war-plugin&lt;/artifactId>
@@ -47,7 +47,7 @@ import java.util.jar.Manifest;
  * {@code MANIFEST.MF} file and the
  * project will be deployed to the production environment. Then, you can read
  * these attributes where it's necessary (in one of your JAXB annotated objects,
- * for example) and show to users:
+ * for example) and show to users:</p>
  *
  * <pre>  import com.jcabi.manifests.Manifest;
  * import java.text.SimpleDateFormat;
@@ -70,16 +70,16 @@ import java.util.jar.Manifest;
  * }</pre>
  *
  * <p>If you want to add more manifests to the collection, use
- * its static instance:
+ * its static instance:</p>
  *
  * <pre>Manifests.singleton().append(new FilesMfs(new File("MANIFEST.MF")));</pre>
  *
- * <p>You can also modify the map directly:
+ * <p>You can also modify the map directly:</p>
  *
  * <pre>Manifests.singleton().put("Hello", "world");</pre>
  *
  * <p>The only dependency you need (check the latest version at
- * <a href="http://manifests.jcabi.com/">jcabi-manifests</a>):
+ * <a href="http://manifests.jcabi.com/">jcabi-manifests</a>):</p>
  *
  * <pre> &lt;dependency>
  *  &lt;groupId>com.jcabi&lt;/groupId>
@@ -116,6 +116,7 @@ public final class Manifests implements MfMap {
 
     /**
      * Public ctor.
+     *
      * @since 1.0
      */
     public Manifests() {
@@ -124,6 +125,7 @@ public final class Manifests implements MfMap {
 
     /**
      * Public ctor.
+     *
      * @param attrs Attributes to encapsulate
      * @since 1.0
      */
@@ -133,6 +135,7 @@ public final class Manifests implements MfMap {
 
     /**
      * Get the singleton.
+     *
      * @return The singleton
      * @since 2.0.0
      */
@@ -211,9 +214,9 @@ public final class Manifests implements MfMap {
      *
      * <p>If such an attribute doesn't exist {@link IllegalArgumentException}
      * will be thrown. If you're not sure whether the attribute is present or
-     * not use {@link #exists(String)} beforehand.
+     * not use {@link #exists(String)} beforehand.</p>
      *
-     * <p>The method is thread-safe.
+     * <p>The method is thread-safe.</p>
      *
      * @param name Name of the attribute
      * @return The value of the attribute retrieved
@@ -242,9 +245,9 @@ public final class Manifests implements MfMap {
      * Check whether attribute exists in any of {@code MANIFEST.MF} files.
      *
      * <p>Use this method before {@link #read(String)} to check whether an
-     * attribute exists, in order to avoid a runtime exception.
+     * attribute exists, in order to avoid a runtime exception.</p>
      *
-     * <p>The method is thread-safe.
+     * <p>The method is thread-safe.</p>
      *
      * @param name Name of the attribute to check
      * @return Returns {@code TRUE} if it exists, {@code FALSE} otherwise

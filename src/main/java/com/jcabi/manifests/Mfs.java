@@ -10,6 +10,7 @@ import java.util.Collection;
 
 /**
  * Manifests.
+ *
  * @since 1.0
  */
 @FunctionalInterface
@@ -17,6 +18,7 @@ public interface Mfs {
 
     /**
      * Find and fetch them all.
+     *
      * @return Iterator of found resources
      * @throws IOException If fails
      */

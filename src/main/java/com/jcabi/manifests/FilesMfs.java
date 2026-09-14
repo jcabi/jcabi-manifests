@@ -14,11 +14,11 @@ import java.util.Collections;
 /**
  * Manifests in files.
  *
- * <p>Append attributes from {@code MANIFEST.MF} file:
+ * <p>Append attributes from {@code MANIFEST.MF} file:</p>
  *
  * <pre> Manifests.append(new FilesMfs(new File("MANIFEST.MF")));</pre>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @since 1.1
  */
@@ -31,6 +31,7 @@ public final class FilesMfs implements Mfs {
 
     /**
      * Ctor.
+     *
      * @param file File
      */
     public FilesMfs(final File file) {
@@ -39,6 +40,7 @@ public final class FilesMfs implements Mfs {
 
     /**
      * Ctor.
+     *
      * @param list Files
      */
     public FilesMfs(final Collection<File> list) {
