@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.jar.Manifest;
 
@@ -130,7 +131,10 @@ public final class Manifests implements MfMap {
      * @since 1.0
      */
     public Manifests(final Map<String, String> attrs) {
-        this.attributes = new ConcurrentHashMap<>(attrs);
+        this.attributes = new ConcurrentSkipListMap<>(
+            String.CASE_INSENSITIVE_ORDER
+        );
+        this.attributes.putAll(attrs);
     }
 
     /**
