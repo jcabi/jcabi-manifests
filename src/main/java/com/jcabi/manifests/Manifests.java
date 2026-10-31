@@ -15,6 +15,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ConcurrentNavigableMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.jar.Manifest;
 
@@ -131,7 +133,16 @@ public final class Manifests implements MfMap {
      * @since 1.0
      */
     public Manifests(final Map<String, String> attrs) {
-        this.attributes = new ConcurrentHashMap<>(attrs);
+        this(Manifests.insensitive(attrs));
+    }
+
+    /**
+     * Private ctor.
+     *
+     * @param attrs Attributes with case-insensitive keys
+     */
+    private Manifests(final ConcurrentNavigableMap<String, String> attrs) {
+        this.attributes = attrs;
     }
 
     /**
@@ -292,5 +303,14 @@ public final class Manifests implements MfMap {
 
     private static void logLoadFailedError(final Exception exn) {
         Logger.error(Manifests.class, "#load(): failed %[exception]s", exn);
+    }
+
+    private static ConcurrentNavigableMap<String, String> insensitive(
+        final Map<String, String> attrs
+    ) {
+        final ConcurrentNavigableMap<String, String> map =
+            new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
+        map.putAll(attrs);
+        return map;
     }
 }

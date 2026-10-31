@@ -104,4 +104,15 @@ final class ManifestsTest {
             Matchers.equalTo("bar")
         );
     }
+
+    @Test
+    void readsAttributeIgnoringCaseOfItsName() throws Exception {
+        final Manifests manifests = new Manifests();
+        manifests.append(new StringMfs(String.format("Scm-Revision: abc%n")));
+        MatcherAssert.assertThat(
+            "fails to find attribute by name in different case",
+            manifests.get("SCM-Revision"),
+            Matchers.equalTo("abc")
+        );
+    }
 }
