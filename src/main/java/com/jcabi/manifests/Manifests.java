@@ -49,7 +49,8 @@ import java.util.jar.Manifest;
  * these attributes where it's necessary (in one of your JAXB annotated objects,
  * for example) and show to users:</p>
  *
- * <pre>  import com.jcabi.manifests.Manifest;
+ * <pre>  import com.jcabi.manifests.Manifests;
+ * import java.text.ParseException;
  * import java.text.SimpleDateFormat;
  * import java.util.Date;
  * import java.util.Locale;
@@ -62,9 +63,9 @@ import java.util.jar.Manifest;
  *     return Manifests.read("Foo-Version");
  *   }
  *   &#64;XmlElement
- *   public Date date() {
+ *   public Date date() throws ParseException {
  *     return new SimpleDateFormat("yyyy.MM.dd", Locale.ENGLISH).parse(
- *       Manifests.read("Foo-Date");
+ *       Manifests.read("Foo-Date")
  *     );
  *   }
  * }</pre>
