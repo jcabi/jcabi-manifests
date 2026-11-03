@@ -16,7 +16,7 @@ import java.util.Collections;
  *
  * <p>Append attributes from {@code MANIFEST.MF} file:</p>
  *
- * <pre> Manifests.append(new FilesMfs(new File("MANIFEST.MF")));</pre>
+ * <pre> Manifests.singleton().append(new FilesMfs(new File("MANIFEST.MF")));</pre>
  *
  * <p>The class is immutable and thread-safe.</p>
  *

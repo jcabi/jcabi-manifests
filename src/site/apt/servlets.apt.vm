@@ -40,52 +40,50 @@
 
 Appending <<<ServletContext>>> Manifests to the Registry
 
-  This is how
+  On first use,
   {{{./apidocs-${project.version}/com/jcabi/manifests/Manifests.html}<<<Manifests>>>}}
-  utility class finds all <<<MANIFEST.MF>>> files available in the
-  classpath:
-
-+--
-public class Manifests {
-  public static void load() {
-    // ...
-    ClassLoader loader = Thread.currentThread().getContextClassLoader();
-    Enumeration<URL> resources = loader.getResources("META-INF/MANIFEST.MF");
-  }
-}
-+--
-
-  Context
+  loads all <<<META-INF/MANIFEST.MF>>> files that
+  {{{./apidocs-${project.version}/com/jcabi/manifests/ClasspathMfs.html}<<<ClasspathMfs>>>}}
+  finds through the context
   {{{http://docs.oracle.com/javase/7/docs/api/java/lang/ClassLoader.html}<<<ClassLoader>>>}}
-  of a current
-  {{{http://docs.oracle.com/javase/7/docs/api/java/lang/Thread.html}<<<Thread>>>}}
-  is being used to find all available
-  <<<META-INF/MANIFEST.MF>>> files.
+  of the current
+  {{{http://docs.oracle.com/javase/7/docs/api/java/lang/Thread.html}<<<Thread>>>}}.
   This mechanism works just fine in web
   applications (<<<WAR>>> packages) as long as
   the current thread contains the same class loader as is being used in
   {{{http://docs.oracle.com/javaee/6/api/javax/servlet/ServletContext.html}<<<ServletContext>>>}}.
   In some web containers it is not true, and
   {{{./apidocs-${project.version}/com/jcabi/manifests/Manifests.html}<<<Manifests>>>}}
-  simply won't see your <<<MANIFEST.MF>>> files.
+  simply won't see the <<<MANIFEST.MF>>> file of your <<<WAR>>> package.
 
-  To solve the problem there is a method
-  {{{./apidocs-${project.version}/com/jcabi/manifests/Manifests.html}<<<append(ServletContext)>>>}},
-  which allows you to inform
-  {{{./apidocs-${project.version}/com/jcabi/manifests/Manifests.html}<<<Manifests>>>}}
-  about an additional classloader available. You should call this method
-  in one of your
+  To solve the problem, append a
+  {{{./apidocs-${project.version}/com/jcabi/manifests/ServletMfs.html}<<<ServletMfs>>>}}
+  to the singleton registry, which reads <<</META-INF/MANIFEST.MF>>>
+  straight from the <<<ServletContext>>>.
+  Do it in one of your
   {{{http://docs.oracle.com/javaee/6/api/javax/servlet/ServletContextListener.html}<<<ServletContextListener>>>}}-s:
 
 +--
 public class MyListener implements ServletContextListener {
   @Override
   public void contextInitialized(ServletContextEvent event) {
-    Manifests.append(event.getServletContext());
+    try {
+      Manifests.singleton().append(
+        new ServletMfs(event.getServletContext())
+      );
+    } catch (IOException ex) {
+      throw new IllegalStateException(ex);
+    }
   }
 }
 +--
 
+  If your application uses <<<jakarta.servlet>>> instead of
+  <<<javax.servlet>>>, use
+  {{{./apidocs-${project.version}/com/jcabi/manifests/JakartaServletMfs.html}<<<JakartaServletMfs>>>}}
+  instead of <<<ServletMfs>>>; it takes a
+  <<<jakarta.servlet.ServletContext>>>.
+
   You can call
-  {{{./apidocs-${project.version}/com/jcabi/manifests/Manifests.html}<<<append(ServletContext)>>>}}
+  {{{./apidocs-${project.version}/com/jcabi/manifests/Manifests.html}<<<append(Mfs)>>>}}
   many times, it's harmless for the registry.

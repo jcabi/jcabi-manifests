@@ -22,7 +22,7 @@ import java.util.Collection;
  * {@link jakarta.servlet.ServletContextListener},
  * in order to inject {@code MANIFEST.MF} attributes to the class:</p>
  *
- * <pre> Manifests.append(new JakartaServletMfs(context));</pre>
+ * <pre> Manifests.singleton().append(new JakartaServletMfs(context));</pre>
  *
  * <p>The class is thread-safe.</p>
  *
