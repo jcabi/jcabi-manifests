@@ -14,7 +14,7 @@ import java.util.Collections;
  *
  * <p>Append attributes from {@code MANIFEST.MF} file:</p>
  *
- * <pre> Manifests.append(
+ * <pre> Manifests.singleton().append(
  *   new StreamsMfs(this.getClass().getResourceAsStream("MANIFEST.MF"))
  * );</pre>
  *

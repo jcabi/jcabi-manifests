@@ -22,7 +22,7 @@ import javax.servlet.ServletContext;
  * {@link javax.servlet.ServletContextListener},
  * in order to inject {@code MANIFEST.MF} attributes to the class:</p>
  *
- * <pre> Manifests.append(new ServletMfs(context));</pre>
+ * <pre> Manifests.singleton().append(new ServletMfs(context));</pre>
  *
  * <p>The class is thread-safe.</p>
  *
