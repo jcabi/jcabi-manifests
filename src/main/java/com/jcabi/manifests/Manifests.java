@@ -137,11 +137,11 @@ public final class Manifests implements MfMap {
     }
 
     /**
-     * Private ctor.
+     * Ctor with a concurrent attribute store.
      *
      * @param attrs Attributes with case-insensitive keys
      */
-    private Manifests(final ConcurrentNavigableMap<String, String> attrs) {
+    Manifests(final ConcurrentNavigableMap<String, String> attrs) {
         this.attributes = attrs;
     }
 
@@ -201,11 +201,10 @@ public final class Manifests implements MfMap {
             for (final InputStream stream : cleanup.all()) {
                 for (final Map.Entry<String, String> attr
                     : Manifests.load(stream).entrySet()) {
-                    if (this.attributes.containsKey(attr.getKey())) {
-                        ++ignored;
-                    } else {
-                        this.attributes.put(attr.getKey(), attr.getValue());
+                    if (this.attributes.putIfAbsent(attr.getKey(), attr.getValue()) == null) {
                         ++saved;
+                    } else {
+                        ++ignored;
                     }
                 }
             }

@@ -12,10 +12,16 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.concurrent.ConcurrentNavigableMap;
+import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 /**
@@ -176,6 +182,49 @@ final class ManifestsTest {
             Mockito.verify(first).close();
             Mockito.verify(second).close();
         }
+    }
+
+    @Test
+    void preservesFirstValueDuringConcurrentAppends() throws Exception {
+        final ConcurrentNavigableMap<String, String> attributes = Mockito.spy(
+            new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER)
+        );
+        final CyclicBarrier checked = new CyclicBarrier(2);
+        Mockito.doAnswer(
+            call -> {
+                final Object present = call.callRealMethod();
+                checked.await(10L, TimeUnit.SECONDS);
+                return present;
+            }
+        ).when(attributes).containsKey(ArgumentMatchers.anyString());
+        Mockito.doAnswer(
+            call -> {
+                final Object previous = call.callRealMethod();
+                Assertions.assertNull(previous, "An appended value must never be replaced");
+                return previous;
+            }
+        ).when(attributes).put(ArgumentMatchers.anyString(), ArgumentMatchers.anyString());
+        final MfMap manifests = new Manifests(attributes);
+        final FutureTask<Void> first = new FutureTask<>(
+            () -> {
+                manifests.append(new StringMfs(String.format("Build-Name: first%n")));
+                return null;
+            }
+        );
+        final FutureTask<Void> second = new FutureTask<>(
+            () -> {
+                manifests.append(new StringMfs(String.format("build-name: second%n")));
+                return null;
+            }
+        );
+        new Thread(first).start();
+        new Thread(second).start();
+        first.get(10L, TimeUnit.SECONDS);
+        second.get(10L, TimeUnit.SECONDS);
+        MatcherAssert.assertThat(
+            "Concurrent appends must store one value for case-insensitive duplicate keys",
+            manifests.size(), Matchers.equalTo(1)
+        );
     }
 
     private static InputStream stream(final String text) {
