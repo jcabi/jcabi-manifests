@@ -184,12 +184,6 @@ final class ManifestsTest {
         }
     }
 
-    private static InputStream stream(final String text) {
-        return Mockito.spy(
-            new ByteArrayInputStream(String.format(text).getBytes(StandardCharsets.UTF_8))
-        );
-    }
-
     @Test
     void preservesFirstValueDuringConcurrentAppends() throws Exception {
         final ConcurrentNavigableMap<String, String> attributes = Mockito.spy(
@@ -230,6 +224,12 @@ final class ManifestsTest {
         MatcherAssert.assertThat(
             "Concurrent appends must store one value for case-insensitive duplicate keys",
             manifests.size(), Matchers.equalTo(1)
+        );
+    }
+
+    private static InputStream stream(final String text) {
+        return Mockito.spy(
+            new ByteArrayInputStream(String.format(text).getBytes(StandardCharsets.UTF_8))
         );
     }
 }
