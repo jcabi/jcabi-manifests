@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * Manifests in files.
@@ -50,8 +51,22 @@ public final class FilesMfs implements Mfs {
     @Override
     public Collection<InputStream> fetch() throws IOException {
         final Collection<InputStream> streams = new ArrayList<>(1);
-        for (final File file : this.files) {
-            streams.add(file.toURI().toURL().openStream());
+        try {
+            for (final File file : this.files) {
+                streams.add(file.toURI().toURL().openStream());
+            }
+        } catch (final IOException failure) {
+            final Iterator<InputStream> iterator = streams.iterator();
+            while (iterator.hasNext()) {
+                try {
+                    iterator.next().close();
+                } catch (final IOException closing) {
+                    if (!closing.equals(failure)) {
+                        failure.addSuppressed(closing);
+                    }
+                }
+            }
+            throw failure;
         }
         return streams;
     }
