@@ -197,16 +197,17 @@ public final class Manifests implements MfMap {
         final Collection<InputStream> list = mfs.fetch();
         int saved = 0;
         int ignored = 0;
-        for (final InputStream stream : list) {
-            for (final Map.Entry<String, String> attr
-                : Manifests.load(stream).entrySet()) {
-                if (this.attributes.putIfAbsent(attr.getKey(), attr.getValue()) == null) {
-                    ++saved;
-                } else {
-                    ++ignored;
+        try (CloseableStreams cleanup = new CloseableStreams(list)) {
+            for (final InputStream stream : cleanup.all()) {
+                for (final Map.Entry<String, String> attr
+                    : Manifests.load(stream).entrySet()) {
+                    if (this.attributes.putIfAbsent(attr.getKey(), attr.getValue()) == null) {
+                        ++saved;
+                    } else {
+                        ++ignored;
+                    }
                 }
             }
-            stream.close();
         }
         if (Logger.isDebugEnabled(this)) {
             Logger.debug(
@@ -273,7 +274,7 @@ public final class Manifests implements MfMap {
         return Manifests.singleton().containsKey(name);
     }
 
-    @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.UseTryWithResources"})
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     private static Map<String, String> load(final InputStream stream)
         throws IOException {
         final ConcurrentMap<String, String> props =
@@ -294,8 +295,6 @@ public final class Manifests implements MfMap {
         // @checkstyle IllegalCatch (1 line)
         } catch (final RuntimeException ex) {
             Manifests.logLoadFailedError(ex);
-        } finally {
-            stream.close();
         }
         return props;
     }

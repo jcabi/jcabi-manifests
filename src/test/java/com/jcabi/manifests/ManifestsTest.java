@@ -5,10 +5,13 @@
 package com.jcabi.manifests;
 
 import com.jcabi.log.Logger;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentNavigableMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.CyclicBarrier;
@@ -120,6 +123,70 @@ final class ManifestsTest {
             "fails to find attribute by name in different case",
             manifests.get("SCM-Revision"),
             Matchers.equalTo("abc")
+        );
+    }
+
+    @Test
+    void closesEveryStreamAfterParsingFails() throws Exception {
+        try (
+            InputStream broken = ManifestsTest.stream("invalid header%n%n");
+            InputStream valid = ManifestsTest.stream("Build-Version: available%n%n")
+        ) {
+            Assertions.assertThrows(
+                IOException.class,
+                () -> new Manifests().append(new StreamsMfs(Arrays.asList(broken, valid))),
+                "A malformed manifest must still fail"
+            );
+            Mockito.verify(broken).close();
+            Mockito.verify(valid).close();
+        }
+    }
+
+    @Test
+    void preservesParsingFailureWhenClosingFails() throws Exception {
+        try (
+            InputStream broken = ManifestsTest.stream("bad header%n%n");
+            InputStream failing = ManifestsTest.stream("Build-Name: failing%n%n");
+            InputStream last = ManifestsTest.stream("Build-Name: last%n%n")
+        ) {
+            final IOException failure = new IOException("Cannot close stream");
+            Mockito.doThrow(failure).when(failing).close();
+            MatcherAssert.assertThat(
+                "The close failure must be suppressed on the parsing error",
+                Assertions.assertThrows(
+                    IOException.class,
+                    () -> new Manifests().append(
+                        new StreamsMfs(Arrays.asList(broken, failing, last))
+                    ),
+                    "The parsing error must propagate"
+                ).getSuppressed(),
+                Matchers.arrayContaining(failure)
+            );
+            Mockito.verify(last).close();
+            Mockito.doNothing().when(failing).close();
+        }
+    }
+
+    @Test
+    void closesEveryStreamExactlyOnce() throws Exception {
+        try (
+            InputStream first = ManifestsTest.stream("Build-Name: first%n%n");
+            InputStream second = ManifestsTest.stream("Build-Name: second%n%n")
+        ) {
+            final MfMap manifests = new Manifests();
+            manifests.append(new StreamsMfs(Arrays.asList(first, second)));
+            MatcherAssert.assertThat(
+                "The first attribute must win",
+                manifests.get("Build-Name"), Matchers.equalTo("first")
+            );
+            Mockito.verify(first).close();
+            Mockito.verify(second).close();
+        }
+    }
+
+    private static InputStream stream(final String text) {
+        return Mockito.spy(
+            new ByteArrayInputStream(String.format(text).getBytes(StandardCharsets.UTF_8))
         );
     }
 
